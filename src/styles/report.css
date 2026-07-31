@@ -146,7 +146,7 @@
 .send-btn {
   flex: 2;
   font-size: calc(7.5px * var(--px));
-  padding: calc(2.5px * var(--px)) calc(2px * var(--px)) calc(3px * var(--px));
+  padding: 0 calc(2px * var(--px));
 }
 
 .cancel-btn {

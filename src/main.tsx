@@ -13,5 +13,6 @@ import './styles/toast.css';
 import './styles/preloader.css';
 import './styles/radar.css';
 import './styles/card.css';
+import './styles/mobile.css';
 
 render(<App />, document.getElementById('app')!);

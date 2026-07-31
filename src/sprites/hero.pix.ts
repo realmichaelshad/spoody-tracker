@@ -1,36 +1,38 @@
 import { sprite } from './palette';
 
 /**
- * Climbing hero — small masked figure clinging to the HUD frame.
- * Two-frame idle animation (head sway); each frame is 18x22,
- * sheet is 36x22. Rows are written as frame1 + frame2 halves.
+ * Climbing hero — masked figure clinging to the HUD frame: big eyes,
+ * arms out gripping, crouched legs, red boots. Two-frame idle sway.
+ * Each frame 20x24; sheet 40x24.
  */
 export const hero = sprite({
   name: 'hero',
   frames: 2,
   map: { k: 'outline', r: 'red', w: 'white', n: 'navy' },
   rows: [
-    '......kkkkkk......' + '.......kkkkkk.....',
-    '....kkrrrrrrkk....' + '.....kkrrrrrrkk...',
-    '...krrrrrrrrrrk...' + '....krrrrrrrrrrk..',
-    '..krkwwrrrrwwkrk..' + '...krkwwrrrrwwkrk.',
-    '..krwwwwrrwwwwrk..' + '...krwwwwrrwwwwrk.',
-    '..krkwwrrrrwwkrk..' + '...krkwwrrrrwwkrk.',
-    '...krrrrrrrrrrk...' + '....krrrrrrrrrrk..',
-    '....kkrrrrrrkk....' + '.....kkrrrrrrkk...',
-    'kk...krrrrrrk...kk' + 'kk...krrrrrrk...kk',
-    'krk.krrrrrrrrk.krk' + 'krk.krrrrrrrrk.krk',
-    'krrkkrrrrrrrrkkrrk' + 'krrkkrrrrrrrrkkrrk',
-    '.krrrrrrrrrrrrrrk.' + '.krrrrrrrrrrrrrrk.',
-    '..krrrrnnnnrrrrk..' + '..krrrrnnnnrrrrk..',
-    '..krrrnnnnnnrrrk..' + '..krrrnnnnnnrrrk..',
-    '...krrnnnnnnrrk...' + '...krrnnnnnnrrk...',
-    '...krrnnnnnnrrk...' + '...krrnnnnnnrrk...',
-    '...krnnkkkknnrk...' + '...krnnkkkknnrk...',
-    '..krnnk....knnrk..' + '..krnnk....knnrk..',
-    '..krnk......knrk..' + '..krnk......knrk..',
-    '.kknk........knkk.' + '.kknk........knkk.',
-    'kknk..........knkk' + 'kknk..........knkk',
-    'kkk............kkk' + 'kkk............kkk',
+    '......kkkkkkkk......' + '......kkkkkkkk......',
+    '....kkrrrrrrrrkk....' + '.....kkrrrrrrrrkk...',
+    '...krrrrrrrrrrrrk...' + '....krrrrrrrrrrrrk..',
+    '...krkkwwrrwwkkrk...' + '....krkkwwrrwwkkrk..',
+    '..krkwwwwrrwwwwkrk..' + '...krkwwwwrrwwwwkrk.',
+    '..krkwwwwrrwwwwkrk..' + '...krkwwwwrrwwwwkrk.',
+    '...krkwwrrrrwwkrk...' + '....krkwwrrrrwwkrk..',
+    '....kkrrrrrrrrkk....' + '.....kkrrrrrrrrkk...',
+    '....krrrrrrrrrrk....' + '.....krrrrrrrrrrk...',
+    '.kk.krrrrrrrrrrk.kk.' + '.kk.krrrrrrrrrrk.kk.',
+    'krrkrrrrrrrrrrrrkrrk' + 'krrkrrrrrrrrrrrrkrrk',
+    'krrkrrrrkrrkrrrrkrrk' + 'krrkrrrrkrrkrrrrkrrk',
+    '.krrrrrrkrrkrrrrrrk.' + '.krrrrrrkrrkrrrrrrk.',
+    '..krrrrrkrrkrrrrrk..' + '..krrrrrkrrkrrrrrk..',
+    '...krrrnnnnnnrrrk...' + '...krrrnnnnnnrrrk...',
+    '....krrnnnnnnrrk....' + '....krrnnnnnnrrk....',
+    '....knnnkkkknnnk....' + '....knnnkkkknnnk....',
+    '...knnnk....knnnk...' + '...knnnk....knnnk...',
+    '...knnk......knnk...' + '...knnk......knnk...',
+    '..knnk........knnk..' + '..knnk........knnk..',
+    '..krnk........knrk..' + '..krnk........knrk..',
+    '.kkrrk........krrkk.' + '.kkrrk........krrkk.',
+    '.kkkkk........kkkkk.' + '.kkkkk........kkkkk.',
+    '....................' + '....................',
   ],
 });

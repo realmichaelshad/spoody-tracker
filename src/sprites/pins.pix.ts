@@ -5,30 +5,36 @@ import { sprite, type CharMap, type PaletteName } from './palette';
  * navy core with a white pixel star. 22x22, anchored center.
  */
 const PIN_ROWS = [
-  '.....kkkkkkkkkkkkkk.....',
-  '....khhhhhlllllllllk....',
-  '...khhhhhhllllllllllk...',
-  '..khhhlllllllllllllllk..',
-  '.kllkkkkkkkkkkkkkkkkllk.',
-  'klllknnnnnnnnnnnnnnklllk',
-  'klllknnnnnnwnnnnnnnklllk',
-  'klllknnnnnwwwnnnnnnklllk',
-  'klllknnnnnwwwnnnnnnklllk',
-  'klllknwwwwwwwwwwwnnklllk',
-  'kfffknnwwwwwwwwwnnnkfffk',
-  'kfffknnnwwwwwwwnnnnkfffk',
-  'kfffknnnwwwwwwwnnnnkfffk',
-  'kfffknnwwwwewwwwnnnkfffk',
-  'kfffknnwwwnnnwwwnnnkfffk',
-  'kfffknwwnnnnnnnwwnnkfffk',
-  'kdddknwnnnnnnnnnwnnkdddk',
-  'kdddknnnnnnnnnnnnnnkdddk',
-  'kdddknnnnnnnnnnnnnnkdddk',
-  '.kddkkkkkkkkkkkkkkkkddk.',
-  '..kddddddddddddddddddk..',
-  '...kddddddddddddddddk...',
-  '....kddddddddddddddk....',
-  '.....kkkkkkkkkkkkkk.....',
+    '......kkkkkkkkkkkkkkkkk......',
+    '.....khhhhhhhllllllllllk.....',
+    '....khhhhhhhhlllllllllllk....',
+    '...khhhhhhhhhllllllllllllk...',
+    '..khhhhhllllllllllllllllllk..',
+    '.klllnnnnnnnnnnnnnnnnnnnlllk.',
+    'kllllnnnnnnnkkkkknnnnnnnllllk',
+    'kllllnnnnnnnkwwwknnnnnnnllllk',
+    'kllllnnnnnnkkwwwkknnnnnnllllk',
+    'kllllkkkkkkkwwwwwkkkkkkkllllk',
+    'kllllkwwwwwwwwwwwwwwwwwkllllk',
+    'kllllkkwwwwwwwwwwwwwwwkkllllk',
+    'kllllnkkwwwwwwwwwwwwwkknllllk',
+    'kllllnnkkwwwwwwwwwwwkknnllllk',
+    'kllllnnnkkwwwwwwwwwkknnnllllk',
+    'kddddnnnkkwwwwwwwwwkknnnddddk',
+    'kddddnnnkwwwwwwwwwwwknnnddddk',
+    'kddddnnkkwwwwwkwwwwwkknnddddk',
+    'kddddnnkwwwwwkkkwwwwwknnddddk',
+    'kddddnkkwwwwkknkkwwwwkknddddk',
+    'kddddnkwwwwkknnnkkwwwwknddddk',
+    'kddddnkwwwkknnnnnkkwwwknddddk',
+    'kddddnkkkkknnnnnnnkkkkknddddk',
+    '.kdddnnnnnnnnnnnnnnnnnnndddk.',
+    '..kdddddddddddddddddddddddk..',
+    '...kdddddddddddddddddddddk...',
+    '....kdddddddddddddddddddk....',
+    '.....kdddddddddddddddddk.....',
+    '......kkkkkkkkkkkkkkkkk......',
+
 ];
 
 function pinMap(
@@ -49,14 +55,9 @@ function pinMap(
   };
 }
 
-export const pinConfirmed = sprite({
-  name: 'pin-confirmed',
-  map: pinMap('okPale', 'okLt', 'ok', 'okDk'),
-  rows: PIN_ROWS,
-});
-
-export const pinRumored = sprite({
-  name: 'pin-rumored',
+/** The one sighting pin — red badge, white star. */
+export const pinSighting = sprite({
+  name: 'pin-sighting',
   map: pinMap('badPale', 'badLt', 'bad', 'badDk'),
   rows: PIN_ROWS,
 });
@@ -71,7 +72,7 @@ export const pinPending = sprite({
 /** Cluster marker — spider-web disc; count text is drawn by the symbol layer. */
 export const clusterWeb = sprite({
   name: 'cluster-web',
-  map: { k: 'outline', e: 'cyanLt', n: 'navy' },
+  map: { k: 'outline', e: 'white', n: 'navy' },
   rows: [
     '.........kkkkkkkk.........',
     '.......kkeeeeeeeekk.......',

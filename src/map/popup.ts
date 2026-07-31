@@ -10,10 +10,9 @@ export function openSightingPopup(map: MLMap, s: Sighting): void {
 
   const el = document.createElement('div');
   el.className = 'sighting-card';
-  const badge = s.type === 'confirmed' ? 'CONFIRMED SIGHTING' : 'RUMORED SIGHTING';
   el.innerHTML = `
-    <div class="card-head ${s.type}">
-      <span class="card-dot"></span>${badge}
+    <div class="card-head">
+      <span class="card-dot"></span>SIGHTING REPORT
     </div>
     ${s.photoUrl ? `<div class="card-photo"><img src="${escapeAttr(s.photoUrl)}" alt="sighting photo" loading="lazy"></div>` : ''}
     <div class="card-msg">${escapeHtml(s.message)}</div>

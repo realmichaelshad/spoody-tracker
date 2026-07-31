@@ -47,11 +47,7 @@
   padding-bottom: calc(2px * var(--px));
 }
 
-.card-head.confirmed {
-  color: var(--ok-pale);
-}
-
-.card-head.rumored {
+.card-head {
   color: var(--bad-pale);
 }
 
@@ -59,16 +55,15 @@
   width: calc(3px * var(--px));
   height: calc(3px * var(--px));
   flex: none;
-}
-
-.card-head.confirmed .card-dot {
-  background: var(--ok);
-  box-shadow: 0 0 calc(3px * var(--px)) var(--ok);
-}
-
-.card-head.rumored .card-dot {
   background: var(--bad);
   box-shadow: 0 0 calc(3px * var(--px)) var(--bad);
+  animation: dot-blink 1.2s steps(2) infinite;
+}
+
+@keyframes dot-blink {
+  50% {
+    opacity: 0.4;
+  }
 }
 
 .card-photo {

@@ -1,0 +1,192 @@
+/* Report-a-sighting panel */
+
+.report-wrap {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(3, 24, 52, 0.55);
+  z-index: 20;
+  pointer-events: auto;
+}
+
+.report-panel {
+  width: min(calc(120px * var(--px)), calc(100vw - 24px));
+  border: calc(7px * var(--px)) solid transparent;
+  border-image: url('/sprites/logo-plate@3x.png') 21 fill round;
+  padding: calc(2px * var(--px)) calc(3px * var(--px)) calc(3px * var(--px));
+  font-family: var(--font-ui);
+  color: var(--cyan);
+  image-rendering: pixelated;
+}
+
+.report-title {
+  font-family: var(--font-display);
+  font-size: calc(9px * var(--px));
+  color: var(--white, #e6f5f8);
+  text-align: center;
+  letter-spacing: 0.06em;
+  margin-bottom: calc(3px * var(--px));
+  text-shadow: calc(1px * var(--px)) calc(1px * var(--px)) 0 var(--outline);
+}
+
+.report-row {
+  display: flex;
+  gap: calc(2px * var(--px));
+  margin: calc(2px * var(--px)) 0;
+}
+
+.type-btn {
+  flex: 1;
+  font-family: var(--font-ui);
+  font-size: calc(5.5px * var(--px));
+  letter-spacing: 0.08em;
+  padding: calc(2px * var(--px)) 0;
+  border: calc(1px * var(--px)) solid var(--outline);
+  background: var(--map-bg);
+  color: var(--cyan-lt);
+  cursor: pointer;
+  opacity: 0.55;
+}
+
+.type-btn.confirmed.on {
+  background: var(--ok);
+  color: var(--ok-pale);
+  opacity: 1;
+  box-shadow: inset 0 calc(-2px * var(--px)) 0 var(--outline);
+}
+
+.type-btn.rumored.on {
+  background: var(--bad);
+  color: var(--bad-pale);
+  opacity: 1;
+  box-shadow: inset 0 calc(-2px * var(--px)) 0 var(--outline);
+}
+
+.report-label {
+  display: block;
+  font-size: calc(5px * var(--px));
+  letter-spacing: 0.1em;
+  color: var(--cyan-lt);
+  margin-top: calc(2px * var(--px));
+}
+
+.report-input {
+  width: 100%;
+  font-family: var(--font-ui);
+  font-size: calc(6px * var(--px));
+  color: var(--pale);
+  background: var(--map-bg);
+  border: calc(1px * var(--px)) solid var(--frame-3);
+  padding: calc(1.5px * var(--px)) calc(2px * var(--px));
+  margin-top: calc(1px * var(--px));
+  outline: none;
+  resize: none;
+}
+
+.report-input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 calc(1px * var(--px)) var(--teal);
+}
+
+.report-input::placeholder {
+  color: var(--frame-3);
+}
+
+.report-count {
+  text-align: right;
+  font-size: calc(4.5px * var(--px));
+  color: var(--frame-1);
+  margin-top: calc(0.5px * var(--px));
+}
+
+.loc-btn {
+  flex: 1;
+  font-family: var(--font-ui);
+  font-size: calc(5px * var(--px));
+  letter-spacing: 0.06em;
+  padding: calc(2px * var(--px)) 0;
+  border: calc(1px * var(--px)) solid var(--teal);
+  background: none;
+  color: var(--cyan);
+  cursor: pointer;
+}
+
+.loc-btn:hover {
+  background: rgba(9, 164, 199, 0.2);
+}
+
+.report-loc {
+  font-size: calc(5px * var(--px));
+  letter-spacing: 0.06em;
+  color: var(--frame-1);
+  text-align: center;
+  margin: calc(1px * var(--px)) 0;
+}
+
+.report-loc.set {
+  color: var(--yellow);
+}
+
+.report-error {
+  font-size: calc(5px * var(--px));
+  color: var(--bad-lt);
+  text-align: center;
+  letter-spacing: 0.06em;
+  margin: calc(1px * var(--px)) 0;
+}
+
+.send-btn {
+  flex: 2;
+  font-family: var(--font-display);
+  font-size: calc(7px * var(--px));
+  letter-spacing: 0.05em;
+  color: var(--outline);
+  border: calc(4px * var(--px)) solid transparent;
+  border-image: url('/sprites/green-pill@3x.png') 12 fill round;
+  background: none;
+  cursor: pointer;
+  padding: 0 calc(2px * var(--px));
+}
+
+.send-btn:disabled {
+  opacity: 0.6;
+}
+
+.cancel-btn {
+  flex: 1;
+  font-family: var(--font-ui);
+  font-size: calc(5px * var(--px));
+  color: var(--cyan-lt);
+  background: none;
+  border: calc(1px * var(--px)) solid var(--frame-3);
+  cursor: pointer;
+}
+
+/* Picking-on-map mode: crosshair + hint bar */
+.pick-hint {
+  position: absolute;
+  top: calc(20px * var(--px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  font-family: var(--font-label);
+  font-size: calc(8px * var(--px));
+  color: var(--yellow);
+  background: var(--panel);
+  border: calc(1px * var(--px)) solid var(--yellow);
+  padding: calc(1.5px * var(--px)) calc(4px * var(--px));
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  animation: pick-blink 1s steps(2) infinite;
+}
+
+@keyframes pick-blink {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.picking .maplibregl-canvas {
+  cursor: crosshair !important;
+}

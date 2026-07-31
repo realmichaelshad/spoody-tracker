@@ -1,12 +1,9 @@
 import { signal } from '@preact/signals';
 
-export type SightingType = 'confirmed' | 'rumored';
-
 export interface Sighting {
   id: string;
   lat: number;
   lng: number;
-  type: SightingType;
   name: string;
   message: string;
   photoUrl?: string | null;

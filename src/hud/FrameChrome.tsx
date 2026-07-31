@@ -1,16 +1,15 @@
 import { config } from '../config';
-import { FilterChips } from './FilterChips';
+import { soundOn, openPanel } from '../state/settings';
 
 interface Props {
   onReport?: () => void;
-  onMenu?: () => void;
 }
 
 /**
  * HUD chrome: pixel frame, logo plate, corner buttons, filter chips,
  * ticker bar, climbing hero, report CTA.
  */
-export function FrameChrome({ onReport, onMenu }: Props) {
+export function FrameChrome({ onReport }: Props) {
   const [wordA, wordB] = splitSiteName(config.siteName);
   return (
     <div class="hud">
@@ -22,10 +21,12 @@ export function FrameChrome({ onReport, onMenu }: Props) {
         {wordB && <span class="word">{wordB}</span>}
       </div>
 
-      <button class="hud-btn menu-btn" aria-label="Menu" onClick={onMenu} />
+      <button
+        class="hud-btn menu-btn"
+        aria-label="Menu"
+        onClick={() => (openPanel.value = openPanel.value === 'none' ? 'menu' : 'none')}
+      />
       <button class="hud-btn spider-btn" aria-label="Report a sighting" onClick={onReport} />
-
-      <FilterChips />
 
       <div class="ticker-bar">
         <div class="ticker-track">
@@ -34,7 +35,12 @@ export function FrameChrome({ onReport, onMenu }: Props) {
             WORLD — REPORT YOUR OWN SIGHTING TO PUT IT ON THE MAP
           </div>
         </div>
-        <button class="hud-btn sound-btn" aria-label="Toggle sound" />
+        <button
+          class={`hud-btn sound-btn ${soundOn.value ? '' : 'off'}`}
+          aria-label="Toggle sound"
+          aria-pressed={soundOn.value}
+          onClick={() => (soundOn.value = !soundOn.value)}
+        />
       </div>
 
       <div class="hero" aria-hidden="true" />

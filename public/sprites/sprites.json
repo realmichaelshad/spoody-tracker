@@ -30,8 +30,8 @@
     }
   },
   "hero": {
-    "w": 36,
-    "h": 22,
+    "w": 40,
+    "h": 24,
     "frames": 2
   },
   "logo-face": {
@@ -52,25 +52,13 @@
     "w": 26,
     "h": 26
   },
-  "pin-confirmed": {
-    "w": 22,
-    "h": 22
-  },
   "pin-pending": {
-    "w": 22,
-    "h": 22
+    "w": 29,
+    "h": 29
   },
-  "pin-rumored": {
-    "w": 22,
-    "h": 22
-  },
-  "chip-green": {
-    "w": 22,
-    "h": 16
-  },
-  "chip-red": {
-    "w": 22,
-    "h": 16
+  "pin-sighting": {
+    "w": 29,
+    "h": 29
   },
   "green-pill": {
     "w": 13,
@@ -101,8 +89,8 @@
     "h": 16
   },
   "spider-glyph": {
-    "w": 15,
-    "h": 14
+    "w": 17,
+    "h": 15
   },
   "yellow-tab": {
     "w": 15,

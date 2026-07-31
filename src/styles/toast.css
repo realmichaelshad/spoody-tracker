@@ -1,0 +1,86 @@
+/* New-sighting notification toasts (top-right, under the spider button) */
+
+.toasts {
+  position: absolute;
+  top: calc(30px * var(--px));
+  right: calc(14px * var(--px));
+  display: flex;
+  flex-direction: column;
+  gap: calc(2px * var(--px));
+  z-index: 16;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  gap: calc(2px * var(--px));
+  align-items: center;
+  text-align: left;
+  width: calc(78px * var(--px));
+  border: calc(6px * var(--px)) solid transparent;
+  border-image: url('/sprites/panel@3x.png') 18 fill round;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  animation: toast-in 220ms steps(5);
+  image-rendering: pixelated;
+}
+
+@keyframes toast-in {
+  from {
+    transform: translateX(120%);
+  }
+}
+
+.toast:hover {
+  filter: brightness(1.1);
+}
+
+.toast-pin {
+  flex: none;
+  width: calc(12px * var(--px));
+  height: calc(12px * var(--px));
+  background: url('/sprites/pin-sighting@3x.png') 0 0 / cover no-repeat;
+}
+
+.toast-body {
+  display: flex;
+  flex-direction: column;
+  gap: calc(0.5px * var(--px));
+  min-width: 0;
+}
+
+.toast-head {
+  display: flex;
+  align-items: center;
+  gap: calc(1.5px * var(--px));
+  font-family: var(--font-label);
+  font-size: calc(7px * var(--px));
+  letter-spacing: 0.08em;
+  color: var(--yellow);
+}
+
+.toast-dot {
+  width: calc(2px * var(--px));
+  height: calc(2px * var(--px));
+  background: var(--bad);
+  box-shadow: 0 0 calc(2px * var(--px)) var(--bad);
+  animation: dot-blink 0.9s steps(2) infinite;
+}
+
+.toast-msg {
+  font-size: calc(5px * var(--px));
+  color: var(--pale);
+  line-height: 1.3;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.toast-meta {
+  font-size: calc(4.5px * var(--px));
+  color: var(--cyan-lt);
+  opacity: 0.75;
+}

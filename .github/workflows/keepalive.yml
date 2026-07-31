@@ -1,0 +1,24 @@
+name: keepalive
+
+# Supabase free projects pause after 7 idle days — this pings the REST API
+# every 3 days so a deployed tracker stays awake. Configure the two repo
+# secrets, or the job exits harmlessly.
+on:
+  schedule:
+    - cron: '0 3 */3 * *'
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Keep Supabase project awake
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          test -n "$SUPABASE_URL" || { echo "no SUPABASE_URL secret; skipping"; exit 0; }
+          curl -fsS "$SUPABASE_URL/rest/v1/sightings?select=id&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" > /dev/null
+          echo "pinged"

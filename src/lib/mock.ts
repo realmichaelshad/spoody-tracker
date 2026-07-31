@@ -1,4 +1,4 @@
-import type { Sighting, SightingType } from '../state/sightings';
+import type { Sighting } from '../state/sightings';
 
 /** Weighted world hotspots [lng, lat, weight] — pins cluster around real cities. */
 const HOTSPOTS: [number, number, number][] = [
@@ -40,25 +40,19 @@ const NAMES = [
   'SKY-EYES-KEN', 'ALLEY-ANNA', 'FERRY-FAN-42', 'CROSSWALK-CARL', 'LAMPPOST-LIZ',
 ];
 
-const CONFIRMED_MSGS = [
+const MSGS = [
   'SAW HIM SWING PAST MY WINDOW. NOT A DRILL.',
   'WEB LINE STILL STUCK TO THE TRAFFIC LIGHT.',
   'HE WAVED AT MY KID. LEGEND.',
   'STOPPED A BIKE THIEF THEN VANISHED UP THE WALL.',
-  'CLEAR VIEW FROM THE ROOFTOP. RED AND BLUE CONFIRMED.',
+  'CLEAR VIEW FROM THE ROOFTOP. RED AND BLUE.',
   'HEARD THE THWIP. LOOKED UP. THERE HE WAS.',
   'CAUGHT THE WHOLE THING ON CAMERA.',
   'HE TOOK A SELFIE WITH THE HOT DOG GUY.',
-];
-
-const RUMORED_MSGS = [
-  'PRETTY SURE THAT SHADOW ON THE WATER TOWER WAS HIM.',
-  'MY NEIGHBOR SWEARS SHE SAW HIM AT THE MARKET.',
   'SOMETHING FAST WENT OVER THE BRIDGE. TOO FAST.',
-  'WEB-LIKE STRING ON MY BALCONY THIS MORNING. SUS.',
   'BLURRY PHOTO BUT THE POSE IS UNMISTAKABLE.',
-  'FRIEND OF A FRIEND SAW HIM BUY EMPANADAS.',
-  'COULD BE A KITE. COULD BE HIM. YOU DECIDE.',
+  'MY NEIGHBOR SAW HIM AT THE MARKET. IM SURE OF IT.',
+  'HE CAUGHT MY DROPPED PHONE MID-AIR. TEN OUT OF TEN.',
 ];
 
 let seedState = 1234567;
@@ -88,15 +82,12 @@ export function generateMockSightings(count: number): Sighting[] {
   const now = Date.now();
   for (let i = 0; i < count; i++) {
     const [lng, lat] = pickWeighted();
-    const type: SightingType = rand() < 0.55 ? 'confirmed' : 'rumored';
-    const msgs = type === 'confirmed' ? CONFIRMED_MSGS : RUMORED_MSGS;
     out.push({
       id: `demo-${i}`,
       lng: scatter(lng, 0.25),
       lat: scatter(lat, 0.18),
-      type,
       name: NAMES[Math.floor(rand() * NAMES.length)],
-      message: msgs[Math.floor(rand() * msgs.length)],
+      message: MSGS[Math.floor(rand() * MSGS.length)],
       photoUrl: null,
       photoState: 'none',
       placeLabel: null,

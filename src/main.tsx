@@ -7,5 +7,8 @@ import '@fontsource-variable/bitcount-prop-single';
 import './styles/tokens.css';
 import './styles/hud.css';
 import './styles/popup.css';
+import './styles/report.css';
+import './styles/drawer.css';
+import './styles/toast.css';
 
 render(<App />, document.getElementById('app')!);

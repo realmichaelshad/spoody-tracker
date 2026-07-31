@@ -199,10 +199,10 @@
   left: calc(1px * var(--px));
   bottom: calc(2px * var(--px));
   z-index: 2;
-  width: calc(18px * var(--px));
-  height: calc(22px * var(--px));
+  width: calc(20px * var(--px));
+  height: calc(24px * var(--px));
   background-image: url('/sprites/hero@3x.png');
-  background-size: calc(36px * var(--px)) 100%;
+  background-size: calc(40px * var(--px)) 100%;
   animation: hero-sway 1.6s steps(1) infinite;
 }
 
@@ -212,21 +212,27 @@
     background-position-x: 0;
   }
   50% {
-    background-position-x: calc(-18px * var(--px));
+    background-position-x: calc(-20px * var(--px));
   }
 }
 
-/* ── Report CTA (bottom-right tab) ───────────────────────────────────────── */
+/* ── Report CTA — primary action, anchored bottom-center above the ticker ── */
 .cta-tab {
   position: absolute;
-  right: calc(14px * var(--px));
-  bottom: calc(1px * var(--px));
-  padding: calc(1px * var(--px)) calc(4px * var(--px)) calc(2px * var(--px));
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(31px * var(--px));
+  padding: calc(1.5px * var(--px)) calc(6px * var(--px)) calc(2.5px * var(--px));
   border: calc(5px * var(--px)) solid transparent;
   border-image: url('/sprites/yellow-tab@3x.png') 15 fill round;
   font-family: var(--font-display);
-  font-size: calc(8px * var(--px));
+  font-size: calc(10px * var(--px));
   color: var(--outline);
   letter-spacing: 0.05em;
   white-space: nowrap;
+  filter: drop-shadow(0 calc(2px * var(--px)) 0 rgba(3, 24, 52, 0.6));
+}
+
+.cta-tab:hover {
+  filter: drop-shadow(0 calc(2px * var(--px)) 0 rgba(3, 24, 52, 0.6)) brightness(1.06);
 }

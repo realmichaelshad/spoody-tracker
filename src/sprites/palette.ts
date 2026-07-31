@@ -19,6 +19,7 @@ export const PALETTE = {
   pale: '#d7f5ff',
   teal: '#09a4c7',
   orange: '#f89d51',
+  orangeDk: '#b5622b',
   yellow: '#ffd988',
   ok: '#52b375',
   okLt: '#94c391',

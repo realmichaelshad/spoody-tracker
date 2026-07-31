@@ -1,7 +1,6 @@
 import type { Map as MLMap, MapMouseEvent } from 'maplibre-gl';
 import { effect } from '@preact/signals';
 import { sightings, sightingsVersion, type Sighting } from '../state/sightings';
-import { showConfirmed, showRumored } from '../state/filters';
 import { openSightingPopup } from './popup';
 
 const SRC = 'sightings';
@@ -16,7 +15,7 @@ interface PinCollection {
   type: 'FeatureCollection';
   features: Array<{
     type: 'Feature';
-    properties: { id: string; type: string };
+    properties: { id: string };
     geometry: { type: 'Point'; coordinates: [number, number] };
   }>;
 }
@@ -26,7 +25,7 @@ function toGeoJSON(): PinCollection {
     type: 'FeatureCollection',
     features: [...sightings.value.values()].map((s) => ({
       type: 'Feature' as const,
-      properties: { id: s.id, type: s.type },
+      properties: { id: s.id },
       geometry: { type: 'Point' as const, coordinates: [s.lng, s.lat] as [number, number] },
     })),
   };
@@ -38,9 +37,7 @@ function toGeoJSON(): PinCollection {
  */
 export async function installPins(map: MLMap): Promise<void> {
   await Promise.all(
-    ['pin-confirmed', 'pin-rumored', 'pin-pending', 'cluster-web'].map((n) =>
-      addSpriteImage(map, n),
-    ),
+    ['pin-sighting', 'pin-pending', 'cluster-web'].map((n) => addSpriteImage(map, n)),
   );
 
   map.addSource(SRC, {
@@ -71,37 +68,24 @@ export async function installPins(map: MLMap): Promise<void> {
     },
   });
 
-  for (const t of ['confirmed', 'rumored'] as const) {
-    map.addLayer({
-      id: `pins-${t}`,
-      type: 'symbol',
-      source: SRC,
-      filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'type'], t]],
-      layout: {
-        'icon-image': `pin-${t}`,
-        'icon-allow-overlap': true,
-        /* Smaller far out (less clutter), full-size once diving in. */
-        'icon-size': ['step', ['zoom'], 0.75, 6, 1],
-      },
-    });
-  }
+  map.addLayer({
+    id: 'pins',
+    type: 'symbol',
+    source: SRC,
+    filter: ['!', ['has', 'point_count']],
+    layout: {
+      'icon-image': 'pin-sighting',
+      'icon-allow-overlap': true,
+      /* Smaller far out (less clutter), full-size once diving in. */
+      'icon-size': ['step', ['zoom'], 0.75, 6, 1],
+    },
+  });
 
   /* Live data → source refresh (signals effect). */
   effect(() => {
     void sightingsVersion.value;
     const src = map.getSource(SRC) as any;
     if (src) src.setData(toGeoJSON());
-  });
-
-  /* Filters → layer visibility. */
-  effect(() => {
-    const conf = showConfirmed.value;
-    const rum = showRumored.value;
-    if (!map.getLayer('pins-confirmed')) return;
-    map.setLayoutProperty('pins-confirmed', 'visibility', conf ? 'visible' : 'none');
-    map.setLayoutProperty('pins-rumored', 'visibility', rum ? 'visible' : 'none');
-    /* Clusters can't split by type — hide them only when both filters are off. */
-    map.setLayoutProperty('clusters', 'visibility', conf || rum ? 'visible' : 'none');
   });
 
   /* Cluster click → expand. */
@@ -114,18 +98,16 @@ export async function installPins(map: MLMap): Promise<void> {
   });
 
   /* Pin click → popup. */
-  for (const layer of ['pins-confirmed', 'pins-rumored']) {
-    map.on('click', layer, (e: MapMouseEvent) => {
-      const f = (e as any).features?.[0];
-      if (!f) return;
-      const s = sightings.value.get(f.properties.id);
-      if (s) openSightingPopup(map, s);
-    });
+  map.on('click', 'pins', (e: MapMouseEvent) => {
+    const f = (e as any).features?.[0];
+    if (!f) return;
+    const s = sightings.value.get(f.properties.id);
+    if (s) openSightingPopup(map, s);
+  });
+  for (const layer of ['pins', 'clusters']) {
     map.on('mouseenter', layer, () => (map.getCanvas().style.cursor = 'pointer'));
     map.on('mouseleave', layer, () => (map.getCanvas().style.cursor = ''));
   }
-  map.on('mouseenter', 'clusters', () => (map.getCanvas().style.cursor = 'pointer'));
-  map.on('mouseleave', 'clusters', () => (map.getCanvas().style.cursor = ''));
 }
 
 /** Fly the camera to a sighting and open its popup on arrival. */

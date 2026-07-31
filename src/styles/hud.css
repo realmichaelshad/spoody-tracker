@@ -89,30 +89,44 @@
   cursor: default;
 }
 
-/* Themed sprite skins — 'stretch' edges (uniform bands) render seam-free,
-   unlike 'round' which repeats fractionally. Corners stay hand-drawn. */
+/* Themed sprite skins — 3-slice (left cap / stretch / right cap) with the
+   button height locked to an exact sprite multiple. Vertical scale is always
+   integer (crisp rows) and the horizontal stretch zone is uniform bands, so
+   slice seams cannot show at any devicePixelRatio. */
 .px-green,
 .px-yellow {
-  border: calc(5px * var(--px)) solid transparent;
   box-shadow: none; /* shadow is baked into the raised sprite */
   background: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border-style: solid;
+  border-color: transparent;
 }
 
 .px-green {
-  border-image: url('/sprites/green-pill@3x.png') 15 fill stretch;
+  height: calc(15px * var(--px)); /* 13 body + 2 baked shadow rows */
+  border-width: 0 calc(5px * var(--px));
+  border-image: url('/sprites/green-pill@3x.png') 0 15 0 15 fill stretch;
+  padding-bottom: calc(2px * var(--px)); /* optically center above the shadow */
 }
 
 .px-green:active {
-  border-image: url('/sprites/green-pill-pressed@3x.png') 15 fill stretch;
+  border-image: url('/sprites/green-pill-pressed@3x.png') 0 15 0 15 fill stretch;
+  padding-bottom: 0;
 }
 
 .px-yellow {
-  border-image: url('/sprites/yellow-tab@3x.png') 21 fill stretch;
-  border-width: calc(7px * var(--px));
+  height: calc(19px * var(--px)); /* 17 body + 2 baked shadow rows */
+  border-width: 0 calc(7px * var(--px));
+  border-image: url('/sprites/yellow-tab@3x.png') 0 21 0 21 fill stretch;
+  padding-bottom: calc(2px * var(--px));
 }
 
 .px-yellow:active {
-  border-image: url('/sprites/yellow-tab-pressed@3x.png') 21 fill stretch;
+  border-image: url('/sprites/yellow-tab-pressed@3x.png') 0 21 0 21 fill stretch;
+  padding-bottom: 0;
 }
 
 /* ── Logo plate (top center) ─────────────────────────────────────────────── */
@@ -327,15 +341,19 @@
   left: 50%;
   transform: translateX(-50%);
   bottom: calc(30px * var(--px));
-  padding: 0 calc(4px * var(--px));
   font-size: calc(10px * var(--px));
-  /* .hud-btn zeroes border — restore it here (this rule loads later) */
-  border: calc(7px * var(--px)) solid transparent;
-  border-image: url('/sprites/yellow-tab@3x.png') 21 fill stretch;
+  /* .hud-btn zeroes the border — restate the 3-slice skin here (loads later) */
+  height: calc(19px * var(--px));
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0 calc(7px * var(--px));
+  border-image: url('/sprites/yellow-tab@3x.png') 0 21 0 21 fill stretch;
+  padding: 0 calc(2px * var(--px)) calc(2px * var(--px));
 }
 
 .cta-tab:active {
-  border-image: url('/sprites/yellow-tab-pressed@3x.png') 21 fill stretch;
+  border-image: url('/sprites/yellow-tab-pressed@3x.png') 0 21 0 21 fill stretch;
+  padding-bottom: 0;
 }
 
 .cta-tab:active {

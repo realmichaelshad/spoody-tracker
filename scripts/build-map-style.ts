@@ -77,6 +77,9 @@ const MIN_ZOOM_OVERRIDES: Record<string, number> = {
   place_suburb: 12,
   place_village: 11,
   place_town: 9,
+  /* Clean world view: country names only until you start diving in */
+  place_city: 5,
+  place_state: 6,
 };
 
 function recolorLayer(layer: any): any | null {

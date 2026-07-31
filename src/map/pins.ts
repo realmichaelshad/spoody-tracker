@@ -132,7 +132,7 @@ export async function installPins(map: MLMap): Promise<void> {
     el.className = 'hover-card';
     const msg = s.message.length > 60 ? s.message.slice(0, 57) + '…' : s.message;
     el.innerHTML = `
-      ${s.photoUrl && s.photoState !== 'unscreened' ? `<img src="${s.photoUrl.replace(/"/g, '&quot;')}" alt="">` : ''}
+      ${s.photoUrl && s.photoState !== 'unscreened' ? `<img src="${s.photoUrl.replace(/"/g, '&quot;')}" alt="" onerror="this.remove()">` : ''}
       <div class="hover-msg">${msg.replace(/[&<>]/g, (c) => `&#${c.charCodeAt(0)};`)}</div>
       <div class="hover-meta">${s.name.replace(/[&<>]/g, (c) => `&#${c.charCodeAt(0)};`)} · ${relativeTime(s.createdAt)}</div>
     `;

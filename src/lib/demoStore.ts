@@ -43,7 +43,15 @@ export function saveLocalSighting(s: Sighting): void {
   try {
     const list = loadLocalSightings();
     list.push(s);
-    localStorage.setItem(KEY, JSON.stringify(list.slice(-200)));
+    const trimmed = list.slice(-200);
+    /* photos are data URLs — keep only the newest 10 to respect the
+       ~5MB localStorage budget */
+    const withPhotos = trimmed.filter((x) => x.photoUrl);
+    for (const old of withPhotos.slice(0, Math.max(0, withPhotos.length - 10))) {
+      old.photoUrl = null;
+      old.photoState = 'none';
+    }
+    localStorage.setItem(KEY, JSON.stringify(trimmed));
   } catch {
     /* storage full/blocked — non-fatal */
   }

@@ -80,7 +80,14 @@ export function SightingCard({ sighting }: Props) {
 
       {s.photoUrl && (
         <div class={`card-photo ${revealed ? '' : 'unscreened'}`}>
-          <img src={s.photoUrl} alt="sighting photo" loading="lazy" />
+          <img
+            src={s.photoUrl}
+            alt="sighting photo"
+            loading="lazy"
+            onError={(e) => {
+              (e.currentTarget as HTMLElement).closest('.card-photo')?.remove();
+            }}
+          />
           {!revealed && (
             <button class="reveal-btn" onClick={() => setRevealed(true)}>
               UNVERIFIED IMAGE — CLICK TO REVEAL

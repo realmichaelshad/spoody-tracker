@@ -31,19 +31,30 @@ export async function submitSighting(input: ReportInput): Promise<ReportResult> 
 
   if (isDemoMode) {
     const label = await placeLabel(input.lat, input.lng);
+    /* Store the photo as a data URL so it survives reloads (object URLs
+       die with the page). Compressed WebP is small enough for localStorage. */
+    let photoUrl: string | null = null;
+    if (input.photo) {
+      photoUrl = await new Promise<string | null>((res) => {
+        const r = new FileReader();
+        r.onload = () => res(typeof r.result === 'string' ? r.result : null);
+        r.onerror = () => res(null);
+        r.readAsDataURL(input.photo!);
+      });
+    }
     const s: Sighting = {
       id: crypto.randomUUID(),
       lat: input.lat,
       lng: input.lng,
       name,
       message,
-      photoUrl: input.photo ? URL.createObjectURL(input.photo) : null,
-      photoState: input.photo ? 'screened' : 'none',
+      photoUrl,
+      photoState: photoUrl ? 'screened' : 'none',
       placeLabel: label,
       createdAt: new Date().toISOString(),
     };
     addSightings([s], { arrival: true });
-    saveLocalSighting({ ...s, photoUrl: null }); // blobs don't survive reload
+    saveLocalSighting(s);
     markMine(s.id);
     return { ok: true };
   }

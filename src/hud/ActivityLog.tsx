@@ -35,7 +35,14 @@ function FeedItem({ s, onJump }: { s: Sighting; onJump: (id: string) => void }) 
         <div class="feed-msg">{s.message}</div>
         {s.photoUrl && (
           <div class={`feed-photo ${s.photoState === 'unscreened' ? 'blurred' : ''}`}>
-            <img src={s.photoUrl} alt="sighting photo" loading="lazy" />
+            <img
+              src={s.photoUrl}
+              alt="sighting photo"
+              loading="lazy"
+              onError={(e) => {
+                (e.currentTarget as HTMLElement).closest('.feed-photo')?.remove();
+              }}
+            />
           </div>
         )}
       </button>

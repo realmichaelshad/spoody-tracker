@@ -63,6 +63,72 @@
   filter: brightness(0.92);
 }
 
+/* ── Primary buttons: pure hard-stop gradients — no border-image seams ───── */
+.px-primary {
+  font-family: var(--font-display);
+  color: var(--outline);
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border: calc(1px * var(--px)) solid var(--outline);
+  box-shadow: 0 calc(2px * var(--px)) 0 rgba(2, 10, 24, 0.85);
+  white-space: nowrap;
+}
+
+.px-primary:hover {
+  filter: brightness(1.08);
+}
+
+.px-primary:active {
+  transform: translateY(calc(2px * var(--px)));
+  box-shadow: none;
+  filter: brightness(0.94);
+}
+
+.px-primary:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.px-green {
+  background: linear-gradient(
+    to bottom,
+    var(--btn-lt) 0,
+    var(--btn-lt) 24%,
+    var(--btn) 24%,
+    var(--btn) 78%,
+    #3f7c51 78%
+  );
+}
+
+.px-green:active {
+  background: linear-gradient(
+    to bottom,
+    #3f7c51 0,
+    #3f7c51 24%,
+    var(--btn) 24%
+  );
+}
+
+.px-yellow {
+  background: linear-gradient(
+    to bottom,
+    var(--yellow) 0,
+    var(--yellow) 24%,
+    var(--orange) 24%,
+    var(--orange) 80%,
+    #b5622b 80%
+  );
+}
+
+.px-yellow:active {
+  background: linear-gradient(
+    to bottom,
+    #b5622b 0,
+    #b5622b 24%,
+    var(--orange) 24%
+  );
+}
+
 /* ── Logo plate (top center) ─────────────────────────────────────────────── */
 .logo-plate {
   position: absolute;

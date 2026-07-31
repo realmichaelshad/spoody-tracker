@@ -81,7 +81,7 @@ export function FrameChrome({ onReport }: Props) {
 
       <div class="hero" aria-hidden="true" />
 
-      <button class="hud-btn cta-tab" onClick={onReport}>
+      <button class="hud-btn px-primary px-yellow cta-tab" onClick={onReport}>
         REPORT SIGHTING
       </button>
     </div>

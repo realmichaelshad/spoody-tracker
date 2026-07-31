@@ -100,33 +100,16 @@
 }
 
 .pre-btn {
-  font-family: var(--font-ui);
-  font-size: calc(6px * var(--px));
-  letter-spacing: 0.1em;
-  color: var(--outline);
-  border: calc(5px * var(--px)) solid transparent;
-  border-image: url('/sprites/green-pill@3x.png') 15 fill round;
-  background: none;
-  padding: 0 calc(3px * var(--px));
-  cursor: pointer;
+  font-size: calc(6.5px * var(--px));
+  padding: calc(3px * var(--px)) calc(5px * var(--px)) calc(3.5px * var(--px));
 }
 
 .pre-btn.alt {
-  border-image: url('/sprites/panel@3x.png') 18 fill round;
+  background: var(--navy);
   color: var(--cyan);
-}
-
-.pre-btn:active {
-  border-image: url('/sprites/green-pill-pressed@3x.png') 15 fill round;
-  transform: translateY(calc(2px * var(--px)));
+  box-shadow: 0 calc(2px * var(--px)) 0 rgba(2, 10, 24, 0.85);
 }
 
 .pre-btn.alt:active {
-  border-image: url('/sprites/panel@3x.png') 18 fill round;
-  transform: translateY(calc(1px * var(--px)));
-}
-
-.pre-btn:disabled {
-  opacity: 0.5;
-  cursor: default;
+  background: var(--map-bg);
 }

@@ -335,32 +335,18 @@
   }
 }
 
-/* ── Report CTA — primary action, anchored bottom-center above the ticker ──
-   Pixel press: the raised sprite bakes a 2px shadow; :active swaps to the
-   pressed sprite and shifts down onto where the shadow was. */
+/* ── Report CTA — primary action, anchored bottom-center above the ticker ── */
 .cta-tab {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   bottom: calc(30px * var(--px));
-  padding: calc(1.5px * var(--px)) calc(6px * var(--px)) calc(2.5px * var(--px));
-  border: calc(7px * var(--px)) solid transparent;
-  border-image: url('/sprites/yellow-tab@3x.png') 21 fill round;
-  font-family: var(--font-display);
+  padding: calc(2.5px * var(--px)) calc(6px * var(--px)) calc(3px * var(--px));
   font-size: calc(10px * var(--px));
-  color: var(--outline);
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-}
-
-.cta-tab:hover {
-  filter: brightness(1.08);
 }
 
 .cta-tab:active {
-  border-image: url('/sprites/yellow-tab-pressed@3x.png') 21 fill round;
   transform: translateX(-50%) translateY(calc(2px * var(--px)));
-  filter: none;
 }
 
 /* ── Small screens: declutter the chrome ─────────────────────────────────── */

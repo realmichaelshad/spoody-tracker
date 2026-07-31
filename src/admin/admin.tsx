@@ -100,7 +100,7 @@ function AdminApp() {
             onKeyDown={(e) => e.key === 'Enter' && (setEntered(true), void load(token))}
           />
           <button
-            class="admin-btn"
+            class="px-primary px-green admin-btn"
             onClick={() => {
               setEntered(true);
               void load(token);
@@ -147,7 +147,7 @@ function AdminApp() {
     <div class="admin-page">
       <header class="admin-head">
         <span class="admin-title">TRACKER CONTROL</span>
-        <button class="admin-btn" disabled={busy} onClick={() => load(token)}>
+        <button class="px-primary px-green admin-btn" disabled={busy} onClick={() => load(token)}>
           {busy ? 'WORKING…' : 'REFRESH'}
         </button>
       </header>

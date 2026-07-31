@@ -81,10 +81,10 @@ export function Preloader({ onDone }: Props) {
         <div class={`pre-choice ${ready ? 'ready' : ''}`}>
           <div class="pre-prompt">CHOOSE YOUR SETTINGS AND START TRACKING</div>
           <div class="pre-btns">
-            <button class="pre-btn" onClick={() => choose(true)} disabled={!ready}>
+            <button class="px-primary px-green pre-btn" onClick={() => choose(true)} disabled={!ready}>
               SOUND ON
             </button>
-            <button class="pre-btn alt" onClick={() => choose(false)} disabled={!ready}>
+            <button class="px-primary pre-btn alt" onClick={() => choose(false)} disabled={!ready}>
               SOUND OFF
             </button>
           </div>

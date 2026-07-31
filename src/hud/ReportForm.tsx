@@ -246,7 +246,7 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
         {error && <div class="report-error">{error}</div>}
 
         <div class="report-row">
-          <button class="send-btn" onClick={submit} disabled={busy}>
+          <button class="px-primary px-green send-btn" onClick={submit} disabled={busy}>
             {busy ? 'TRANSMITTING…' : 'PUT IT ON THE MAP'}
           </button>
           <button class="px-btn cancel-btn" onClick={() => (reportOpen.value = null)}>

@@ -83,8 +83,9 @@ function addGraticule(map: MLMap): void {
       type: 'line',
       source: 'graticule',
       paint: {
-        'line-color': '#96e0f7',
-        'line-opacity': ['interpolate', ['linear'], ['zoom'], 0, 0.16, 4, 0.1, 6, 0],
+        /* thin near-white lines like the reference's clean graticule */
+        'line-color': '#d7f5ff',
+        'line-opacity': ['interpolate', ['linear'], ['zoom'], 0, 0.14, 4, 0.08, 6, 0],
         'line-width': 1,
       },
     },

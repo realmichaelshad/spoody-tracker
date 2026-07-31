@@ -1,0 +1,101 @@
+{
+  "frame": {
+    "w": 27,
+    "h": 27,
+    "slice": {
+      "top": 12,
+      "right": 12,
+      "bottom": 12,
+      "left": 12
+    }
+  },
+  "inset": {
+    "w": 11,
+    "h": 11,
+    "slice": {
+      "top": 4,
+      "right": 4,
+      "bottom": 4,
+      "left": 4
+    }
+  },
+  "panel": {
+    "w": 15,
+    "h": 15,
+    "slice": {
+      "top": 6,
+      "right": 6,
+      "bottom": 6,
+      "left": 6
+    }
+  },
+  "hero": {
+    "w": 36,
+    "h": 22,
+    "frames": 2
+  },
+  "logo-face": {
+    "w": 16,
+    "h": 13
+  },
+  "logo-plate": {
+    "w": 19,
+    "h": 19,
+    "slice": {
+      "top": 7,
+      "right": 7,
+      "bottom": 7,
+      "left": 7
+    }
+  },
+  "chip-green": {
+    "w": 22,
+    "h": 16
+  },
+  "chip-red": {
+    "w": 22,
+    "h": 16
+  },
+  "green-pill": {
+    "w": 13,
+    "h": 13,
+    "slice": {
+      "top": 4,
+      "right": 4,
+      "bottom": 4,
+      "left": 4
+    }
+  },
+  "icon-plate": {
+    "w": 24,
+    "h": 24,
+    "slice": {
+      "top": 6,
+      "right": 6,
+      "bottom": 6,
+      "left": 6
+    }
+  },
+  "menu-btn": {
+    "w": 22,
+    "h": 22
+  },
+  "sound-btn": {
+    "w": 16,
+    "h": 16
+  },
+  "spider-glyph": {
+    "w": 15,
+    "h": 14
+  },
+  "yellow-tab": {
+    "w": 15,
+    "h": 15,
+    "slice": {
+      "top": 5,
+      "right": 5,
+      "bottom": 5,
+      "left": 5
+    }
+  }
+}

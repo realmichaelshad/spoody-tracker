@@ -1,0 +1,232 @@
+/* HUD chrome — pixel frame, plates, buttons. All sprite sizes are 1x-px * var(--px). */
+
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.hud * {
+  image-rendering: pixelated;
+}
+
+/* ── Main frame ──────────────────────────────────────────────────────────── */
+.hud-frame {
+  position: absolute;
+  inset: 0;
+  border: calc(12px * var(--px)) solid transparent;
+  border-image: url('/sprites/frame@3x.png') 36 round;
+}
+
+/* ── Logo plate (top center) ─────────────────────────────────────────────── */
+.logo-plate {
+  position: absolute;
+  top: calc(2px * var(--px));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: calc(2px * var(--px));
+  padding: calc(2px * var(--px)) calc(5px * var(--px));
+  border: calc(7px * var(--px)) solid transparent;
+  border-image: url('/sprites/logo-plate@3x.png') 21 fill round;
+  pointer-events: auto;
+}
+
+.logo-plate .word {
+  font-family: var(--font-display);
+  font-size: calc(10px * var(--px));
+  line-height: 1;
+  color: var(--white, #e6f5f8);
+  letter-spacing: 0.06em;
+  text-shadow: calc(1px * var(--px)) calc(1px * var(--px)) 0 var(--outline);
+  white-space: nowrap;
+  transform: translateY(calc(-1px * var(--px)));
+}
+
+.logo-plate .face {
+  width: calc(16px * var(--px));
+  height: calc(13px * var(--px));
+  background: url('/sprites/logo-face@3x.png') 0 0 / cover no-repeat;
+}
+
+/* ── Corner buttons ──────────────────────────────────────────────────────── */
+.hud-btn {
+  position: absolute;
+  pointer-events: auto;
+  cursor: pointer;
+  border: 0;
+  background-color: transparent;
+  padding: 0;
+}
+
+.hud-btn:active {
+  transform: translateY(calc(1px * var(--px)));
+}
+
+.menu-btn {
+  top: calc(4px * var(--px));
+  left: calc(4px * var(--px));
+  width: calc(22px * var(--px));
+  height: calc(22px * var(--px));
+  background-image: url('/sprites/menu-btn@3x.png');
+  background-size: 100% 100%;
+}
+
+.spider-btn {
+  top: calc(4px * var(--px));
+  right: calc(4px * var(--px));
+  width: calc(24px * var(--px));
+  height: calc(24px * var(--px));
+  background-image: url('/sprites/icon-plate@3x.png');
+  background-size: 100% 100%;
+  display: grid;
+  place-items: center;
+}
+
+.spider-btn::after {
+  content: '';
+  width: calc(15px * var(--px));
+  height: calc(14px * var(--px));
+  background: url('/sprites/spider-glyph@3x.png') 0 0 / cover no-repeat;
+}
+
+/* ── Filter chips (left rail) ────────────────────────────────────────────── */
+.chips {
+  position: absolute;
+  left: calc(1px * var(--px));
+  top: 33%;
+  display: flex;
+  flex-direction: column;
+  gap: calc(3px * var(--px));
+}
+
+.chip {
+  width: calc(22px * var(--px));
+  height: calc(16px * var(--px));
+  background-size: 100% 100%;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.chip.green {
+  background-image: url('/sprites/chip-green@3x.png');
+}
+
+.chip.red {
+  background-image: url('/sprites/chip-red@3x.png');
+}
+
+.chip::after {
+  content: '';
+  width: calc(15px * var(--px));
+  height: calc(14px * var(--px));
+  background: url('/sprites/spider-glyph@3x.png') 0 0 / cover no-repeat;
+}
+
+.chip.off {
+  filter: grayscale(0.9) brightness(0.7);
+}
+
+/* ── Ticker (bottom) ─────────────────────────────────────────────────────── */
+.ticker-bar {
+  position: absolute;
+  left: calc(22px * var(--px));
+  right: calc(16px * var(--px));
+  bottom: calc(15px * var(--px));
+  height: calc(14px * var(--px));
+  display: flex;
+  align-items: center;
+  gap: calc(2px * var(--px));
+  pointer-events: auto;
+}
+
+.ticker-track {
+  flex: 1;
+  height: 100%;
+  border: calc(4px * var(--px)) solid transparent;
+  border-image: url('/sprites/inset@3x.png') 12 fill round;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.ticker-text {
+  font-family: var(--font-ticker);
+  font-size: calc(6px * var(--px));
+  color: var(--cyan);
+  white-space: nowrap;
+  text-transform: uppercase;
+  animation: ticker-scroll 24s linear infinite;
+}
+
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(100vw);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.sound-btn {
+  position: relative;
+  width: calc(16px * var(--px));
+  height: calc(16px * var(--px));
+  background-image: url('/sprites/sound-btn@3x.png');
+  background-size: 100% 100%;
+  flex: none;
+}
+
+.sound-btn.off::after {
+  content: '';
+  position: absolute;
+  inset: 20%;
+  background: linear-gradient(
+    to top right,
+    transparent 42%,
+    var(--bad) 42%,
+    var(--bad) 58%,
+    transparent 58%
+  );
+}
+
+/* ── Hero (bottom-left corner, climbing the frame) ───────────────────────── */
+.hero {
+  position: absolute;
+  left: calc(1px * var(--px));
+  bottom: calc(2px * var(--px));
+  z-index: 2;
+  width: calc(18px * var(--px));
+  height: calc(22px * var(--px));
+  background-image: url('/sprites/hero@3x.png');
+  background-size: calc(36px * var(--px)) 100%;
+  animation: hero-sway 1.6s steps(1) infinite;
+}
+
+@keyframes hero-sway {
+  0%,
+  100% {
+    background-position-x: 0;
+  }
+  50% {
+    background-position-x: calc(-18px * var(--px));
+  }
+}
+
+/* ── Report CTA (bottom-right tab) ───────────────────────────────────────── */
+.cta-tab {
+  position: absolute;
+  right: calc(14px * var(--px));
+  bottom: calc(1px * var(--px));
+  padding: calc(1px * var(--px)) calc(4px * var(--px)) calc(2px * var(--px));
+  border: calc(5px * var(--px)) solid transparent;
+  border-image: url('/sprites/yellow-tab@3x.png') 15 fill round;
+  font-family: var(--font-display);
+  font-size: calc(8px * var(--px));
+  color: var(--outline);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}

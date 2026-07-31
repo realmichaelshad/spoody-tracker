@@ -1,17 +1,11 @@
-import { config } from './config';
+import { FrameChrome } from './hud/FrameChrome';
 
 export function App() {
   return (
-    <div
-      style={{
-        display: 'grid',
-        placeItems: 'center',
-        height: '100%',
-        textTransform: 'uppercase',
-        letterSpacing: '0.08em',
-      }}
-    >
-      <div>{config.siteName} — BOOTING…</div>
-    </div>
+    <>
+      {/* Map mounts here in M2 — navy placeholder for now */}
+      <div id="map" style={{ position: 'absolute', inset: 0, background: 'var(--map-bg)' }} />
+      <FrameChrome />
+    </>
   );
 }

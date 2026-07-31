@@ -43,6 +43,7 @@
   /* Surfaces */
   --panel: rgba(14, 28, 59, 0.95);
   --panel-dim: rgba(10, 22, 40, 0.82);
+  --page-bg: #3860be; /* royal blue visible outside the frame corners */
 
   /* Ticker greys */
   --tick-1: #2c2c2c;
@@ -56,6 +57,18 @@
 
   /* Pixel scale for HUD chrome (1 CSS px of sprite = --px on screen) */
   --px: 3;
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --px: 2;
+  }
+}
+
+@media (min-width: 1900px) {
+  :root {
+    --px: 4;
+  }
 }
 
 /* Pixel-crisp rendering everywhere; inherited by canvas, backgrounds, border-images */
@@ -73,7 +86,7 @@ html,
 body {
   height: 100%;
   overflow: hidden;
-  background: var(--map-bg);
+  background: var(--page-bg);
   color: var(--cyan);
   font-family: var(--font-ui);
 }

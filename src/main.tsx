@@ -6,5 +6,6 @@ import '@fontsource/jersey-25';
 import '@fontsource-variable/bitcount-prop-single';
 import './styles/tokens.css';
 import './styles/hud.css';
+import './styles/popup.css';
 
 render(<App />, document.getElementById('app')!);

@@ -43,12 +43,49 @@ const DROP_LAYERS = new Set([
   'road_oneway_opposite',
   'landcover_ice_shelf',
   'landcover_glacier',
+  /* Declutter + perf: rails add noise at every zoom, never read on navy */
+  'railway_transit',
+  'railway_transit_dashline',
+  'railway_minor',
+  'railway_minor_dashline',
+  'railway',
+  'railway_dashline',
 ]);
+
+/**
+ * Declutter: the reference world view is just landmass + ocean + city names —
+ * roads only appear once you dive toward a city. Later minzooms also mean
+ * fewer tiles parsed and fewer symbols laid out = faster rendering.
+ */
+const MIN_ZOOM_OVERRIDES: Record<string, number> = {
+  highway_motorway_casing: 7,
+  highway_motorway_inner: 7,
+  highway_motorway_subtle: 7,
+  highway_major_casing: 9,
+  highway_major_inner: 9,
+  highway_major_subtle: 9,
+  highway_minor: 12,
+  highway_path: 14,
+  highway_name_other: 14,
+  highway_name_motorway: 13,
+  waterway: 8,
+  'aeroway-taxiway': 12,
+  'aeroway-runway-casing': 12,
+  'aeroway-area': 12,
+  'aeroway-runway': 12,
+  place_other: 12,
+  place_suburb: 12,
+  place_village: 11,
+  place_town: 9,
+};
 
 function recolorLayer(layer: any): any | null {
   if (DROP_LAYERS.has(layer.id)) return null;
   const l = structuredClone(layer);
   const paint = (l.paint ??= {});
+  if (MIN_ZOOM_OVERRIDES[l.id] !== undefined) {
+    l.minzoom = Math.max(l.minzoom ?? 0, MIN_ZOOM_OVERRIDES[l.id]);
+  }
 
   switch (l.id) {
     case 'background':

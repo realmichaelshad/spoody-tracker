@@ -48,6 +48,22 @@
       "left": 7
     }
   },
+  "cluster-web": {
+    "w": 26,
+    "h": 26
+  },
+  "pin-confirmed": {
+    "w": 22,
+    "h": 22
+  },
+  "pin-pending": {
+    "w": 22,
+    "h": 22
+  },
+  "pin-rumored": {
+    "w": 22,
+    "h": 22
+  },
   "chip-green": {
     "w": 22,
     "h": 16

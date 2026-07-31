@@ -1,0 +1,129 @@
+/* Pixel-framed map popup (maplibre Popup, custom class) */
+
+.pixel-popup .maplibregl-popup-content {
+  background: none;
+  padding: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.pixel-popup .maplibregl-popup-tip {
+  display: none;
+}
+
+.pixel-popup .maplibregl-popup-close-button {
+  z-index: 2;
+  right: calc(2px * var(--px));
+  top: calc(1px * var(--px));
+  color: var(--cyan);
+  font-family: var(--font-ui);
+  font-size: calc(6px * var(--px));
+  width: calc(7px * var(--px));
+  height: calc(7px * var(--px));
+  border-radius: 0;
+}
+
+.pixel-popup .maplibregl-popup-close-button:hover {
+  background: none;
+  color: var(--pale);
+}
+
+.sighting-card {
+  width: calc(88px * var(--px));
+  border: calc(6px * var(--px)) solid transparent;
+  border-image: url('/sprites/panel@3x.png') 18 fill round;
+  font-family: var(--font-ui);
+  color: var(--cyan);
+  image-rendering: pixelated;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: calc(2px * var(--px));
+  font-family: var(--font-label);
+  font-size: calc(7px * var(--px));
+  letter-spacing: 0.06em;
+  padding-bottom: calc(2px * var(--px));
+}
+
+.card-head.confirmed {
+  color: var(--ok-pale);
+}
+
+.card-head.rumored {
+  color: var(--bad-pale);
+}
+
+.card-dot {
+  width: calc(3px * var(--px));
+  height: calc(3px * var(--px));
+  flex: none;
+}
+
+.card-head.confirmed .card-dot {
+  background: var(--ok);
+  box-shadow: 0 0 calc(3px * var(--px)) var(--ok);
+}
+
+.card-head.rumored .card-dot {
+  background: var(--bad);
+  box-shadow: 0 0 calc(3px * var(--px)) var(--bad);
+}
+
+.card-photo {
+  margin: calc(1px * var(--px)) 0 calc(2px * var(--px));
+  border: calc(1px * var(--px)) solid var(--outline);
+  background: var(--map-bg);
+}
+
+.card-photo img {
+  display: block;
+  width: 100%;
+  max-height: calc(60px * var(--px));
+  object-fit: cover;
+}
+
+.card-msg {
+  font-size: calc(6px * var(--px));
+  line-height: 1.45;
+  color: var(--pale);
+  overflow-wrap: break-word;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: calc(2px * var(--px));
+  margin-top: calc(2px * var(--px));
+  font-size: calc(5px * var(--px));
+}
+
+.card-name {
+  color: var(--yellow);
+  letter-spacing: 0.05em;
+}
+
+.card-time {
+  color: var(--cyan-lt);
+  opacity: 0.8;
+  text-align: right;
+}
+
+.card-flag {
+  margin-top: calc(2px * var(--px));
+  border: calc(1px * var(--px)) solid var(--bad-dk, #9f3e34);
+  background: none;
+  color: var(--bad-lt);
+  font-family: var(--font-ui);
+  font-size: calc(4.5px * var(--px));
+  letter-spacing: 0.08em;
+  padding: calc(1px * var(--px)) calc(2px * var(--px));
+  cursor: pointer;
+}
+
+.card-flag:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

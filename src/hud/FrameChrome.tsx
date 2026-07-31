@@ -1,11 +1,16 @@
 import { config } from '../config';
+import { FilterChips } from './FilterChips';
+
+interface Props {
+  onReport?: () => void;
+  onMenu?: () => void;
+}
 
 /**
- * Static HUD chrome: pixel frame, logo plate, corner buttons, filter chips,
- * ticker bar, climbing hero, report CTA. Interactivity is wired in later
- * milestones — this component owns layout and look.
+ * HUD chrome: pixel frame, logo plate, corner buttons, filter chips,
+ * ticker bar, climbing hero, report CTA.
  */
-export function FrameChrome() {
+export function FrameChrome({ onReport, onMenu }: Props) {
   const [wordA, wordB] = splitSiteName(config.siteName);
   return (
     <div class="hud">
@@ -17,13 +22,10 @@ export function FrameChrome() {
         {wordB && <span class="word">{wordB}</span>}
       </div>
 
-      <button class="hud-btn menu-btn" aria-label="Menu" />
-      <button class="hud-btn spider-btn" aria-label="Report a sighting" />
+      <button class="hud-btn menu-btn" aria-label="Menu" onClick={onMenu} />
+      <button class="hud-btn spider-btn" aria-label="Report a sighting" onClick={onReport} />
 
-      <div class="chips">
-        <button class="hud-btn chip green" aria-label="Toggle confirmed sightings" />
-        <button class="hud-btn chip red" aria-label="Toggle rumored sightings" />
-      </div>
+      <FilterChips />
 
       <div class="ticker-bar">
         <div class="ticker-track">
@@ -37,7 +39,9 @@ export function FrameChrome() {
 
       <div class="hero" aria-hidden="true" />
 
-      <button class="hud-btn cta-tab">REPORT SIGHTING</button>
+      <button class="hud-btn cta-tab" onClick={onReport}>
+        REPORT SIGHTING
+      </button>
     </div>
   );
 }

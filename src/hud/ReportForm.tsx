@@ -1,7 +1,17 @@
 import { signal } from '@preact/signals';
-import { useRef, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import { submitSighting } from '../lib/api';
 import { compressImage } from '../lib/imageCompress';
+import { config } from '../config';
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (el: HTMLElement, opts: Record<string, unknown>) => string;
+      getResponse: (id?: string) => string | undefined;
+    };
+  }
+}
 
 /** null = closed; otherwise the report panel is open with optional preset coords. */
 export const reportOpen = signal<{ lat?: number; lng?: number } | null>(null);
@@ -24,6 +34,31 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
   const [photoUrl, setPhotoUrl] = useState('');
   const [photoBusy, setPhotoBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const turnstileId = useRef<string>();
+
+  /* Optional anti-bot widget — only when a site key is configured. */
+  useEffect(() => {
+    if (!config.turnstileSiteKey || !turnstileRef.current || turnstileId.current) return;
+    const renderWidget = () => {
+      if (window.turnstile && turnstileRef.current && !turnstileId.current) {
+        turnstileId.current = window.turnstile.render(turnstileRef.current, {
+          sitekey: config.turnstileSiteKey,
+          theme: 'dark',
+        });
+      }
+    };
+    if (window.turnstile) {
+      renderWidget();
+    } else if (!document.querySelector('script[data-turnstile]')) {
+      const s = document.createElement('script');
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+      s.async = true;
+      s.dataset.turnstile = '1';
+      s.onload = renderWidget;
+      document.head.appendChild(s);
+    }
+  });
 
   const attachPhoto = async (file: File | undefined) => {
     if (!file) return;
@@ -186,6 +221,8 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
             ? `TARGET LOCKED: ${open.lat!.toFixed(3)}, ${open.lng!.toFixed(3)}`
             : 'NO LOCATION SET'}
         </div>
+
+        {config.turnstileSiteKey && <div ref={turnstileRef} class="turnstile-slot" />}
 
         {error && <div class="report-error">{error}</div>}
 

@@ -1,0 +1,159 @@
+/* Tracker Control (admin page) — utilitarian pixel styling */
+
+.admin-center {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+}
+
+.admin-note,
+.admin-login {
+  border: calc(6px * var(--px)) solid transparent;
+  border-image: url('/sprites/panel@3x.png') 18 fill round;
+  font-family: var(--font-ui);
+  color: var(--cyan);
+  text-align: center;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+  font-size: calc(6px * var(--px));
+  max-width: min(90vw, 560px);
+}
+
+.admin-login {
+  display: flex;
+  flex-direction: column;
+  gap: calc(3px * var(--px));
+}
+
+.admin-title {
+  font-family: var(--font-display);
+  font-size: calc(11px * var(--px));
+  color: var(--white, #e6f5f8);
+  letter-spacing: 0.06em;
+  text-shadow: calc(1px * var(--px)) calc(1px * var(--px)) 0 var(--outline);
+}
+
+.admin-input {
+  font-family: var(--font-ui);
+  font-size: calc(6px * var(--px));
+  color: var(--pale);
+  background: var(--map-bg);
+  border: calc(1px * var(--px)) solid var(--frame-3);
+  padding: calc(2px * var(--px));
+  text-align: center;
+  outline: none;
+}
+
+.admin-input:focus {
+  border-color: var(--teal);
+}
+
+.admin-btn {
+  font-family: var(--font-ui);
+  font-size: calc(5.5px * var(--px));
+  letter-spacing: 0.1em;
+  color: var(--outline);
+  border: calc(4px * var(--px)) solid transparent;
+  border-image: url('/sprites/green-pill@3x.png') 12 fill round;
+  background: none;
+  cursor: pointer;
+}
+
+.admin-err {
+  color: var(--bad-lt);
+  font-family: var(--font-ui);
+  font-size: calc(5px * var(--px));
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin: calc(2px * var(--px)) 0;
+}
+
+.admin-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: calc(4px * var(--px));
+  font-family: var(--font-ui);
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.admin-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: calc(4px * var(--px));
+}
+
+.admin-section h2 {
+  font-family: var(--font-display);
+  font-size: calc(8px * var(--px));
+  color: var(--cyan);
+  letter-spacing: 0.08em;
+  margin: calc(4px * var(--px)) 0 calc(2px * var(--px));
+}
+
+.admin-section .count {
+  color: var(--yellow);
+}
+
+.admin-empty {
+  font-size: calc(5px * var(--px));
+  color: var(--cyan-lt);
+  opacity: 0.7;
+  letter-spacing: 0.1em;
+}
+
+.admin-row {
+  display: flex;
+  gap: calc(3px * var(--px));
+  align-items: flex-start;
+  border: calc(1px * var(--px)) solid var(--frame-3);
+  background: var(--panel);
+  padding: calc(2px * var(--px));
+  margin-bottom: calc(2px * var(--px));
+}
+
+.admin-row img {
+  width: calc(30px * var(--px));
+  height: calc(30px * var(--px));
+  object-fit: cover;
+  border: calc(1px * var(--px)) solid var(--outline);
+}
+
+.admin-row-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-msg {
+  font-size: calc(6px * var(--px));
+  color: var(--pale);
+}
+
+.admin-meta {
+  font-size: calc(4.5px * var(--px));
+  color: var(--cyan-lt);
+  opacity: 0.8;
+  margin-top: calc(1px * var(--px));
+}
+
+.admin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: calc(1.5px * var(--px));
+}
+
+.admin-actions button {
+  font-family: var(--font-ui);
+  font-size: calc(4.5px * var(--px));
+  letter-spacing: 0.08em;
+  color: var(--cyan);
+  background: var(--map-bg);
+  border: calc(1px * var(--px)) solid var(--frame-3);
+  padding: calc(1px * var(--px)) calc(2px * var(--px));
+  cursor: pointer;
+}
+
+.admin-actions button:hover {
+  border-color: var(--teal);
+}

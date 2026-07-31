@@ -55,6 +55,8 @@ export async function submitSighting(input: ReportInput): Promise<ReportResult> 
     fd.set('name', name);
     fd.set('message', message);
     fd.set('place_label', label);
+    const tsToken = (window as any).turnstile?.getResponse?.();
+    if (tsToken) fd.set('turnstile_token', tsToken);
     if (input.photo) fd.set('photo', input.photo, 'photo.webp');
     const { supabase } = await import('./supabaseClient');
     const { data, error } = await supabase().functions.invoke('report-sighting', { body: fd });

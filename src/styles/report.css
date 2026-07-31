@@ -109,7 +109,9 @@
   display: block;
   width: 100%;
   max-height: calc(40px * var(--px));
-  object-fit: cover;
+  /* real photos render smooth and uncropped — pixelation is for sprites */
+  image-rendering: auto;
+  object-fit: contain;
 }
 
 .photo-ok {

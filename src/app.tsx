@@ -4,19 +4,17 @@ import { ReportForm, reportOpen, pickingOnMap } from './hud/ReportForm';
 import { MenuDrawer } from './hud/MenuDrawer';
 import { Toasts } from './hud/Toast';
 import { NotificationCenter } from './hud/NotificationCenter';
-import { Preloader } from './hud/Preloader';
 import { Radar } from './hud/Radar';
 import { createMap } from './map/createMap';
 import { installPins, flyToSighting } from './map/pins';
 import { addSightings, sightings, latestArrival } from './state/sightings';
 import { isDemoMode } from './config';
-import { sfx } from './audio/sfx';
+import { sfx, unlockAudio } from './audio/sfx';
 import type { Map as MLMap } from 'maplibre-gl';
 
 export function App() {
   const mapEl = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MLMap>();
-  const [booted, setBooted] = useState(false);
   const [mapReady, setMapReady] = useState<MLMap | null>(null);
 
   useEffect(() => {
@@ -40,6 +38,15 @@ export function App() {
       await installPins(map);
       setMapReady(map);
     });
+
+    /* No startup gate: audio unlocks on the first real interaction. */
+    const unlockOnce = () => {
+      unlockAudio();
+      window.removeEventListener('pointerdown', unlockOnce);
+      window.removeEventListener('keydown', unlockOnce);
+    };
+    window.addEventListener('pointerdown', unlockOnce);
+    window.addEventListener('keydown', unlockOnce);
 
     /* Remote arrival → sonar ping (unless notifications are muted) */
     const unsubPing = latestArrival.subscribe(async (s) => {
@@ -108,7 +115,6 @@ export function App() {
           map.flyTo({ center: [lng, lat], zoom: Math.max(map.getZoom(), 14), speed: 1.6 });
         }}
       />
-      {!booted && <Preloader onDone={() => setBooted(true)} />}
     </>
   );
 }

@@ -158,6 +158,7 @@
   width: 100%;
   max-height: calc(56px * var(--px));
   object-fit: cover;
+  image-rendering: auto; /* photos stay smooth inside the pixel HUD */
 }
 
 .feed-photo.blurred img {

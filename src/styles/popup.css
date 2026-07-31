@@ -77,6 +77,7 @@
   width: 100%;
   max-height: calc(60px * var(--px));
   object-fit: cover;
+  image-rendering: auto; /* photos stay smooth inside the pixel HUD */
 }
 
 .card-photo.unscreened {

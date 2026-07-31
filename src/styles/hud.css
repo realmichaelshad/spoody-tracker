@@ -252,3 +252,51 @@
   transform: translateX(-50%) translateY(calc(2px * var(--px)));
   filter: none;
 }
+
+/* ── Small screens: declutter the chrome ─────────────────────────────────── */
+@media (max-width: 720px) {
+  .hero {
+    display: none;
+  }
+
+  .ticker-bar {
+    left: calc(15px * var(--px));
+    right: calc(15px * var(--px));
+  }
+
+  .logo-plate .word {
+    font-size: calc(8px * var(--px));
+  }
+
+  .cta-tab {
+    font-size: calc(9px * var(--px));
+    bottom: calc(32px * var(--px));
+  }
+
+  .toasts,
+  .notif-panel {
+    width: auto;
+    left: calc(14px * var(--px));
+    right: calc(4px * var(--px));
+  }
+
+  .toast {
+    width: 100%;
+  }
+
+  .drawer {
+    left: calc(6px * var(--px));
+    right: calc(6px * var(--px));
+    width: auto;
+  }
+}
+
+/* Keyboard focus — visible pixel outline on anything interactive */
+.hud-btn:focus-visible,
+.cta-tab:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: calc(1px * var(--px)) solid var(--yellow);
+  outline-offset: calc(0.5px * var(--px));
+}

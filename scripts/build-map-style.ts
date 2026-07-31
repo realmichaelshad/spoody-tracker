@@ -195,11 +195,12 @@ async function main() {
   style.sky = {
     'sky-color': '#02101f',
     'horizon-color': '#09a4c7',
-    'fog-color': '#0d2547',
-    'sky-horizon-blend': 0.8,
-    'horizon-fog-blend': 0.3,
-    'fog-ground-blend': 0.98,
-    'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 0.5, 5, 0.3, 7, 0],
+    /* fog matches the ocean so no terminator band cuts across the globe */
+    'fog-color': '#031834',
+    'sky-horizon-blend': 0.9,
+    'horizon-fog-blend': 0.15,
+    'fog-ground-blend': 0.9,
+    'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 0.45, 5, 0.25, 7, 0],
   };
   style.light = { anchor: 'map', color: '#ffffff', intensity: 0.1 };
 

@@ -33,7 +33,13 @@ export function createMap(container: HTMLElement, opts: CreateMapOptions = {}): 
     pixelRatio: Math.min(window.devicePixelRatio || 1, 1.5),
   });
 
-  map.on('style.load', () => addGraticule(map));
+  map.on('style.load', () => {
+    addGraticule(map);
+    /* Weak devices: flat mercator renders lighter than the globe. */
+    const weak =
+      (navigator as any).deviceMemory !== undefined && (navigator as any).deviceMemory <= 2;
+    if (weak) map.setProjection({ type: 'mercator' });
+  });
   /* Boot over the viewer's own country (coarse IP lookup, no permission). */
   map.once('load', () => void flyToHome(map));
 

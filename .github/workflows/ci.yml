@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Sprites in sync (regenerate and diff)
+        run: |
+          npm run sprites
+          git diff --exit-code -- public/sprites || {
+            echo '::error::public/sprites is out of sync — run `npm run sprites` and commit';
+            exit 1;
+          }
+      - run: npm run typecheck
+      - run: npx vite build

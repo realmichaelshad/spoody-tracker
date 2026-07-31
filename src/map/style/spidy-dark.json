@@ -2209,10 +2209,10 @@
   "sky": {
     "sky-color": "#02101f",
     "horizon-color": "#09a4c7",
-    "fog-color": "#0d2547",
-    "sky-horizon-blend": 0.8,
-    "horizon-fog-blend": 0.3,
-    "fog-ground-blend": 0.98,
+    "fog-color": "#031834",
+    "sky-horizon-blend": 0.9,
+    "horizon-fog-blend": 0.15,
+    "fog-ground-blend": 0.9,
     "atmosphere-blend": [
       "interpolate",
       [
@@ -2222,9 +2222,9 @@
         "zoom"
       ],
       0,
-      0.5,
+      0.45,
       5,
-      0.3,
+      0.25,
       7,
       0
     ]

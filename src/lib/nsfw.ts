@@ -9,9 +9,15 @@ let modelPromise: Promise<any> | null = null;
 async function loadModel() {
   if (!modelPromise) {
     modelPromise = (async () => {
-      const [nsfwjs, tf] = await Promise.all([import('nsfwjs'), import('@tensorflow/tfjs')]);
+      /* nsfwjs/core is model-free; importing ONLY the MobileNetV2 definition
+         keeps the other bundled models (~35MB) out of the build entirely. */
+      const [core, tf, { MobileNetV2Model }] = await Promise.all([
+        import('nsfwjs/core'),
+        import('@tensorflow/tfjs'),
+        import('nsfwjs/models/mobilenet_v2'),
+      ]);
       await tf.ready();
-      return nsfwjs.load('MobileNetV2');
+      return core.load('MobileNetV2', { modelDefinitions: [MobileNetV2Model] } as any);
     })();
     /* A failed load must not poison future attempts (e.g. flaky network). */
     modelPromise.catch(() => {

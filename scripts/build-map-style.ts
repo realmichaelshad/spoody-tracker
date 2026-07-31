@@ -89,22 +89,34 @@ function recolorLayer(layer: any): any | null {
 
   switch (l.id) {
     case 'background':
-      /* Lighter land at globe zoom so continents pop against the ocean,
-         settling to the city-view base as you dive in. */
+      /* World view (clean, reference-style): DARK land silhouettes on a
+         lighter ocean. Diving in, land lightens to the city-view base. */
       paint['background-color'] = [
         'interpolate',
         ['linear'],
         ['zoom'],
         0,
-        '#14335f',
-        5,
-        '#14335f',
-        7,
+        '#0e2036',
+        6,
+        '#0e2036',
+        8,
         C.land,
       ];
       break;
     case 'water':
-      paint['fill-color'] = C.ocean;
+      /* Ocean is the LIGHT field at world zoom (their clean look), then
+         deepens to dark navy as you approach street level. */
+      paint['fill-color'] = [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        0,
+        '#175070',
+        6,
+        '#175070',
+        9,
+        C.ocean,
+      ];
       delete paint['fill-pattern'];
       break;
     case 'landuse_residential':

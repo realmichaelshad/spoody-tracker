@@ -172,44 +172,6 @@ export const yellowTabPressed = sprite({
   ],
 });
 
-/**
- * Ruler tick strips for the map edges — minor tick every 4px, major every
- * 16px. Repeat-x along the top edge; the vertical strip is its transpose.
- */
-export const rulerH = sprite({
-  name: 'ruler-h',
-  map: { e: 'cyanLt' },
-  rows: [
-    'e...............',
-    'e.......e.......',
-    'e...e...e...e...',
-    'e.e.e.e.e.e.e.e.',
-  ],
-});
-
-export const rulerV = sprite({
-  name: 'ruler-v',
-  map: { e: 'cyanLt' },
-  rows: [
-    'eeee',
-    '....',
-    '..ee',
-    '....',
-    '.eee',
-    '....',
-    '..ee',
-    '....',
-    'eeee',
-    '....',
-    '..ee',
-    '....',
-    '.eee',
-    '....',
-    '..ee',
-    '....',
-  ],
-});
-
 /** Green pill button 9-slice — RAISED with baked shadow. 15x15, slice 5. */
 export const greenPill = sprite({
   name: 'green-pill',

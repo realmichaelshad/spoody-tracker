@@ -102,7 +102,7 @@ export function SightingCard({ sighting }: Props) {
           <span class="webup-icon" /> {s.likeCount ?? 0}
         </button>
         <button
-          class="replies-btn"
+          class="px-btn replies-btn"
           onClick={() => {
             sfx.blip();
             setShowReplies(!showReplies);
@@ -168,7 +168,7 @@ export function SightingCard({ sighting }: Props) {
                 onInput={(e) => setReplyMsg((e.target as HTMLInputElement).value)}
                 onKeyDown={(e) => e.key === 'Enter' && !busy && void sendReply()}
               />
-              <button class="reply-send" disabled={busy} onClick={sendReply}>
+              <button class="px-btn reply-send" disabled={busy} onClick={sendReply}>
                 {busy ? '…' : 'SEND'}
               </button>
             </div>

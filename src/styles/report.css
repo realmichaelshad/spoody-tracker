@@ -75,18 +75,8 @@
 
 .loc-btn {
   flex: 1;
-  font-family: var(--font-ui);
   font-size: calc(5px * var(--px));
-  letter-spacing: 0.06em;
   padding: calc(2px * var(--px)) 0;
-  border: calc(1px * var(--px)) solid var(--teal);
-  background: none;
-  color: var(--cyan);
-  cursor: pointer;
-}
-
-.loc-btn:hover {
-  background: rgba(9, 164, 199, 0.2);
 }
 
 .name-row {
@@ -104,17 +94,8 @@
 .dice-btn {
   flex: none;
   width: calc(10px * var(--px));
-  font-family: var(--font-ui);
   font-size: calc(6px * var(--px));
   color: var(--yellow);
-  background: var(--map-bg);
-  border: calc(1px * var(--px)) solid var(--frame-3);
-  cursor: pointer;
-}
-
-.dice-btn:hover {
-  border-color: var(--yellow);
-  transform: rotate(10deg);
 }
 
 .photo-preview {
@@ -184,22 +165,9 @@
   opacity: 0.6;
 }
 
-/* Flat bordered buttons: uniform pixel press */
-.loc-btn:active,
-.cancel-btn:active,
-.dice-btn:active {
-  transform: translateY(calc(1px * var(--px)));
-  filter: brightness(0.9);
-}
-
 .cancel-btn {
   flex: 1;
-  font-family: var(--font-ui);
   font-size: calc(5px * var(--px));
-  color: var(--cyan-lt);
-  background: none;
-  border: calc(1px * var(--px)) solid var(--frame-3);
-  cursor: pointer;
 }
 
 /* Picking-on-map mode: crosshair + hint bar */

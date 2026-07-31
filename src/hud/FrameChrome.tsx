@@ -30,8 +30,6 @@ export function FrameChrome({ onReport }: Props) {
     <div class="hud">
       <div class="map-fx" />
       <div class="hud-frame" />
-      <div class="ruler-top" aria-hidden="true" />
-      <div class="ruler-left" aria-hidden="true" />
 
       <div class="logo-plate">
         <span class="word">{wordA}</span>

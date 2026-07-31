@@ -3,14 +3,25 @@
 
 .toasts {
   position: absolute;
-  top: calc(29px * var(--px));
-  right: calc(4px * var(--px));
+  bottom: calc(33px * var(--px));
+  left: calc(14px * var(--px));
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
+  justify-content: flex-end;
   gap: calc(2px * var(--px));
   z-index: 16;
   pointer-events: none;
+}
+
+.toasts .toast {
+  animation: toast-in-left 220ms steps(5);
+}
+
+@keyframes toast-in-left {
+  from {
+    transform: translateX(-120%);
+  }
 }
 
 /* Notification badge on the spider button */
@@ -67,6 +78,28 @@
   border-bottom: calc(1px * var(--px)) solid var(--frame-3);
   padding-bottom: calc(1px * var(--px));
   margin-bottom: calc(1px * var(--px));
+}
+
+.notif-head-btns {
+  display: flex;
+  align-items: center;
+  gap: calc(2px * var(--px));
+}
+
+.notif-mute {
+  font-family: var(--font-ui);
+  font-size: calc(4.5px * var(--px));
+  letter-spacing: 0.08em;
+  color: var(--cyan-lt);
+  background: none;
+  border: calc(1px * var(--px)) solid var(--frame-3);
+  padding: 0 calc(1.5px * var(--px));
+  cursor: pointer;
+}
+
+.notif-mute.on {
+  color: var(--bad-lt);
+  border-color: var(--bad);
 }
 
 .notif-close {

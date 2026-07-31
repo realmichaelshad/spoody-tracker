@@ -19,45 +19,48 @@
   border-image: url('/sprites/frame@3x.png') 36 round;
 }
 
-/* ── Instrument overlays: rulers, scanlines, vignette ────────────────────── */
-.ruler-top,
-.ruler-left {
-  position: absolute;
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-.ruler-top {
-  top: calc(13px * var(--px));
-  left: calc(28px * var(--px));
-  right: calc(30px * var(--px));
-  height: calc(4px * var(--px));
-  background: url('/sprites/ruler-h@3x.png') repeat-x;
-  background-size: calc(16px * var(--px)) 100%;
-}
-
-.ruler-left {
-  left: calc(13px * var(--px));
-  top: calc(30px * var(--px));
-  bottom: calc(30px * var(--px));
-  width: calc(4px * var(--px));
-  background: url('/sprites/ruler-v@3x.png') repeat-y;
-  background-size: 100% calc(16px * var(--px));
-}
-
+/* ── Instrument overlay: faint scanlines + edge vignette ─────────────────── */
 .map-fx {
   position: absolute;
   inset: calc(9px * var(--px));
   pointer-events: none;
-  /* faint CRT scanlines + edge vignette for instrument depth */
   background: repeating-linear-gradient(
     to bottom,
-    rgba(3, 24, 52, 0.14) 0,
-    rgba(3, 24, 52, 0.14) 1px,
+    rgba(3, 24, 52, 0.08) 0,
+    rgba(3, 24, 52, 0.08) 1px,
     transparent 1px,
     transparent 4px
   );
   box-shadow: inset 0 0 calc(26px * var(--px)) rgba(2, 10, 24, 0.55);
+}
+
+/* ── Shared clean pixel-button treatment for flat buttons ────────────────── */
+.px-btn {
+  font-family: var(--font-ui);
+  letter-spacing: 0.08em;
+  color: var(--pale);
+  cursor: pointer;
+  border: calc(1px * var(--px)) solid var(--outline);
+  /* hard-stop two-tone face: lighter cap, deep body, dark base line */
+  background: linear-gradient(
+    to bottom,
+    var(--frame-2) 0,
+    var(--frame-2) 30%,
+    var(--frame-3) 30%,
+    var(--frame-3) 85%,
+    var(--navy) 85%
+  );
+  box-shadow: 0 calc(1.5px * var(--px)) 0 rgba(2, 10, 24, 0.7);
+}
+
+.px-btn:hover {
+  filter: brightness(1.12);
+}
+
+.px-btn:active {
+  transform: translateY(calc(1.5px * var(--px)));
+  box-shadow: none;
+  filter: brightness(0.92);
 }
 
 /* ── Logo plate (top center) ─────────────────────────────────────────────── */

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'preact/hooks';
 import { latestArrival, type Sighting } from '../state/sightings';
+import { notifMuted } from '../state/settings';
 import { relativeTime } from '../lib/time';
 
 interface Props {
@@ -34,7 +35,7 @@ export function Toasts({ onJump }: Props) {
     };
   }, []);
 
-  if (!items.length) return null;
+  if (!items.length || notifMuted.value) return null;
   return (
     <div class="toasts">
       {items.map((t) => (

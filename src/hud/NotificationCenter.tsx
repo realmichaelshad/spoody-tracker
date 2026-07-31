@@ -1,5 +1,7 @@
 import { notifications, notifOpen, closeNotifications } from '../state/notifications';
+import { notifMuted } from '../state/settings';
 import { relativeTime } from '../lib/time';
+import { sfx } from '../audio/sfx';
 import type { Sighting } from '../state/sightings';
 
 interface Props {
@@ -14,9 +16,20 @@ export function NotificationCenter({ onJump }: Props) {
     <div class="notif-panel">
       <div class="notif-head">
         SIGHTING ALERTS
-        <button class="notif-close" onClick={closeNotifications} aria-label="Close alerts">
-          ×
-        </button>
+        <span class="notif-head-btns">
+          <button
+            class={`notif-mute ${notifMuted.value ? 'on' : ''}`}
+            onClick={() => {
+              notifMuted.value = !notifMuted.value;
+              sfx.toggle(!notifMuted.value);
+            }}
+          >
+            {notifMuted.value ? 'MUTED' : 'MUTE'}
+          </button>
+          <button class="notif-close" onClick={closeNotifications} aria-label="Close alerts">
+            ×
+          </button>
+        </span>
       </div>
       {items.length === 0 && (
         <div class="notif-empty">ALL QUIET… FOR NOW. NEW SIGHTINGS LAND HERE.</div>

@@ -41,9 +41,11 @@ export function App() {
       setMapReady(map);
     });
 
-    /* Remote arrival → sonar ping */
-    const unsubPing = latestArrival.subscribe((s) => {
-      if (s) sfx.ping();
+    /* Remote arrival → sonar ping (unless notifications are muted) */
+    const unsubPing = latestArrival.subscribe(async (s) => {
+      if (!s) return;
+      const { notifMuted } = await import('./state/settings');
+      if (!notifMuted.value) sfx.ping();
     });
 
     /* Pick-on-map: one-shot click sets report coords and reopens the form. */

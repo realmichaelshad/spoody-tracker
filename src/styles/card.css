@@ -57,18 +57,8 @@
 }
 
 .replies-btn {
-  font-family: var(--font-ui);
   font-size: calc(5px * var(--px));
-  letter-spacing: 0.06em;
-  color: var(--cyan);
-  background: none;
-  border: calc(1px * var(--px)) solid var(--frame-3);
   padding: calc(1px * var(--px)) calc(2px * var(--px));
-  cursor: pointer;
-}
-
-.replies-btn:hover {
-  border-color: var(--teal);
 }
 
 .card-actions .card-flag {
@@ -194,19 +184,9 @@
   flex: 1;
 }
 
-.reply-send:active {
-  transform: translateY(calc(1px * var(--px)));
-  filter: brightness(0.9);
-}
-
 .reply-send {
-  font-family: var(--font-ui);
   font-size: calc(5px * var(--px));
-  color: var(--outline);
-  background: var(--btn);
-  border: calc(1px * var(--px)) solid var(--outline);
   padding: 0 calc(2px * var(--px));
-  cursor: pointer;
 }
 
 .reply-err {

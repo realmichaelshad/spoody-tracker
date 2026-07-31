@@ -163,7 +163,7 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
             onInput={(e) => setName((e.target as HTMLInputElement).value.toUpperCase())}
           />
           <button
-            class="dice-btn"
+            class="px-btn dice-btn"
             title="Roll a codename"
             aria-label="Roll a random codename"
             onClick={() => setName(rollCodename())}
@@ -195,7 +195,7 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
             onChange={(e) => attachPhoto((e.target as HTMLInputElement).files?.[0])}
           />
           <button
-            class="loc-btn photo-btn"
+            class="px-btn loc-btn photo-btn"
             onClick={() => fileRef.current?.click()}
             disabled={photoBusy}
           >
@@ -203,7 +203,7 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
           </button>
           {photo && (
             <button
-              class="loc-btn photo-clear"
+              class="px-btn loc-btn photo-clear"
               onClick={() => {
                 if (photoUrl) URL.revokeObjectURL(photoUrl);
                 setPhoto(null);
@@ -222,11 +222,11 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
         )}
 
         <div class="report-row loc-row">
-          <button class="loc-btn" onClick={useMyLocation} disabled={locBusy}>
+          <button class="px-btn loc-btn" onClick={useMyLocation} disabled={locBusy}>
             {locBusy ? 'LOCATING…' : 'MY LOCATION'}
           </button>
           <button
-            class="loc-btn"
+            class="px-btn loc-btn"
             onClick={() => {
               pickingOnMap.value = true;
               onPickOnMap();
@@ -249,7 +249,7 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
           <button class="send-btn" onClick={submit} disabled={busy}>
             {busy ? 'TRANSMITTING…' : 'PUT IT ON THE MAP'}
           </button>
-          <button class="cancel-btn" onClick={() => (reportOpen.value = null)}>
+          <button class="px-btn cancel-btn" onClick={() => (reportOpen.value = null)}>
             CANCEL
           </button>
         </div>

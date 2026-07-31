@@ -1,0 +1,84 @@
+/**
+ * Design tokens — palette sampled pixel-exact from the reference tracker HUD.
+ * These are the ONLY colors allowed in sprites (enforced by scripts/build-sprites.ts)
+ * and should be the only colors referenced by components.
+ */
+:root {
+  /* Frame bevel blues */
+  --frame-1: #3997bb; /* light bevel */
+  --frame-2: #2976a0; /* mid */
+  --frame-3: #154f80; /* dark shadow */
+  --navy: #132853;    /* deep panel fill */
+
+  /* Core */
+  --outline: #1e1e14; /* warm near-black sprite outline */
+  --map-bg: #031834;  /* deep navy ocean / app background */
+
+  /* HUD text */
+  --cyan: #96e0f7;
+  --cyan-lt: #a8e1fe;
+  --pale: #d7f5ff;
+  --teal: #09a4c7;
+
+  /* Accents */
+  --orange: #f89d51;
+  --yellow: #ffd988;
+
+  /* Sighting types */
+  --ok: #52b375;      /* confirmed green */
+  --ok-lt: #94c391;
+  --ok-pale: #dcf6da;
+  --bad: #ec5147;     /* rumored red */
+  --bad-lt: #feaca6;
+  --bad-pale: #fce5e3;
+
+  /* Buttons */
+  --btn: #42aa6b;
+  --btn-lt: #87bb87;
+
+  /* Special/event blue */
+  --event: #7ecff4;
+  --event-lt: #abe8ff;
+
+  /* Surfaces */
+  --panel: rgba(14, 28, 59, 0.95);
+  --panel-dim: rgba(10, 22, 40, 0.82);
+
+  /* Ticker greys */
+  --tick-1: #2c2c2c;
+  --tick-2: #3b3b3b;
+
+  /* Typography */
+  --font-ui: 'Pixelify Sans Variable', 'Pixelify Sans', monospace;
+  --font-display: 'Jersey 25', monospace;
+  --font-label: 'Jersey 10', monospace;
+  --font-ticker: 'Bitcount Prop Single Variable', 'Bitcount Prop Single', monospace;
+
+  /* Pixel scale for HUD chrome (1 CSS px of sprite = --px on screen) */
+  --px: 3;
+}
+
+/* Pixel-crisp rendering everywhere; inherited by canvas, backgrounds, border-images */
+:root {
+  image-rendering: pixelated;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--map-bg);
+  color: var(--cyan);
+  font-family: var(--font-ui);
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+}

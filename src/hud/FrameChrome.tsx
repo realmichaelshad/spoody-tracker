@@ -1,8 +1,8 @@
 import { config } from '../config';
-import { soundOn, openPanel } from '../state/settings';
+import { openPanel } from '../state/settings';
 import { newestFirst, sightings } from '../state/sightings';
 import { unreadCount, notifOpen, openNotifications, closeNotifications } from '../state/notifications';
-import { sfx, unlockAudio } from '../audio/sfx';
+import { sfx } from '../audio/sfx';
 
 interface Props {
   onReport?: () => void;
@@ -66,17 +66,6 @@ export function FrameChrome({ onReport }: Props) {
         <div class="ticker-track">
           <div class="ticker-text">{tickerText()}</div>
         </div>
-        <button
-          class={`hud-btn sound-btn ${soundOn.value ? '' : 'off'}`}
-          aria-label="Toggle sound"
-          aria-pressed={soundOn.value}
-          onClick={() => {
-            const next = !soundOn.value;
-            soundOn.value = next;
-            if (next) unlockAudio();
-            sfx.toggle(next);
-          }}
-        />
       </div>
 
       <div class="hero" aria-hidden="true" />

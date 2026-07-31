@@ -28,6 +28,42 @@
   color: var(--pale);
 }
 
+/* Hover preview card — compact peek without clicking */
+.hover-pop {
+  pointer-events: none;
+}
+
+.hover-card {
+  width: calc(62px * var(--px));
+  border: calc(6px * var(--px)) solid transparent;
+  border-image: url('/sprites/panel@3x.png') 18 fill round;
+  font-family: var(--font-ui);
+  image-rendering: pixelated;
+}
+
+.hover-card img {
+  display: block;
+  width: 100%;
+  max-height: calc(30px * var(--px));
+  object-fit: cover;
+  image-rendering: auto;
+  border: calc(1px * var(--px)) solid var(--outline);
+  margin-bottom: calc(1px * var(--px));
+}
+
+.hover-msg {
+  font-size: calc(5px * var(--px));
+  color: var(--pale);
+  line-height: 1.35;
+}
+
+.hover-meta {
+  margin-top: calc(1px * var(--px));
+  font-size: calc(4px * var(--px));
+  color: var(--yellow);
+  letter-spacing: 0.05em;
+}
+
 .sighting-card {
   width: calc(88px * var(--px));
   border: calc(6px * var(--px)) solid transparent;

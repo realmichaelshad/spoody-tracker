@@ -1,5 +1,17 @@
 /* Sighting card social row + reply thread */
 
+.you-badge {
+  display: inline-block;
+  margin-left: calc(1.5px * var(--px));
+  padding: 0 calc(1px * var(--px));
+  font-size: calc(4px * var(--px));
+  letter-spacing: 0.1em;
+  color: var(--outline);
+  background: var(--yellow);
+  border: calc(0.5px * var(--px)) solid var(--outline);
+  vertical-align: middle;
+}
+
 .card-actions {
   display: flex;
   align-items: center;

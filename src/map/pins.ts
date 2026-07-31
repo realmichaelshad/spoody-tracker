@@ -1,8 +1,10 @@
-import type { Map as MLMap, MapMouseEvent } from 'maplibre-gl';
+import { Popup, type Map as MLMap, type MapMouseEvent } from 'maplibre-gl';
 import { effect } from '@preact/signals';
 import { sightings, sightingsVersion, type Sighting } from '../state/sightings';
 import { openSightingPopup } from './popup';
+import { isMine } from '../lib/demoStore';
 import { installArrivalPulse } from './arrivalPulse';
+import { relativeTime } from '../lib/time';
 
 const SRC = 'sightings';
 
@@ -16,7 +18,7 @@ interface PinCollection {
   type: 'FeatureCollection';
   features: Array<{
     type: 'Feature';
-    properties: { id: string };
+    properties: { id: string; own: number };
     geometry: { type: 'Point'; coordinates: [number, number] };
   }>;
 }
@@ -26,7 +28,7 @@ function toGeoJSON(): PinCollection {
     type: 'FeatureCollection',
     features: [...sightings.value.values()].map((s) => ({
       type: 'Feature' as const,
-      properties: { id: s.id },
+      properties: { id: s.id, own: isMine(s.id) ? 1 : 0 },
       geometry: { type: 'Point' as const, coordinates: [s.lng, s.lat] as [number, number] },
     })),
   };
@@ -75,12 +77,24 @@ export async function installPins(map: MLMap): Promise<void> {
     id: 'pins',
     type: 'symbol',
     source: SRC,
-    filter: ['!', ['has', 'point_count']],
+    filter: ['all', ['!', ['has', 'point_count']], ['!=', ['get', 'own'], 1]],
     layout: {
       'icon-image': 'pin-sighting',
       'icon-allow-overlap': true,
       /* Smaller far out (less clutter), full-size once diving in. */
       'icon-size': ['step', ['zoom'], 0.75, 6, 1],
+    },
+  });
+
+  /* The viewer's own reports: gold pins, always full size, drawn on top. */
+  map.addLayer({
+    id: 'pins-own',
+    type: 'symbol',
+    source: SRC,
+    filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'own'], 1]],
+    layout: {
+      'icon-image': 'pin-pending',
+      'icon-allow-overlap': true,
     },
   });
 
@@ -102,14 +116,51 @@ export async function installPins(map: MLMap): Promise<void> {
     map.easeTo({ center: (f.geometry as any).coordinates, zoom, duration: 320 });
   });
 
-  /* Pin click → popup. */
-  map.on('click', 'pins', (e: MapMouseEvent) => {
+  /* Hover preview — a light card so you can peek without clicking. */
+  let hoverPop: Popup | null = null;
+  const hideHover = () => {
+    hoverPop?.remove();
+    hoverPop = null;
+  };
+  const showHover = (e: MapMouseEvent) => {
     const f = (e as any).features?.[0];
     if (!f) return;
     const s = sightings.value.get(f.properties.id);
-    if (s) openSightingPopup(map, s);
-  });
-  for (const layer of ['pins', 'clusters']) {
+    if (!s) return;
+    hideHover();
+    const el = document.createElement('div');
+    el.className = 'hover-card';
+    const msg = s.message.length > 60 ? s.message.slice(0, 57) + '…' : s.message;
+    el.innerHTML = `
+      ${s.photoUrl && s.photoState !== 'unscreened' ? `<img src="${s.photoUrl.replace(/"/g, '&quot;')}" alt="">` : ''}
+      <div class="hover-msg">${msg.replace(/[&<>]/g, (c) => `&#${c.charCodeAt(0)};`)}</div>
+      <div class="hover-meta">${s.name.replace(/[&<>]/g, (c) => `&#${c.charCodeAt(0)};`)} · ${relativeTime(s.createdAt)}</div>
+    `;
+    hoverPop = new Popup({
+      closeButton: false,
+      closeOnClick: false,
+      offset: 20,
+      maxWidth: 'none',
+      className: 'pixel-popup hover-pop',
+    })
+      .setLngLat([s.lng, s.lat])
+      .setDOMContent(el)
+      .addTo(map);
+  };
+
+  /* Pin click → full popup (hover preview clears first). */
+  for (const pinLayer of ['pins', 'pins-own']) {
+    map.on('click', pinLayer, (e: MapMouseEvent) => {
+      const f = (e as any).features?.[0];
+      if (!f) return;
+      hideHover();
+      const s = sightings.value.get(f.properties.id);
+      if (s) openSightingPopup(map, s);
+    });
+    map.on('mousemove', pinLayer, showHover);
+    map.on('mouseleave', pinLayer, hideHover);
+  }
+  for (const layer of ['pins', 'pins-own', 'clusters']) {
     map.on('mouseenter', layer, () => (map.getCanvas().style.cursor = 'pointer'));
     map.on('mouseleave', layer, () => (map.getCanvas().style.cursor = ''));
   }

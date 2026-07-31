@@ -4,6 +4,7 @@ import { relativeTime } from '../lib/time';
 import { openPanel } from '../state/settings';
 import { hasLiked, toggleLike } from '../lib/social';
 import { sfx } from '../audio/sfx';
+import { isMine } from '../lib/demoStore';
 
 interface Props {
   onJump: (id: string) => void;
@@ -22,7 +23,10 @@ function FeedItem({ s, onJump }: { s: Sighting; onJump: (id: string) => void }) 
         }}
       >
         <div class="feed-head">
-          <span class="feed-name">{s.name}</span>
+          <span class="feed-name">
+            {s.name}
+            {isMine(s.id) && <span class="you-badge">YOU</span>}
+          </span>
           <span class="feed-time">
             {relativeTime(s.createdAt)}
             {s.placeLabel ? ` · ${s.placeLabel}` : ''}
@@ -56,7 +60,16 @@ function FeedItem({ s, onJump }: { s: Sighting; onJump: (id: string) => void }) 
         >
           {(s.replyCount ?? 0) > 0 ? `${s.replyCount} REPLIES` : 'REPLY'}
         </button>
-        <span class="feed-goto">VIEW ON MAP →</span>
+        <button
+          class="feed-goto"
+          onClick={() => {
+            sfx.blip();
+            openPanel.value = 'none';
+            onJump(s.id);
+          }}
+        >
+          VIEW ON MAP →
+        </button>
       </div>
     </article>
   );

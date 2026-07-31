@@ -4,6 +4,7 @@ import { sightings } from '../state/sightings';
 import { relativeTime } from '../lib/time';
 import { hasLiked, toggleLike, getReplies, addReply } from '../lib/social';
 import { flagSighting } from '../lib/flags';
+import { isMine } from '../lib/demoStore';
 import { sfx } from '../audio/sfx';
 
 interface Props {
@@ -90,7 +91,10 @@ export function SightingCard({ sighting }: Props) {
 
       <div class="card-msg">{s.message}</div>
       <div class="card-meta">
-        <span class="card-name">{s.name}</span>
+        <span class="card-name">
+          {s.name}
+          {isMine(s.id) && <span class="you-badge">YOU</span>}
+        </span>
         <span class="card-time">
           {relativeTime(s.createdAt)}
           {s.placeLabel ? ` · ${s.placeLabel}` : ''}

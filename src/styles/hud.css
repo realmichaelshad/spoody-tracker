@@ -24,13 +24,6 @@
   position: absolute;
   inset: calc(9px * var(--px));
   pointer-events: none;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(3, 24, 52, 0.08) 0,
-    rgba(3, 24, 52, 0.08) 1px,
-    transparent 1px,
-    transparent 4px
-  );
   box-shadow: inset 0 0 calc(26px * var(--px)) rgba(2, 10, 24, 0.55);
 }
 
@@ -89,44 +82,86 @@
   cursor: default;
 }
 
-/* Themed sprite skins — 3-slice (left cap / stretch / right cap) with the
-   button height locked to an exact sprite multiple. Vertical scale is always
-   integer (crisp rows) and the horizontal stretch zone is uniform bands, so
-   slice seams cannot show at any devicePixelRatio. */
+/* Themed pixel buttons — chamfered corners via clip-path, banded faces via
+   hard-stop gradients, outline + ground shadow via drop-shadow (which follows
+   the clip). ZERO image scaling => no seam lines at any devicePixelRatio. */
 .px-green,
 .px-yellow {
-  box-shadow: none; /* shadow is baked into the raised sprite */
-  background: none;
+  --c: calc(2px * var(--px));
+  border: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
-  border-style: solid;
-  border-color: transparent;
+  clip-path: polygon(
+    0 var(--c), var(--c) var(--c), var(--c) 0,
+    calc(100% - var(--c)) 0, calc(100% - var(--c)) var(--c), 100% var(--c),
+    100% calc(100% - var(--c)), calc(100% - var(--c)) calc(100% - var(--c)),
+    calc(100% - var(--c)) 100%, var(--c) 100%,
+    var(--c) calc(100% - var(--c)), 0 calc(100% - var(--c))
+  );
+  box-shadow: none;
+}
+
+.px-green,
+.px-yellow {
+  filter: drop-shadow(calc(1px * var(--px)) 0 0 var(--outline))
+    drop-shadow(calc(-1px * var(--px)) 0 0 var(--outline))
+    drop-shadow(0 calc(1px * var(--px)) 0 var(--outline))
+    drop-shadow(0 calc(-1px * var(--px)) 0 var(--outline))
+    drop-shadow(0 calc(2px * var(--px)) 0 rgba(2, 10, 24, 0.85));
+}
+
+.px-green:hover,
+.px-yellow:hover {
+  filter: drop-shadow(calc(1px * var(--px)) 0 0 var(--outline))
+    drop-shadow(calc(-1px * var(--px)) 0 0 var(--outline))
+    drop-shadow(0 calc(1px * var(--px)) 0 var(--outline))
+    drop-shadow(0 calc(-1px * var(--px)) 0 var(--outline))
+    drop-shadow(0 calc(2px * var(--px)) 0 rgba(2, 10, 24, 0.85)) brightness(1.08);
+}
+
+.px-green:active,
+.px-yellow:active {
+  transform: translateY(calc(2px * var(--px)));
+  filter: drop-shadow(calc(1px * var(--px)) 0 0 var(--outline))
+    drop-shadow(calc(-1px * var(--px)) 0 0 var(--outline))
+    drop-shadow(0 calc(1px * var(--px)) 0 var(--outline))
+    drop-shadow(0 calc(-1px * var(--px)) 0 var(--outline));
 }
 
 .px-green {
-  height: calc(15px * var(--px)); /* 13 body + 2 baked shadow rows */
-  border-width: 0 calc(5px * var(--px));
-  border-image: url('/sprites/green-pill@3x.png') 0 15 0 15 fill stretch;
-  padding-bottom: calc(2px * var(--px)); /* optically center above the shadow */
+  height: calc(13px * var(--px));
+  padding: 0 calc(5px * var(--px));
+  background: linear-gradient(
+    to bottom,
+    var(--btn-lt) 0,
+    var(--btn-lt) 23%,
+    var(--btn) 23%,
+    var(--btn) 80%,
+    #3f7c51 80%
+  );
 }
 
 .px-green:active {
-  border-image: url('/sprites/green-pill-pressed@3x.png') 0 15 0 15 fill stretch;
-  padding-bottom: 0;
+  background: linear-gradient(to bottom, #3f7c51 0, #3f7c51 23%, var(--btn) 23%);
 }
 
 .px-yellow {
-  height: calc(19px * var(--px)); /* 17 body + 2 baked shadow rows */
-  border-width: 0 calc(7px * var(--px));
-  border-image: url('/sprites/yellow-tab@3x.png') 0 21 0 21 fill stretch;
-  padding-bottom: calc(2px * var(--px));
+  height: calc(17px * var(--px));
+  padding: 0 calc(6px * var(--px));
+  background: linear-gradient(
+    to bottom,
+    var(--yellow) 0,
+    var(--yellow) 23%,
+    var(--orange) 23%,
+    var(--orange) 82%,
+    #b5622b 82%
+  );
 }
 
 .px-yellow:active {
-  border-image: url('/sprites/yellow-tab-pressed@3x.png') 0 21 0 21 fill stretch;
-  padding-bottom: 0;
+  background: linear-gradient(to bottom, #b5622b 0, #b5622b 23%, var(--orange) 23%);
 }
 
 /* ── Logo plate (top center) ─────────────────────────────────────────────── */
@@ -278,7 +313,7 @@
   color: var(--cyan);
   white-space: nowrap;
   text-transform: uppercase;
-  animation: ticker-scroll 24s linear infinite;
+  animation: ticker-scroll 70s linear infinite;
 }
 
 @keyframes ticker-scroll {
@@ -340,20 +375,12 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: calc(30px * var(--px));
+  bottom: calc(31px * var(--px));
   font-size: calc(10px * var(--px));
-  /* .hud-btn zeroes the border — restate the 3-slice skin here (loads later) */
-  height: calc(19px * var(--px));
-  border-style: solid;
-  border-color: transparent;
-  border-width: 0 calc(7px * var(--px));
-  border-image: url('/sprites/yellow-tab@3x.png') 0 21 0 21 fill stretch;
-  padding: 0 calc(2px * var(--px)) calc(2px * var(--px));
 }
 
 .cta-tab:active {
-  border-image: url('/sprites/yellow-tab-pressed@3x.png') 0 21 0 21 fill stretch;
-  padding-bottom: 0;
+  transform: translateX(-50%) translateY(calc(2px * var(--px)));
 }
 
 .cta-tab:active {
@@ -362,8 +389,9 @@
 
 /* ── Small screens: declutter the chrome ─────────────────────────────────── */
 @media (max-width: 720px) {
+  /* Spidey stays on mobile — clinging just above the ticker */
   .hero {
-    display: none;
+    bottom: calc(31px * var(--px));
   }
 
   .ticker-bar {
@@ -380,11 +408,20 @@
     bottom: calc(32px * var(--px));
   }
 
-  .toasts,
   .notif-panel {
     width: auto;
     left: calc(14px * var(--px));
     right: calc(4px * var(--px));
+  }
+
+  /* Alerts drop from under the logo — clear of ticker, CTA, and Spidey */
+  .toasts {
+    top: calc(28px * var(--px));
+    bottom: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(92vw, calc(96px * var(--px)));
+    align-items: stretch;
   }
 
   .toast {

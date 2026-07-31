@@ -27,6 +27,17 @@ async function loadModel() {
   return modelPromise;
 }
 
+/** Begin loading the model in the background (e.g. when the report form
+ *  opens) so the actual scan feels instant. Safe to call repeatedly. */
+export function warmUpScanner(): void {
+  const kick = () => void loadModel().catch(() => undefined);
+  if ('requestIdleCallback' in window) {
+    (window as any).requestIdleCallback(kick, { timeout: 3000 });
+  } else {
+    setTimeout(kick, 300);
+  }
+}
+
 export interface ScreenResult {
   ok: boolean;
   reason?: 'unsafe' | 'scanner-offline';

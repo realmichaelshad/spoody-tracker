@@ -46,6 +46,11 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
   const turnstileRef = useRef<HTMLDivElement>(null);
   const turnstileId = useRef<string>();
 
+  /* Pre-warm the photo scanner so ADD PHOTO feels instant. */
+  useEffect(() => {
+    if (open) void import('../lib/nsfw').then((m) => m.warmUpScanner());
+  }, [open !== null]);
+
   /* Optional anti-bot widget — only when a site key is configured. */
   useEffect(() => {
     if (!config.turnstileSiteKey || !turnstileRef.current || turnstileId.current) return;
@@ -97,6 +102,9 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
 
   if (!open) return null;
   const hasLoc = open.lat !== undefined && open.lng !== undefined;
+
+  /* A location-related error is resolved the moment coords are set. */
+  if (hasLoc && /LOCATION/.test(error)) setError('');
 
   const useMyLocation = () => {
     setError('');

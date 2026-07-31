@@ -59,13 +59,31 @@ export async function ipLocate(): Promise<IpLoc | null> {
  * at country-ish altitude. No-op if IP lookup fails.
  */
 export async function flyToHome(map: MLMap): Promise<void> {
-  const loc = await ipLocate();
+  /* If the user has ALREADY granted geolocation, land exactly on them;
+     otherwise the IP puts us over their city. No permission prompt here. */
+  let precise: { lat: number; lng: number } | null = null;
+  try {
+    const perm = await navigator.permissions?.query({ name: 'geolocation' as PermissionName });
+    if (perm?.state === 'granted') {
+      precise = await new Promise((res) =>
+        navigator.geolocation.getCurrentPosition(
+          (p) => res({ lat: p.coords.latitude, lng: p.coords.longitude }),
+          () => res(null),
+          { timeout: 4000 },
+        ),
+      );
+    }
+  } catch {
+    /* permissions API unavailable — stick with IP */
+  }
+
+  const loc = precise ?? (await ipLocate());
   if (!loc) return;
   map.flyTo({
     center: [loc.lng, loc.lat],
-    zoom: 4,
-    speed: 0.9,
-    curve: 1.6,
+    zoom: precise ? 13 : 10,
+    speed: 0.75, /* slow cinematic swoop from the globe down to home */
+    curve: 1.7,
     essential: true,
   });
 }

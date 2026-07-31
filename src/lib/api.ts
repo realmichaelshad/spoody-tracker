@@ -1,5 +1,5 @@
 import { addSightings, type Sighting } from '../state/sightings';
-import { saveLocalSighting } from './demoStore';
+import { saveLocalSighting, markMine } from './demoStore';
 import { placeLabel } from './geocode';
 import { isDemoMode } from '../config';
 
@@ -44,6 +44,7 @@ export async function submitSighting(input: ReportInput): Promise<ReportResult> 
     };
     addSightings([s], { arrival: true });
     saveLocalSighting({ ...s, photoUrl: null }); // blobs don't survive reload
+    markMine(s.id);
     return { ok: true };
   }
 
@@ -65,7 +66,8 @@ export async function submitSighting(input: ReportInput): Promise<ReportResult> 
       if (status === 429) return { ok: false, error: 'TOO MANY REPORTS. COOL DOWN A MINUTE.' };
       return { ok: false, error: 'TRANSMISSION FAILED. TRY AGAIN.' };
     }
-    void data;
+    const newId = (data as any)?.id;
+    if (typeof newId === 'string') markMine(newId);
     return { ok: true };
   } catch {
     return { ok: false, error: 'TRANSMISSION FAILED. TRY AGAIN.' };

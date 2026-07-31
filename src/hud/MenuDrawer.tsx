@@ -1,4 +1,5 @@
-import { openPanel } from '../state/settings';
+import { openPanel, soundOn } from '../state/settings';
+import { sfx, unlockAudio } from '../audio/sfx';
 import { ActivityLog } from './ActivityLog';
 
 interface Props {
@@ -36,6 +37,17 @@ export function MenuDrawer({ onReport, onJump }: Props) {
             </button>
             <button class="menu-item" onClick={() => (openPanel.value = 'help')}>
               HELP
+            </button>
+            <button
+              class="menu-item"
+              onClick={() => {
+                const next = !soundOn.value;
+                soundOn.value = next;
+                if (next) unlockAudio();
+                sfx.toggle(next);
+              }}
+            >
+              SOUND: {soundOn.value ? 'ON' : 'OFF'}
             </button>
           </div>
         )}

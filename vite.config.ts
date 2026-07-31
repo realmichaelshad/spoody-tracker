@@ -4,6 +4,9 @@ import { resolve } from 'node:path';
 
 export default defineConfig({
   plugins: [preact()],
+  optimizeDeps: {
+    exclude: ['maplibre-gl'],
+  },
   build: {
     rollupOptions: {
       input: {

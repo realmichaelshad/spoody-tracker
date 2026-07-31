@@ -89,44 +89,30 @@
   cursor: default;
 }
 
+/* Themed sprite skins — 'stretch' edges (uniform bands) render seam-free,
+   unlike 'round' which repeats fractionally. Corners stay hand-drawn. */
+.px-green,
+.px-yellow {
+  border: calc(5px * var(--px)) solid transparent;
+  box-shadow: none; /* shadow is baked into the raised sprite */
+  background: none;
+}
+
 .px-green {
-  background: linear-gradient(
-    to bottom,
-    var(--btn-lt) 0,
-    var(--btn-lt) 24%,
-    var(--btn) 24%,
-    var(--btn) 78%,
-    #3f7c51 78%
-  );
+  border-image: url('/sprites/green-pill@3x.png') 15 fill stretch;
 }
 
 .px-green:active {
-  background: linear-gradient(
-    to bottom,
-    #3f7c51 0,
-    #3f7c51 24%,
-    var(--btn) 24%
-  );
+  border-image: url('/sprites/green-pill-pressed@3x.png') 15 fill stretch;
 }
 
 .px-yellow {
-  background: linear-gradient(
-    to bottom,
-    var(--yellow) 0,
-    var(--yellow) 24%,
-    var(--orange) 24%,
-    var(--orange) 80%,
-    #b5622b 80%
-  );
+  border-image: url('/sprites/yellow-tab@3x.png') 21 fill stretch;
+  border-width: calc(7px * var(--px));
 }
 
 .px-yellow:active {
-  background: linear-gradient(
-    to bottom,
-    #b5622b 0,
-    #b5622b 24%,
-    var(--orange) 24%
-  );
+  border-image: url('/sprites/yellow-tab-pressed@3x.png') 21 fill stretch;
 }
 
 /* ── Logo plate (top center) ─────────────────────────────────────────────── */

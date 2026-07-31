@@ -19,6 +19,47 @@
   border-image: url('/sprites/frame@3x.png') 36 round;
 }
 
+/* ── Instrument overlays: rulers, scanlines, vignette ────────────────────── */
+.ruler-top,
+.ruler-left {
+  position: absolute;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.ruler-top {
+  top: calc(13px * var(--px));
+  left: calc(28px * var(--px));
+  right: calc(30px * var(--px));
+  height: calc(4px * var(--px));
+  background: url('/sprites/ruler-h@3x.png') repeat-x;
+  background-size: calc(16px * var(--px)) 100%;
+}
+
+.ruler-left {
+  left: calc(13px * var(--px));
+  top: calc(30px * var(--px));
+  bottom: calc(30px * var(--px));
+  width: calc(4px * var(--px));
+  background: url('/sprites/ruler-v@3x.png') repeat-y;
+  background-size: 100% calc(16px * var(--px));
+}
+
+.map-fx {
+  position: absolute;
+  inset: calc(9px * var(--px));
+  pointer-events: none;
+  /* faint CRT scanlines + edge vignette for instrument depth */
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(3, 24, 52, 0.14) 0,
+    rgba(3, 24, 52, 0.14) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  box-shadow: inset 0 0 calc(26px * var(--px)) rgba(2, 10, 24, 0.55);
+}
+
 /* ── Logo plate (top center) ─────────────────────────────────────────────── */
 .logo-plate {
   position: absolute;

@@ -53,8 +53,8 @@
   font-size: calc(5.5px * var(--px));
   letter-spacing: 0.1em;
   color: var(--outline);
-  border: calc(4px * var(--px)) solid transparent;
-  border-image: url('/sprites/green-pill@3x.png') 12 fill round;
+  border: calc(5px * var(--px)) solid transparent;
+  border-image: url('/sprites/green-pill@3x.png') 15 fill round;
   background: none;
   cursor: pointer;
 }

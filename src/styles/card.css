@@ -67,8 +67,7 @@
   cursor: pointer;
 }
 
-.replies-btn:hover,
-.webup-btn:hover {
+.replies-btn:hover {
   border-color: var(--teal);
 }
 
@@ -193,6 +192,11 @@
 
 .reply-input.grow {
   flex: 1;
+}
+
+.reply-send:active {
+  transform: translateY(calc(1px * var(--px)));
+  filter: brightness(0.9);
 }
 
 .reply-send {

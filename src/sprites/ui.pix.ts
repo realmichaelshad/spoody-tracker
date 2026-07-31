@@ -172,24 +172,50 @@ export const yellowTabPressed = sprite({
   ],
 });
 
-/** Green pill button 9-slice, 13x13, slice 4. */
+/** Green pill button 9-slice — RAISED with baked shadow. 15x15, slice 5. */
 export const greenPill = sprite({
   name: 'green-pill',
-  map: { k: 'outline', l: 'btnLt', g: 'btn', d: 'okDk' },
-  slice: { top: 4, right: 4, bottom: 4, left: 4 },
+  map: { k: 'outline', l: 'btnLt', g: 'btn', d: 'okDk', s: 'navy' },
+  slice: { top: 5, right: 5, bottom: 5, left: 5 },
   rows: [
-    '..kkkkkkkkk..',
-    '.klllllllllk.',
-    'klllllllllllk',
-    'kgggggggggggk',
-    'kgggggggggggk',
-    'kgggggggggggk',
-    'kgggggggggggk',
-    'kgggggggggggk',
-    'kgggggggggggk',
-    'kgggggggggggk',
-    'kdddddddddddk',
-    '.kdddddddddk.',
-    '..kkkkkkkkk..',
+    '..kkkkkkkkkkk..',
+    '.klllllllllllk.',
+    'klllllllllllllk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kdddddddddddddk',
+    '.kdddddddddddk.',
+    '..kkkkkkkkkkk..',
+    '..sssssssssss..',
+    '..sssssssssss..',
+  ],
+});
+
+/** Pressed green pill — shadow gone, top shaded. */
+export const greenPillPressed = sprite({
+  name: 'green-pill-pressed',
+  map: { k: 'outline', g: 'btn', d: 'okDk' },
+  slice: { top: 5, right: 5, bottom: 5, left: 5 },
+  rows: [
+    '..kkkkkkkkkkk..',
+    '.kdddddddddddk.',
+    'kdddddddddddddk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    'kgggggggggggggk',
+    '.kgggggggggggk.',
+    '..kkkkkkkkkkk..',
   ],
 });

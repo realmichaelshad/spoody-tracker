@@ -61,13 +61,23 @@
     "h": 29
   },
   "green-pill": {
-    "w": 13,
-    "h": 13,
+    "w": 15,
+    "h": 15,
     "slice": {
-      "top": 4,
-      "right": 4,
-      "bottom": 4,
-      "left": 4
+      "top": 5,
+      "right": 5,
+      "bottom": 5,
+      "left": 5
+    }
+  },
+  "green-pill-pressed": {
+    "w": 15,
+    "h": 15,
+    "slice": {
+      "top": 5,
+      "right": 5,
+      "bottom": 5,
+      "left": 5
     }
   },
   "icon-plate": {

@@ -36,33 +36,6 @@
   margin: calc(2px * var(--px)) 0;
 }
 
-.type-btn {
-  flex: 1;
-  font-family: var(--font-ui);
-  font-size: calc(5.5px * var(--px));
-  letter-spacing: 0.08em;
-  padding: calc(2px * var(--px)) 0;
-  border: calc(1px * var(--px)) solid var(--outline);
-  background: var(--map-bg);
-  color: var(--cyan-lt);
-  cursor: pointer;
-  opacity: 0.55;
-}
-
-.type-btn.confirmed.on {
-  background: var(--ok);
-  color: var(--ok-pale);
-  opacity: 1;
-  box-shadow: inset 0 calc(-2px * var(--px)) 0 var(--outline);
-}
-
-.type-btn.rumored.on {
-  background: var(--bad);
-  color: var(--bad-pale);
-  opacity: 1;
-  box-shadow: inset 0 calc(-2px * var(--px)) 0 var(--outline);
-}
-
 .report-label {
   display: block;
   font-size: calc(5px * var(--px));
@@ -195,15 +168,28 @@
   font-size: calc(7px * var(--px));
   letter-spacing: 0.05em;
   color: var(--outline);
-  border: calc(4px * var(--px)) solid transparent;
-  border-image: url('/sprites/green-pill@3x.png') 12 fill round;
+  border: calc(5px * var(--px)) solid transparent;
+  border-image: url('/sprites/green-pill@3x.png') 15 fill round;
   background: none;
   cursor: pointer;
   padding: 0 calc(2px * var(--px));
 }
 
+.send-btn:active {
+  border-image: url('/sprites/green-pill-pressed@3x.png') 15 fill round;
+  transform: translateY(calc(2px * var(--px)));
+}
+
 .send-btn:disabled {
   opacity: 0.6;
+}
+
+/* Flat bordered buttons: uniform pixel press */
+.loc-btn:active,
+.cancel-btn:active,
+.dice-btn:active {
+  transform: translateY(calc(1px * var(--px)));
+  filter: brightness(0.9);
 }
 
 .cancel-btn {

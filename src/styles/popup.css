@@ -65,7 +65,7 @@
 }
 
 .sighting-card {
-  width: calc(88px * var(--px));
+  width: calc(102px * var(--px));
   border: calc(6px * var(--px)) solid transparent;
   border-image: url('/sprites/panel@3x.png') 18 fill round;
   font-family: var(--font-ui);
@@ -148,9 +148,9 @@
 
 .card-meta {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: calc(2px * var(--px));
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(0.5px * var(--px));
   margin-top: calc(2px * var(--px));
   font-size: calc(5px * var(--px));
 }
@@ -158,12 +158,16 @@
 .card-name {
   color: var(--yellow);
   letter-spacing: 0.05em;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card-time {
   color: var(--cyan-lt);
-  opacity: 0.8;
-  text-align: right;
+  opacity: 0.75;
+  text-align: left;
 }
 
 .card-flag {

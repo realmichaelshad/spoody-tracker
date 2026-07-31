@@ -1,0 +1,122 @@
+/* Boot screen */
+
+.preloader {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  background: var(--map-bg);
+}
+
+.pre-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(5px * var(--px));
+  text-align: center;
+  padding: calc(4px * var(--px));
+}
+
+.pre-face {
+  width: calc(32px * var(--px));
+  height: calc(26px * var(--px));
+  background: url('/sprites/logo-face@3x.png') center / contain no-repeat;
+  image-rendering: pixelated;
+  animation: pre-bob 1.4s steps(2) infinite;
+}
+
+@keyframes pre-bob {
+  50% {
+    transform: translateY(calc(-1px * var(--px)));
+  }
+}
+
+.pre-text {
+  min-height: calc(30px * var(--px));
+}
+
+.pre-line {
+  font-family: var(--font-label);
+  font-size: calc(9px * var(--px));
+  letter-spacing: 0.08em;
+  color: var(--cyan);
+  line-height: 1.5;
+}
+
+.pre-caret {
+  display: inline-block;
+  width: calc(3px * var(--px));
+  height: calc(6px * var(--px));
+  background: var(--cyan);
+  margin-left: calc(1px * var(--px));
+  animation: caret-blink 0.7s steps(2) infinite;
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.pre-bar {
+  display: flex;
+  gap: calc(1px * var(--px));
+}
+
+.pre-cell {
+  width: calc(5px * var(--px));
+  height: calc(4px * var(--px));
+  background: var(--navy);
+  border: calc(0.5px * var(--px)) solid var(--frame-3);
+}
+
+.pre-cell.on {
+  background: var(--cyan);
+  box-shadow: 0 0 calc(2px * var(--px)) rgba(150, 224, 247, 0.7);
+}
+
+.pre-choice {
+  opacity: 0.25;
+  transition: opacity 200ms steps(3);
+}
+
+.pre-choice.ready {
+  opacity: 1;
+}
+
+.pre-prompt {
+  font-family: var(--font-ui);
+  font-size: calc(5.5px * var(--px));
+  letter-spacing: 0.12em;
+  color: var(--pale);
+  margin-bottom: calc(3px * var(--px));
+}
+
+.pre-btns {
+  display: flex;
+  gap: calc(3px * var(--px));
+  justify-content: center;
+}
+
+.pre-btn {
+  font-family: var(--font-ui);
+  font-size: calc(6px * var(--px));
+  letter-spacing: 0.1em;
+  color: var(--outline);
+  border: calc(4px * var(--px)) solid transparent;
+  border-image: url('/sprites/green-pill@3x.png') 12 fill round;
+  background: none;
+  padding: 0 calc(3px * var(--px));
+  cursor: pointer;
+}
+
+.pre-btn.alt {
+  border-image: url('/sprites/panel@3x.png') 18 fill round;
+  color: var(--cyan);
+}
+
+.pre-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

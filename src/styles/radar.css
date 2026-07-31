@@ -1,0 +1,29 @@
+/* Radar widget — bottom-right on the map, inside the frame */
+
+.radar {
+  position: absolute;
+  right: calc(15px * var(--px));
+  bottom: calc(32px * var(--px));
+  width: calc(44px * var(--px));
+  height: calc(44px * var(--px));
+  border-radius: 50%;
+  background: rgba(3, 24, 52, 0.85);
+  border: calc(1px * var(--px)) solid var(--outline);
+  box-shadow:
+    0 0 0 calc(1px * var(--px)) rgba(168, 225, 254, 0.35),
+    0 0 calc(6px * var(--px)) rgba(9, 164, 199, 0.35);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.radar canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (max-width: 720px) {
+  .radar {
+    display: none;
+  }
+}

@@ -6,11 +6,15 @@ import { installQuantizedZoom } from './quantizedZoom';
 import { installGlobeSpin } from './globeSpin';
 import { flyToHome } from './ipLocate';
 
+interface CreateMapOptions {
+  onZoomStep?: (dir: 1 | -1) => void;
+}
+
 /**
  * Boots the MapLibre map: committed retro style, globe projection,
  * env-overridable tile source, idle globe spin, stepped zoom.
  */
-export function createMap(container: HTMLElement): MLMap {
+export function createMap(container: HTMLElement, opts: CreateMapOptions = {}): MLMap {
   const style = structuredClone(styleJson) as any;
   /* Tile source is env-overridable (self-host escape hatch). */
   style.sources.openmaptiles.url = config.tilesUrl;
@@ -33,7 +37,7 @@ export function createMap(container: HTMLElement): MLMap {
   /* Boot over the viewer's own country (coarse IP lookup, no permission). */
   map.once('load', () => void flyToHome(map));
 
-  installQuantizedZoom(map);
+  installQuantizedZoom(map, opts.onZoomStep);
   installGlobeSpin(map);
 
   if (import.meta.env.DEV) {

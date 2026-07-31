@@ -329,6 +329,13 @@
   bottom: calc(30px * var(--px));
   padding: 0 calc(4px * var(--px));
   font-size: calc(10px * var(--px));
+  /* .hud-btn zeroes border — restore it here (this rule loads later) */
+  border: calc(7px * var(--px)) solid transparent;
+  border-image: url('/sprites/yellow-tab@3x.png') 21 fill stretch;
+}
+
+.cta-tab:active {
+  border-image: url('/sprites/yellow-tab-pressed@3x.png') 21 fill stretch;
 }
 
 .cta-tab:active {

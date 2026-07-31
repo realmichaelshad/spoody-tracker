@@ -10,6 +10,18 @@ export interface Sighting {
   photoState?: 'none' | 'screened' | 'unscreened' | 'removed';
   placeLabel?: string | null;
   createdAt: string; // ISO
+  likeCount?: number;
+  replyCount?: number;
+}
+
+export interface Reply {
+  id: string;
+  sightingId: string;
+  name: string;
+  message: string;
+  createdAt: string;
+  /** One level of nesting: set when this is a reply to another reply. */
+  parentId?: string | null;
 }
 
 /** All visible sightings, newest first. Map keyed by id for dedupe/updates. */

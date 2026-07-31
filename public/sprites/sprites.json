@@ -93,13 +93,23 @@
     "h": 15
   },
   "yellow-tab": {
-    "w": 15,
-    "h": 15,
+    "w": 19,
+    "h": 19,
     "slice": {
-      "top": 5,
-      "right": 5,
-      "bottom": 5,
-      "left": 5
+      "top": 7,
+      "right": 7,
+      "bottom": 7,
+      "left": 7
+    }
+  },
+  "yellow-tab-pressed": {
+    "w": 19,
+    "h": 19,
+    "slice": {
+      "top": 7,
+      "right": 7,
+      "bottom": 7,
+      "left": 7
     }
   }
 }

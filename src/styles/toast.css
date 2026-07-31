@@ -1,14 +1,108 @@
-/* New-sighting notification toasts (top-right, under the spider button) */
+/* New-sighting notification toasts — anchored directly under the spider
+   button (the notification center), so alerts visibly "come from" it. */
 
 .toasts {
   position: absolute;
-  top: calc(30px * var(--px));
-  right: calc(14px * var(--px));
+  top: calc(29px * var(--px));
+  right: calc(4px * var(--px));
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: calc(2px * var(--px));
   z-index: 16;
   pointer-events: none;
+}
+
+/* Notification badge on the spider button */
+.spider-btn .badge {
+  position: absolute;
+  top: calc(-2px * var(--px));
+  right: calc(-2px * var(--px));
+  min-width: calc(8px * var(--px));
+  height: calc(8px * var(--px));
+  display: grid;
+  place-items: center;
+  background: var(--bad);
+  border: calc(1px * var(--px)) solid var(--outline);
+  color: var(--white, #e6f5f8);
+  font-family: var(--font-ui);
+  font-size: calc(5px * var(--px));
+  line-height: 1;
+  padding: 0 calc(1px * var(--px));
+  animation: badge-pop 300ms steps(3);
+}
+
+@keyframes badge-pop {
+  from {
+    transform: scale(0);
+  }
+}
+
+/* Notification dropdown panel */
+.notif-panel {
+  position: absolute;
+  top: calc(29px * var(--px));
+  right: calc(4px * var(--px));
+  width: calc(84px * var(--px));
+  max-height: calc(120px * var(--px));
+  overflow-y: auto;
+  border: calc(6px * var(--px)) solid transparent;
+  border-image: url('/sprites/panel@3x.png') 18 fill round;
+  z-index: 17;
+  pointer-events: auto;
+  font-family: var(--font-ui);
+  scrollbar-width: thin;
+  scrollbar-color: var(--frame-2) transparent;
+  animation: toast-in 180ms steps(4);
+}
+
+.notif-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-label);
+  font-size: calc(7px * var(--px));
+  letter-spacing: 0.08em;
+  color: var(--yellow);
+  border-bottom: calc(1px * var(--px)) solid var(--frame-3);
+  padding-bottom: calc(1px * var(--px));
+  margin-bottom: calc(1px * var(--px));
+}
+
+.notif-close {
+  background: none;
+  border: 0;
+  color: var(--cyan);
+  font-family: var(--font-ui);
+  font-size: calc(8px * var(--px));
+  line-height: 1;
+  cursor: pointer;
+}
+
+.notif-empty {
+  font-size: calc(5px * var(--px));
+  color: var(--cyan-lt);
+  opacity: 0.8;
+  padding: calc(2px * var(--px)) 0;
+  letter-spacing: 0.06em;
+}
+
+.notif-item {
+  display: flex;
+  gap: calc(2px * var(--px));
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-bottom: calc(1px * var(--px)) solid rgba(21, 79, 128, 0.5);
+  padding: calc(1.5px * var(--px)) 0;
+  cursor: pointer;
+  font-family: var(--font-ui);
+}
+
+.notif-item:hover {
+  background: rgba(150, 224, 247, 0.07);
 }
 
 .toast {

@@ -1,0 +1,211 @@
+/* Sighting card social row + reply thread */
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: calc(2px * var(--px));
+  margin-top: calc(2px * var(--px));
+}
+
+/* "Web-up" (like) — clean: spider icon + count, red when you've webbed it */
+.webup-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(1.5px * var(--px));
+  font-family: var(--font-ui);
+  font-size: calc(5px * var(--px));
+  color: var(--cyan-lt);
+  background: none;
+  border: 0;
+  padding: calc(1px * var(--px)) 0;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+}
+
+.webup-btn .webup-icon {
+  width: calc(8px * var(--px));
+  height: calc(7px * var(--px));
+  background: url('/sprites/spider-glyph@3x.png') center / contain no-repeat;
+  image-rendering: pixelated;
+  /* neutral cyan-ish spider until liked */
+  filter: invert(0.8) sepia(0.4) saturate(3) hue-rotate(160deg) brightness(1.1);
+  transition: transform 120ms steps(2);
+}
+
+.webup-btn:hover .webup-icon {
+  transform: scale(1.15);
+}
+
+.webup-btn.on {
+  color: var(--bad-lt);
+}
+
+.webup-btn.on .webup-icon {
+  /* liked: hero red */
+  filter: invert(0.45) sepia(1) saturate(6) hue-rotate(-15deg) brightness(1.05);
+  animation: webup-pop 240ms steps(3);
+}
+
+@keyframes webup-pop {
+  40% {
+    transform: scale(1.5) rotate(-8deg);
+  }
+}
+
+.webup-count {
+  min-width: calc(4px * var(--px));
+}
+
+.replies-btn {
+  font-family: var(--font-ui);
+  font-size: calc(5px * var(--px));
+  letter-spacing: 0.06em;
+  color: var(--cyan);
+  background: none;
+  border: calc(1px * var(--px)) solid var(--frame-3);
+  padding: calc(1px * var(--px)) calc(2px * var(--px));
+  cursor: pointer;
+}
+
+.replies-btn:hover,
+.webup-btn:hover {
+  border-color: var(--teal);
+}
+
+.card-actions .card-flag {
+  margin-top: 0;
+  margin-left: auto;
+}
+
+.reply-thread {
+  margin-top: calc(2px * var(--px));
+  border-top: calc(1px * var(--px)) solid var(--frame-3);
+  padding-top: calc(2px * var(--px));
+  display: flex;
+  flex-direction: column;
+  gap: calc(1.5px * var(--px));
+  max-height: calc(50px * var(--px));
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--frame-2) transparent;
+}
+
+.reply {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: calc(1.5px * var(--px));
+  font-size: calc(5px * var(--px));
+  line-height: 1.35;
+}
+
+.reply.nested {
+  margin-left: calc(5px * var(--px));
+  border-left: calc(1px * var(--px)) solid var(--frame-3);
+  padding-left: calc(2px * var(--px));
+}
+
+.reply-reply {
+  background: none;
+  border: 0;
+  color: var(--cyan-lt);
+  opacity: 0.55;
+  font-size: calc(5px * var(--px));
+  cursor: pointer;
+  padding: 0 calc(0.5px * var(--px));
+}
+
+.reply-reply:hover {
+  opacity: 1;
+  color: var(--yellow);
+}
+
+.replying-to {
+  display: flex;
+  align-items: center;
+  gap: calc(2px * var(--px));
+  font-size: calc(4.5px * var(--px));
+  color: var(--yellow);
+  letter-spacing: 0.06em;
+}
+
+.replying-cancel {
+  background: none;
+  border: 0;
+  color: var(--bad-lt);
+  font-size: calc(6px * var(--px));
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.reply-name {
+  color: var(--yellow);
+  letter-spacing: 0.05em;
+  flex: none;
+}
+
+.reply-msg {
+  color: var(--pale);
+  min-width: 0;
+}
+
+.reply-time {
+  color: var(--cyan-lt);
+  opacity: 0.6;
+  font-size: calc(4px * var(--px));
+  flex: none;
+}
+
+.reply-loading {
+  font-size: calc(4.5px * var(--px));
+  color: var(--cyan-lt);
+  opacity: 0.7;
+  letter-spacing: 0.08em;
+}
+
+.reply-form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(1px * var(--px));
+  margin-top: calc(1px * var(--px));
+}
+
+.reply-send-row {
+  display: flex;
+  gap: calc(1px * var(--px));
+}
+
+.reply-input {
+  font-family: var(--font-ui);
+  font-size: calc(5px * var(--px));
+  color: var(--pale);
+  background: var(--map-bg);
+  border: calc(1px * var(--px)) solid var(--frame-3);
+  padding: calc(1px * var(--px)) calc(1.5px * var(--px));
+  outline: none;
+  min-width: 0;
+}
+
+.reply-input:focus {
+  border-color: var(--teal);
+}
+
+.reply-input.grow {
+  flex: 1;
+}
+
+.reply-send {
+  font-family: var(--font-ui);
+  font-size: calc(5px * var(--px));
+  color: var(--outline);
+  background: var(--btn);
+  border: calc(1px * var(--px)) solid var(--outline);
+  padding: 0 calc(2px * var(--px));
+  cursor: pointer;
+}
+
+.reply-err {
+  font-size: calc(4.5px * var(--px));
+  color: var(--bad-lt);
+}

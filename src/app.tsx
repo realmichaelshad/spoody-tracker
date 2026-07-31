@@ -3,6 +3,7 @@ import { FrameChrome } from './hud/FrameChrome';
 import { ReportForm, reportOpen, pickingOnMap } from './hud/ReportForm';
 import { MenuDrawer } from './hud/MenuDrawer';
 import { Toasts } from './hud/Toast';
+import { NotificationCenter } from './hud/NotificationCenter';
 import { Preloader } from './hud/Preloader';
 import { Radar } from './hud/Radar';
 import { createMap } from './map/createMap';
@@ -84,6 +85,11 @@ export function App() {
         }}
       />
       <Toasts
+        onJump={(s) => {
+          if (mapRef.current) flyToSighting(mapRef.current, s);
+        }}
+      />
+      <NotificationCenter
         onJump={(s) => {
           if (mapRef.current) flyToSighting(mapRef.current, s);
         }}

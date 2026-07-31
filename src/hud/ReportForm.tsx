@@ -15,6 +15,15 @@ declare global {
 
 /** null = closed; otherwise the report panel is open with optional preset coords. */
 export const reportOpen = signal<{ lat?: number; lng?: number } | null>(null);
+
+const CODE_A = ['WEB', 'ROOF', 'ALLEY', 'PIXEL', 'NIGHT', 'SKY', 'TRAIN', 'BODEGA', 'CAM', 'WALL'];
+const CODE_B = ['WATCHER', 'SPOTTER', 'RUNNER', 'KID', 'EYES', 'TRACKER', 'HAWK', 'CRAWLER'];
+
+function rollCodename(): string {
+  const a = CODE_A[Math.floor(Math.random() * CODE_A.length)];
+  const b = CODE_B[Math.floor(Math.random() * CODE_B.length)];
+  return `${a}-${b}-${Math.floor(Math.random() * 98) + 1}`;
+}
 /** When true, the next map click sets report coordinates. */
 export const pickingOnMap = signal(false);
 
@@ -144,14 +153,24 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
         <label class="report-label" for="rep-name">
           YOUR CODENAME
         </label>
-        <input
-          id="rep-name"
-          class="report-input"
-          maxLength={24}
-          placeholder="WEB-WATCHER-77"
-          value={name}
-          onInput={(e) => setName((e.target as HTMLInputElement).value.toUpperCase())}
-        />
+        <div class="name-row">
+          <input
+            id="rep-name"
+            class="report-input"
+            maxLength={24}
+            placeholder="WEB-WATCHER-77"
+            value={name}
+            onInput={(e) => setName((e.target as HTMLInputElement).value.toUpperCase())}
+          />
+          <button
+            class="dice-btn"
+            title="Roll a codename"
+            aria-label="Roll a random codename"
+            onClick={() => setName(rollCodename())}
+          >
+            ?
+          </button>
+        </div>
 
         <label class="report-label" for="rep-msg">
           WHAT DID YOU SEE?

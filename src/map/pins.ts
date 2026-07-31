@@ -2,6 +2,7 @@ import type { Map as MLMap, MapMouseEvent } from 'maplibre-gl';
 import { effect } from '@preact/signals';
 import { sightings, sightingsVersion, type Sighting } from '../state/sightings';
 import { openSightingPopup } from './popup';
+import { installArrivalPulse } from './arrivalPulse';
 
 const SRC = 'sightings';
 
@@ -44,8 +45,10 @@ export async function installPins(map: MLMap): Promise<void> {
     type: 'geojson',
     data: toGeoJSON() as any,
     cluster: true,
-    clusterRadius: 44,
-    clusterMaxZoom: 14,
+    /* Gentle clustering: individual pins split out from mid zoom so you
+       don't have to dive to street level to see sightings. */
+    clusterRadius: 36,
+    clusterMaxZoom: 8,
   });
 
   map.addLayer({
@@ -80,6 +83,8 @@ export async function installPins(map: MLMap): Promise<void> {
       'icon-size': ['step', ['zoom'], 0.75, 6, 1],
     },
   });
+
+  installArrivalPulse(map);
 
   /* Live data → source refresh (signals effect). */
   effect(() => {

@@ -87,7 +87,7 @@
   background: rgba(150, 224, 247, 0.08);
 }
 
-/* Activity log */
+/* Activity feed — social stream of sightings */
 .log-body {
   display: flex;
   flex-direction: column;
@@ -100,50 +100,98 @@
   padding: calc(8px * var(--px)) 0;
 }
 
-.log-item {
-  display: flex;
-  gap: calc(2px * var(--px));
-  align-items: flex-start;
+.feed-item {
+  border-bottom: calc(1px * var(--px)) solid rgba(21, 79, 128, 0.6);
+  padding: calc(2.5px * var(--px)) calc(1px * var(--px));
+}
+
+.feed-main {
+  display: block;
+  width: 100%;
   text-align: left;
   background: none;
   border: 0;
-  border-bottom: calc(1px * var(--px)) solid rgba(21, 79, 128, 0.6);
-  padding: calc(2px * var(--px)) calc(1px * var(--px));
   cursor: pointer;
+  font-family: var(--font-ui);
+  padding: 0;
 }
 
-.log-item:hover {
-  background: rgba(150, 224, 247, 0.07);
+.feed-main:hover .feed-msg {
+  color: var(--white, #e6f5f8);
 }
 
-.log-star {
-  flex: none;
-  width: calc(10px * var(--px));
-  height: calc(10px * var(--px));
-  background: url('/sprites/pin-sighting@3x.png') 0 0 / cover no-repeat;
-  image-rendering: pixelated;
+.feed-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: calc(2px * var(--px));
+}
+
+.feed-name {
+  font-size: calc(5.5px * var(--px));
+  color: var(--yellow);
+  letter-spacing: 0.05em;
+}
+
+.feed-time {
+  font-size: calc(4.5px * var(--px));
+  color: var(--cyan-lt);
+  opacity: 0.7;
+  text-align: right;
+}
+
+.feed-msg {
+  font-size: calc(6px * var(--px));
+  color: var(--pale);
+  line-height: 1.4;
   margin-top: calc(1px * var(--px));
 }
 
-.log-text {
+.feed-photo {
+  margin-top: calc(2px * var(--px));
+  border: calc(1px * var(--px)) solid var(--outline);
+  background: var(--map-bg);
+}
+
+.feed-photo img {
+  display: block;
+  width: 100%;
+  max-height: calc(56px * var(--px));
+  object-fit: cover;
+}
+
+.feed-photo.blurred img {
+  filter: blur(12px) brightness(0.6);
+}
+
+.feed-actions {
   display: flex;
-  flex-direction: column;
-  gap: calc(1px * var(--px));
+  align-items: center;
+  gap: calc(3px * var(--px));
+  margin-top: calc(2px * var(--px));
 }
 
-.log-msg {
-  font-family: var(--font-ui);
-  font-size: calc(5.5px * var(--px));
-  color: var(--pale);
-  line-height: 1.35;
-}
-
-.log-meta {
+.feed-replies {
   font-family: var(--font-ui);
   font-size: calc(4.5px * var(--px));
+  letter-spacing: 0.08em;
+  color: var(--cyan);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+
+.feed-replies:hover {
+  color: var(--pale);
+}
+
+.feed-goto {
+  margin-left: auto;
+  font-size: calc(4px * var(--px));
   color: var(--cyan-lt);
-  opacity: 0.75;
-  letter-spacing: 0.04em;
+  opacity: 0.55;
+  letter-spacing: 0.06em;
 }
 
 /* Help */

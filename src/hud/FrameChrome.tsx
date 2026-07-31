@@ -1,6 +1,7 @@
 import { config } from '../config';
 import { soundOn, openPanel } from '../state/settings';
 import { newestFirst, sightings } from '../state/sightings';
+import { unreadCount, notifOpen, openNotifications, closeNotifications } from '../state/notifications';
 import { sfx, unlockAudio } from '../audio/sfx';
 
 interface Props {
@@ -44,7 +45,21 @@ export function FrameChrome({ onReport }: Props) {
           opening ? sfx.open() : sfx.close();
         }}
       />
-      <button class="hud-btn spider-btn" aria-label="Report a sighting" onClick={onReport} />
+      <button
+        class="hud-btn spider-btn"
+        aria-label="Sighting alerts"
+        onClick={() => {
+          if (notifOpen.value) {
+            closeNotifications();
+            sfx.close();
+          } else {
+            openNotifications();
+            sfx.open();
+          }
+        }}
+      >
+        {unreadCount.value > 0 && <span class="badge">{Math.min(unreadCount.value, 9)}</span>}
+      </button>
 
       <div class="ticker-bar">
         <div class="ticker-track">

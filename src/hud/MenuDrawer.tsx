@@ -1,5 +1,4 @@
 import { openPanel } from '../state/settings';
-import { config } from '../config';
 import { ActivityLog } from './ActivityLog';
 
 interface Props {
@@ -45,21 +44,17 @@ export function MenuDrawer({ onReport, onJump }: Props) {
 
         {panel === 'help' && (
           <div class="panel-body help-body">
-            <p>
-              {config.siteName} IS A COMMUNITY SIGHTINGS MAP. ANYONE, ANYWHERE ON EARTH CAN PUT
-              A SIGHTING ON THE MAP — AND EVERYONE ELSE SEES IT.
+            <p class="help-line">
+              <span class="help-pin" /> STAR = A SIGHTING. TAP IT.
             </p>
             <p class="help-line">
-              <span class="help-pin" /> A STAR PIN IS A SIGHTING. TAP IT TO READ THE REPORT.
+              <span class="help-web" /> WEB = A BUNCH OF THEM. TAP TO SPLIT.
             </p>
-            <p class="help-line">
-              <span class="help-web" /> A WEB IS A CLUSTER. TAP TO ZOOM IN AND SPLIT IT.
-            </p>
-            <p>SCROLL TO ZOOM IN CHUNKY STEPS. LEAVE THE MAP ALONE AND THE GLOBE SPINS.</p>
             <p>
-              TO REPORT: HIT <b>REPORT SIGHTING</b>, DROP YOUR PIN, SAY WHAT YOU SAW. NO ACCOUNT
-              NEEDED.
+              SEE SOMETHING? HIT <b>REPORT SIGHTING</b>, DROP A PIN, SAY WHAT YOU SAW. THE WHOLE
+              WORLD SEES IT. NO ACCOUNT NEEDED.
             </p>
+            <p>LIKE REPORTS, LEAVE REPLIES, AND WATCH THE SPIDER BUTTON FOR NEW ALERTS.</p>
             <p class="help-foot">
               UNOFFICIAL FAN PROJECT · OPEN SOURCE · BE COOL, DON'T POST ANYTHING GROSS.
             </p>

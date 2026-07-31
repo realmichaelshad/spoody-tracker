@@ -82,12 +82,18 @@ export function generateMockSightings(count: number): Sighting[] {
   const now = Date.now();
   for (let i = 0; i < count; i++) {
     const [lng, lat] = pickWeighted();
+    const id = `demo-${i}`;
+    /* replyCount must match the seeded replies in social.ts (same hash) */
+    let h = 0;
+    for (const ch of id) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
     out.push({
-      id: `demo-${i}`,
+      id,
       lng: scatter(lng, 0.25),
       lat: scatter(lat, 0.18),
       name: NAMES[Math.floor(rand() * NAMES.length)],
       message: MSGS[Math.floor(rand() * MSGS.length)],
+      likeCount: Math.floor(rand() * rand() * 40),
+      replyCount: h % 3,
       photoUrl: null,
       photoState: 'none',
       placeLabel: null,

@@ -12,5 +12,6 @@ import './styles/drawer.css';
 import './styles/toast.css';
 import './styles/preloader.css';
 import './styles/radar.css';
+import './styles/card.css';
 
 render(<App />, document.getElementById('app')!);

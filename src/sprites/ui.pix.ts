@@ -113,27 +113,62 @@ export const soundBtn = sprite({
   ],
 });
 
-/** Yellow action tab 9-slice (call-to-action plates), 15x15, slice 5. */
+/**
+ * Yellow action tab 9-slice — RAISED variant with a baked 2px drop shadow;
+ * pairs with yellowTabPressed for the pixel press-down effect. 19x19, slice 7.
+ */
 export const yellowTab = sprite({
   name: 'yellow-tab',
-  map: { k: 'outline', y: 'yellow', o: 'orange', d: 'navy' },
-  slice: { top: 5, right: 5, bottom: 5, left: 5 },
+  map: { k: 'outline', y: 'yellow', o: 'orange', x: 'orangeDk', s: 'navy' },
+  slice: { top: 7, right: 7, bottom: 7, left: 7 },
   rows: [
-    '..kkkkkkkkkkk..',
-    '.kyyyyyyyyyyyk.',
-    'kyyyyyyyyyyyyyk',
-    'koooooooooooook',
-    'koooooooooooook',
-    'koooooooooooook',
-    'koooooooooooook',
-    'koooooooooooook',
-    'koooooooooooook',
-    'koooooooooooook',
-    'koooooooooooook',
-    'koooooooooooook',
-    'kdddddddddddddk',
-    '.kdddddddddddk.',
-    '..kkkkkkkkkkk..',
+    '...kkkkkkkkkkkkk...',
+    '..kyyyyyyyyyyyyyk..',
+    '.kyyyyyyyyyyyyyyyk.',
+    'kyyyyyyyyyyyyyyyyyk',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'kxxxxxxxxxxxxxxxxxk',
+    '.kxxxxxxxxxxxxxxxk.',
+    '..kxxxxxxxxxxxxxk..',
+    '...kkkkkkkkkkkkk...',
+    '..sssssssssssssss..',
+    '..sssssssssssssss..',
+  ],
+});
+
+/** Pressed variant — shadow gone, top shaded (the button sits "down"). */
+export const yellowTabPressed = sprite({
+  name: 'yellow-tab-pressed',
+  map: { k: 'outline', o: 'orange', x: 'orangeDk' },
+  slice: { top: 7, right: 7, bottom: 7, left: 7 },
+  rows: [
+    '...kkkkkkkkkkkkk...',
+    '..kxxxxxxxxxxxxxk..',
+    '.kxxxxxxxxxxxxxxxk.',
+    'kxxxxxxxxxxxxxxxxxk',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    'koooooooooooooooook',
+    '.koooooooooooooook.',
+    '..koooooooooooook..',
+    '...kkkkkkkkkkkkk...',
   ],
 });
 

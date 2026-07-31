@@ -79,6 +79,29 @@
   object-fit: cover;
 }
 
+.card-photo.unscreened {
+  position: relative;
+}
+
+.card-photo.unscreened img {
+  filter: blur(14px) brightness(0.6);
+}
+
+.reveal-btn {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 0;
+  color: var(--yellow);
+  font-family: var(--font-ui);
+  font-size: calc(5px * var(--px));
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  text-shadow: 0 calc(1px * var(--px)) 0 var(--outline);
+}
+
 .card-msg {
   font-size: calc(6px * var(--px));
   line-height: 1.45;

@@ -1,6 +1,7 @@
 import { signal } from '@preact/signals';
-import { useState } from 'preact/hooks';
+import { useRef, useState } from 'preact/hooks';
 import { submitSighting } from '../lib/api';
+import { compressImage } from '../lib/imageCompress';
 
 /** null = closed; otherwise the report panel is open with optional preset coords. */
 export const reportOpen = signal<{ lat?: number; lng?: number } | null>(null);
@@ -19,6 +20,36 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [locBusy, setLocBusy] = useState(false);
+  const [photo, setPhoto] = useState<Blob | null>(null);
+  const [photoUrl, setPhotoUrl] = useState('');
+  const [photoBusy, setPhotoBusy] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const attachPhoto = async (file: File | undefined) => {
+    if (!file) return;
+    setError('');
+    setPhotoBusy(true);
+    try {
+      const compressed = await compressImage(file);
+      const { screenImage } = await import('../lib/nsfw');
+      const screen = await screenImage(compressed);
+      if (!screen.ok) {
+        setPhotoBusy(false);
+        setError(
+          screen.reason === 'unsafe'
+            ? 'IMAGE REJECTED BY THE SCANNER.'
+            : 'SCANNER OFFLINE — POST WITHOUT A PHOTO.',
+        );
+        return;
+      }
+      if (photoUrl) URL.revokeObjectURL(photoUrl);
+      setPhoto(compressed);
+      setPhotoUrl(URL.createObjectURL(compressed));
+    } catch {
+      setError('COULD NOT READ THAT IMAGE.');
+    }
+    setPhotoBusy(false);
+  };
 
   if (!open) return null;
   const hasLoc = open.lat !== undefined && open.lng !== undefined;
@@ -52,6 +83,7 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
       lng: open.lng!,
       name,
       message,
+      photo,
     });
     setBusy(false);
     if (!res.ok) {
@@ -99,6 +131,41 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
           onInput={(e) => setMessage((e.target as HTMLTextAreaElement).value)}
         />
         <div class="report-count">{140 - message.length}</div>
+
+        <div class="report-row photo-row">
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={(e) => attachPhoto((e.target as HTMLInputElement).files?.[0])}
+          />
+          <button
+            class="loc-btn photo-btn"
+            onClick={() => fileRef.current?.click()}
+            disabled={photoBusy}
+          >
+            {photoBusy ? 'SCANNING…' : photo ? 'CHANGE PHOTO' : 'ADD PHOTO'}
+          </button>
+          {photo && (
+            <button
+              class="loc-btn photo-clear"
+              onClick={() => {
+                if (photoUrl) URL.revokeObjectURL(photoUrl);
+                setPhoto(null);
+                setPhotoUrl('');
+              }}
+            >
+              REMOVE
+            </button>
+          )}
+        </div>
+        {photoUrl && (
+          <div class="photo-preview">
+            <img src={photoUrl} alt="attached photo preview" />
+            <span class="photo-ok">SCANNED ✓</span>
+          </div>
+        )}
 
         <div class="report-row loc-row">
           <button class="loc-btn" onClick={useMyLocation} disabled={locBusy}>

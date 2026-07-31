@@ -14,7 +14,14 @@ export function openSightingPopup(map: MLMap, s: Sighting): void {
     <div class="card-head">
       <span class="card-dot"></span>SIGHTING REPORT
     </div>
-    ${s.photoUrl ? `<div class="card-photo"><img src="${escapeAttr(s.photoUrl)}" alt="sighting photo" loading="lazy"></div>` : ''}
+    ${
+      s.photoUrl
+        ? `<div class="card-photo ${s.photoState === 'unscreened' ? 'unscreened' : ''}">
+             <img src="${escapeAttr(s.photoUrl)}" alt="sighting photo" loading="lazy">
+             ${s.photoState === 'unscreened' ? '<button class="reveal-btn">UNVERIFIED IMAGE — CLICK TO REVEAL</button>' : ''}
+           </div>`
+        : ''
+    }
     <div class="card-msg">${escapeHtml(s.message)}</div>
     <div class="card-meta">
       <span class="card-name">${escapeHtml(s.name)}</span>
@@ -36,6 +43,10 @@ export function openSightingPopup(map: MLMap, s: Sighting): void {
 
   el.querySelector('.card-flag')?.addEventListener('click', () => {
     void import('../lib/flags').then((m) => m.flagSighting(s.id, el));
+  });
+  el.querySelector('.reveal-btn')?.addEventListener('click', (ev) => {
+    (ev.currentTarget as HTMLElement).parentElement?.classList.remove('unscreened');
+    (ev.currentTarget as HTMLElement).remove();
   });
 }
 

@@ -22,10 +22,10 @@
             "zoom"
           ],
           0,
-          "#14335f",
-          5,
-          "#14335f",
-          7,
+          "#0e2036",
+          6,
+          "#0e2036",
+          8,
           "#0d2547"
         ]
       }
@@ -60,7 +60,21 @@
       ],
       "paint": {
         "fill-antialias": false,
-        "fill-color": "#031834"
+        "fill-color": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          0,
+          "#175070",
+          6,
+          "#175070",
+          9,
+          "#031834"
+        ]
       }
     },
     {
@@ -1733,7 +1747,8 @@
         "text-halo-blur": 1,
         "text-halo-color": "#031834",
         "text-halo-width": 1.5
-      }
+      },
+      "minzoom": 5
     },
     {
       "id": "place_city_large",
@@ -1912,7 +1927,8 @@
         "text-halo-blur": 1,
         "text-halo-color": "#031834",
         "text-halo-width": 1.5
-      }
+      },
+      "minzoom": 6
     },
     {
       "id": "place_country_other",

@@ -50,9 +50,10 @@ function FeedItem({ s, onJump }: { s: Sighting; onJump: (id: string) => void }) 
         <button
           class={`webup-btn ${liked ? 'on' : ''}`}
           aria-label="Web-up this sighting"
-          onClick={async () => {
+          onClick={() => {
             sfx.blip();
-            setLiked(await toggleLike(s.id));
+            setLiked((v) => !v);
+            void toggleLike(s.id).then(setLiked);
           }}
         >
           <span class="webup-icon" />

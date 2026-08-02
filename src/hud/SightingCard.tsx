@@ -32,9 +32,12 @@ export function SightingCard({ sighting }: Props) {
     }
   }, [showReplies]);
 
-  const like = async () => {
+  const like = () => {
     sfx.blip();
-    setLiked(await toggleLike(s.id));
+    /* Optimistic: the button must respond on the same frame as the tap.
+       The server round-trip settles in the background. */
+    setLiked((v) => !v);
+    void toggleLike(s.id).then(setLiked);
   };
 
   const sendReply = async () => {

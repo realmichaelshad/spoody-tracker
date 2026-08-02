@@ -1,6 +1,6 @@
 import { addSightings, type Sighting } from '../state/sightings';
 import { saveLocalSighting, markMine } from './demoStore';
-import { placeLabel } from './geocode';
+import { placeLabelFast } from './geocode';
 import { isDemoMode } from '../config';
 
 export interface ReportInput {
@@ -30,7 +30,7 @@ export async function submitSighting(input: ReportInput): Promise<ReportResult> 
   }
 
   if (isDemoMode) {
-    const label = await placeLabel(input.lat, input.lng);
+    const label = await placeLabelFast(input.lat, input.lng);
     /* Store the photo as a data URL so it survives reloads (object URLs
        die with the page). Compressed WebP is small enough for localStorage. */
     let photoUrl: string | null = null;
@@ -60,7 +60,7 @@ export async function submitSighting(input: ReportInput): Promise<ReportResult> 
   }
 
   try {
-    const label = await placeLabel(input.lat, input.lng);
+    const label = await placeLabelFast(input.lat, input.lng);
     const fd = new FormData();
     fd.set('lat', String(input.lat));
     fd.set('lng', String(input.lng));

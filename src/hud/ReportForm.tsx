@@ -2,6 +2,7 @@ import { signal } from '@preact/signals';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { submitSighting } from '../lib/api';
 import { compressImage } from '../lib/imageCompress';
+import { primePlaceLabel } from '../lib/geocode';
 import { config } from '../config';
 
 declare global {
@@ -49,6 +50,14 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
     typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches;
   const turnstileRef = useRef<HTMLDivElement>(null);
   const turnstileId = useRef<string>();
+
+  /* Resolve the place label as soon as coordinates exist, so hitting
+     submit never waits on the geocoder. */
+  useEffect(() => {
+    if (open?.lat !== undefined && open?.lng !== undefined) {
+      primePlaceLabel(open.lat, open.lng);
+    }
+  }, [open?.lat, open?.lng]);
 
   /* Pre-warm the photo scanner so ADD PHOTO feels instant. */
   useEffect(() => {

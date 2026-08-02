@@ -1,9 +1,11 @@
-import type { Map as MLMap } from 'maplibre-gl';
+import { Marker, type Map as MLMap } from 'maplibre-gl';
 
 interface IpLoc {
   lat: number;
   lng: number;
   label: string;
+  /** true when it came from real GPS rather than a city-level IP guess */
+  precise?: boolean;
 }
 
 /**
@@ -24,6 +26,18 @@ async function fetchJson(url: string, ms: number): Promise<any> {
   } finally {
     clearTimeout(t);
   }
+}
+
+/**
+ * The lookup is started at module load, in parallel with the map booting,
+ * so the coordinates are usually already resolved by the time the map is
+ * ready — the globe starts flying immediately instead of sitting still.
+ */
+let locationPromise: Promise<IpLoc | null> | null = null;
+
+export function primeLocation(): Promise<IpLoc | null> {
+  locationPromise ??= resolveLocation();
+  return locationPromise;
 }
 
 export async function ipLocate(): Promise<IpLoc | null> {
@@ -58,32 +72,87 @@ export async function ipLocate(): Promise<IpLoc | null> {
  * Cinematic boot move: spin the globe over to the viewer's area and settle
  * at country-ish altitude. No-op if IP lookup fails.
  */
-export async function flyToHome(map: MLMap): Promise<void> {
-  /* If the user has ALREADY granted geolocation, land exactly on them;
-     otherwise the IP puts us over their city. No permission prompt here. */
-  let precise: { lat: number; lng: number } | null = null;
+/** Resolve the best location we can without prompting for permission. */
+async function resolveLocation(): Promise<IpLoc | null> {
+  /* If geolocation was ALREADY granted, land exactly on them. */
   try {
     const perm = await navigator.permissions?.query({ name: 'geolocation' as PermissionName });
     if (perm?.state === 'granted') {
-      precise = await new Promise((res) =>
+      const precise = await new Promise<IpLoc | null>((res) =>
         navigator.geolocation.getCurrentPosition(
-          (p) => res({ lat: p.coords.latitude, lng: p.coords.longitude }),
+          (p) => res({ lat: p.coords.latitude, lng: p.coords.longitude, label: 'YOUR LOCATION' }),
           () => res(null),
           { timeout: 4000 },
         ),
       );
+      if (precise) return { ...precise, precise: true };
     }
   } catch {
-    /* permissions API unavailable — stick with IP */
+    /* permissions API unavailable — fall through to IP */
   }
+  return ipLocate();
+}
 
-  const loc = precise ?? (await ipLocate());
+/**
+ * Cinematic boot move: swoop from the globe down to the viewer's area and
+ * drop a "YOU ARE HERE" marker. No-op if the location can't be resolved.
+ */
+export async function flyToHome(map: MLMap): Promise<void> {
+  const loc = await primeLocation();
   if (!loc) return;
+
   map.flyTo({
     center: [loc.lng, loc.lat],
-    zoom: precise ? 13 : 9,
-    speed: 0.75, /* slow cinematic swoop from the globe down to home */
+    zoom: loc.precise ? 13 : 9,
+    speed: 0.8, /* cinematic swoop from the globe down to home */
     curve: 1.7,
     essential: true,
   });
+
+  map.once('moveend', () => {
+    const marker = showYouAreHere(map, loc);
+    /* IP position is only city-accurate. Ask for real GPS and snap the
+       beacon exactly onto the viewer once they allow it. */
+    if (!loc.precise) void refineToExact(map, marker);
+  });
+}
+
+/** Pixel "YOU ARE HERE" pin + label at the viewer's own position. */
+function showYouAreHere(map: MLMap, loc: IpLoc): Marker {
+  const el = document.createElement('div');
+  el.className = 'you-are-here';
+  el.innerHTML = `
+    <span class="yah-label">YOU ARE HERE</span>
+    <span class="yah-dot"></span>
+  `;
+  const marker = new Marker({ element: el, anchor: 'bottom' })
+    .setLngLat([loc.lng, loc.lat])
+    .addTo(map);
+
+  /* Fade the label after a beat; keep the dot as a quiet home reference. */
+  setTimeout(() => el.classList.add('settled'), 6000);
+  map.once('remove', () => marker.remove());
+  return marker;
+}
+
+/** Upgrade the city-level guess to the device's exact position. */
+async function refineToExact(map: MLMap, marker: Marker): Promise<void> {
+  if (!navigator.geolocation) return;
+  const exact = await new Promise<{ lat: number; lng: number } | null>((res) =>
+    navigator.geolocation.getCurrentPosition(
+      (p) => res({ lat: p.coords.latitude, lng: p.coords.longitude }),
+      () => res(null),
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60_000 },
+    ),
+  );
+  if (!exact) return; // declined or unavailable — the city-level beacon stands
+
+  marker.setLngLat([exact.lng, exact.lat]);
+  const el = marker.getElement();
+  el.classList.remove('settled');
+  el.classList.add('exact');
+  const label = el.querySelector('.yah-label');
+  if (label) label.textContent = 'YOU ARE HERE';
+  map.easeTo({ center: [exact.lng, exact.lat], zoom: 14, duration: 1600 });
+  setTimeout(() => el.classList.add('settled'), 7000);
 }

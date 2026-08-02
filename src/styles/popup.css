@@ -186,3 +186,65 @@
   opacity: 0.6;
   cursor: default;
 }
+
+/* ── "YOU ARE HERE" home beacon ──────────────────────────────────────────── */
+.you-are-here {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(1px * var(--px));
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+
+.yah-label {
+  font-family: var(--font-label);
+  font-size: calc(7px * var(--px));
+  letter-spacing: 0.1em;
+  color: var(--outline);
+  background: var(--yellow);
+  border: calc(1px * var(--px)) solid var(--outline);
+  padding: 0 calc(2px * var(--px)) calc(0.5px * var(--px));
+  white-space: nowrap;
+  box-shadow: 0 calc(1px * var(--px)) 0 rgba(2, 10, 24, 0.8);
+  animation: yah-in 260ms steps(4);
+  transition: opacity 600ms steps(4);
+}
+
+@keyframes yah-in {
+  from {
+    transform: translateY(calc(-3px * var(--px)));
+    opacity: 0;
+  }
+}
+
+.yah-dot {
+  width: calc(5px * var(--px));
+  height: calc(5px * var(--px));
+  background: var(--yellow);
+  border: calc(1px * var(--px)) solid var(--outline);
+  box-shadow: 0 0 calc(4px * var(--px)) var(--yellow);
+  animation: yah-pulse 1.6s steps(2) infinite;
+}
+
+@keyframes yah-pulse {
+  50% {
+    box-shadow: 0 0 calc(9px * var(--px)) var(--yellow);
+  }
+}
+
+/* After a few seconds the label fades out; the beacon stays. */
+.you-are-here.settled .yah-label {
+  opacity: 0;
+}
+
+/* Exact GPS fix: beacon turns confident green */
+.you-are-here.exact .yah-dot {
+  background: var(--ok);
+  box-shadow: 0 0 calc(5px * var(--px)) var(--ok);
+}
+
+.you-are-here.exact .yah-label {
+  background: var(--ok);
+  color: var(--outline);
+}

@@ -376,11 +376,35 @@
   left: 50%;
   transform: translateX(-50%);
   bottom: calc(31px * var(--px));
-  font-size: calc(10px * var(--px));
+  /* bigger, prouder primary action */
+  height: calc(21px * var(--px));
+  font-size: calc(12px * var(--px));
+  padding: 0 calc(9px * var(--px)) calc(2px * var(--px));
+  letter-spacing: 0.08em;
+  /* gentle attention hop every few seconds — retro, not needy */
+  animation: cta-idle 5.2s steps(2) infinite;
+}
+
+@keyframes cta-idle {
+  0%,
+  92%,
+  100% {
+    margin-bottom: 0;
+  }
+  94%,
+  98% {
+    margin-bottom: calc(1.5px * var(--px));
+  }
+}
+
+.cta-tab:hover {
+  transform: translateX(-50%) translateY(calc(-1px * var(--px)));
+  animation: none;
 }
 
 .cta-tab:active {
   transform: translateX(-50%) translateY(calc(2px * var(--px)));
+  animation: none;
 }
 
 .cta-tab:active {

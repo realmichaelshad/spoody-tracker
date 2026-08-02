@@ -8,10 +8,10 @@ function persisted(key: string, initial: boolean) {
 }
 
 /** Master sound switch (SFX engine checks this before playing anything). */
-export const soundOn = persisted('webhead:sound', true);
+export const soundOn = persisted('spoody:sound', true);
 
 /** Mute sighting notifications (no toasts, no ping; alerts panel still works). */
-export const notifMuted = persisted('webhead:notif-muted', false);
+export const notifMuted = persisted('spoody:notif-muted', false);
 
 /** Which HUD panel is open (drawer navigation). */
 export const openPanel = signal<'none' | 'menu' | 'log' | 'help'>('none');

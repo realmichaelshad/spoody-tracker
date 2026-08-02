@@ -1,3 +1,4 @@
+import '../lib/migrateStorage';
 import { render } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { config, isDemoMode } from '../config';
@@ -33,7 +34,7 @@ function photoUrl(row: Row): string | null {
 }
 
 function AdminApp() {
-  const [token, setToken] = useState(sessionStorage.getItem('webhead:admin') ?? '');
+  const [token, setToken] = useState(sessionStorage.getItem('spoody:admin') ?? '');
   const [entered, setEntered] = useState(!!token);
   const [queue, setQueue] = useState<Queue | null>(null);
   const [err, setErr] = useState('');
@@ -53,7 +54,7 @@ function AdminApp() {
         return;
       }
       setQueue(await res.json());
-      sessionStorage.setItem('webhead:admin', tok);
+      sessionStorage.setItem('spoody:admin', tok);
     } catch {
       setErr('CONTROL LINK FAILED.');
     }

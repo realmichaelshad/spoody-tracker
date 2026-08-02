@@ -91,3 +91,68 @@
     filter: none;
   }
 }
+
+/* ── Mobile-final pass: native feel + tap targets ───────────────────────── */
+
+/* No 300ms delay, no accidental double-tap zoom, no gray tap flash */
+button,
+.hud-btn,
+.px-btn,
+.px-primary {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
+@media (max-width: 720px), (pointer: coarse) {
+  /* Sighting popup: comfortable width, never clipped by the frame */
+  .maplibregl-popup {
+    max-width: 94vw !important;
+  }
+
+  .sighting-card {
+    width: min(calc(102px * var(--px)), 86vw);
+  }
+
+  /* Popup close is a real tap target */
+  .pixel-popup .maplibregl-popup-close-button {
+    width: calc(12px * var(--px));
+    height: calc(12px * var(--px));
+    font-size: calc(8px * var(--px));
+  }
+
+  /* Reply inputs must be >=16px or iOS zooms the page on focus */
+  .reply-input {
+    font-size: 16px;
+  }
+
+  /* Thread rows + feed actions: finger-sized */
+  .reply-reply,
+  .feed-replies,
+  .feed-goto,
+  .webup-btn,
+  .card-flag,
+  .replies-btn,
+  .reply-send {
+    min-height: 34px;
+  }
+
+  .drawer-close,
+  .notif-close {
+    padding: calc(2px * var(--px)) calc(3px * var(--px));
+  }
+
+  .notif-mute {
+    min-height: 30px;
+    padding: 0 calc(3px * var(--px));
+  }
+
+  /* Hover-only furniture off on touch */
+  .hover-pop {
+    display: none;
+  }
+}

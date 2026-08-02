@@ -19,7 +19,7 @@ export function SightingCard({ sighting }: Props) {
   const [revealed, setRevealed] = useState(s.photoState !== 'unscreened');
   const [replies, setReplies] = useState<Reply[] | null>(null);
   const [showReplies, setShowReplies] = useState(false);
-  const [replyName, setReplyName] = useState(localStorage.getItem('webhead:name') ?? '');
+  const [replyName, setReplyName] = useState(localStorage.getItem('spoody:name') ?? '');
   const [replyMsg, setReplyMsg] = useState('');
   const [replyErr, setReplyErr] = useState('');
   const [replyTo, setReplyTo] = useState<Reply | null>(null);
@@ -40,7 +40,7 @@ export function SightingCard({ sighting }: Props) {
   const sendReply = async () => {
     setBusy(true);
     setReplyErr('');
-    localStorage.setItem('webhead:name', replyName.trim().slice(0, 24));
+    localStorage.setItem('spoody:name', replyName.trim().slice(0, 24));
     const res = await addReply(s.id, replyName, replyMsg, replyTo?.parentId ?? replyTo?.id);
     setBusy(false);
     if (!res.ok) {

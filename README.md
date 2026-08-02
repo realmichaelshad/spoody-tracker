@@ -1,4 +1,4 @@
-# WEBHEAD TRACKER
+# SPOODY TRACKER
 
 A retro pixel-art **community sightings map**. Anyone on Earth can drop a
 sighting — codename, message, optional photo, no account — and everyone else
@@ -17,8 +17,8 @@ default stack, MIT licensed.
 ## Quick start (demo mode — zero setup)
 
 ```bash
-git clone <your-fork-url> webhead-tracker
-cd webhead-tracker
+git clone <your-fork-url> spoody-tracker
+cd spoody-tracker
 npm install
 npm run dev
 ```

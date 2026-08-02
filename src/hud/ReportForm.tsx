@@ -34,7 +34,7 @@ interface Props {
 
 export function ReportForm({ onPickOnMap, onDone }: Props) {
   const open = reportOpen.value;
-  const [name, setName] = useState(localStorage.getItem('webhead:name') ?? '');
+  const [name, setName] = useState(localStorage.getItem('spoody:name') ?? '');
   const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -43,6 +43,10 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
   const [photoUrl, setPhotoUrl] = useState('');
   const [photoBusy, setPhotoBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
+  /* Touch devices get explicit TAKE PHOTO / GALLERY choices. */
+  const coarse =
+    typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches;
   const turnstileRef = useRef<HTMLDivElement>(null);
   const turnstileId = useRef<string>();
 
@@ -129,7 +133,7 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
     }
     setBusy(true);
     setError('');
-    localStorage.setItem('webhead:name', name.trim().slice(0, 24));
+    localStorage.setItem('spoody:name', name.trim().slice(0, 24));
     const res = await submitSighting({
       lat: open.lat!,
       lng: open.lng!,
@@ -202,12 +206,35 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
             hidden
             onChange={(e) => attachPhoto((e.target as HTMLInputElement).files?.[0])}
           />
+          <input
+            ref={cameraRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            hidden
+            onChange={(e) => attachPhoto((e.target as HTMLInputElement).files?.[0])}
+          />
+          {coarse && (
+            <button
+              class="px-btn loc-btn photo-btn"
+              onClick={() => cameraRef.current?.click()}
+              disabled={photoBusy}
+            >
+              {photoBusy ? 'SCANNING…' : '📷 TAKE PHOTO'}
+            </button>
+          )}
           <button
             class="px-btn loc-btn photo-btn"
             onClick={() => fileRef.current?.click()}
             disabled={photoBusy}
           >
-            {photoBusy ? 'SCANNING…' : photo ? 'CHANGE PHOTO' : 'ADD PHOTO'}
+            {photoBusy
+              ? 'SCANNING…'
+              : photo
+                ? 'CHANGE PHOTO'
+                : coarse
+                  ? 'GALLERY'
+                  : 'ADD PHOTO'}
           </button>
           {photo && (
             <button

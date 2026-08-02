@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "webhead-tracker",
+      "name": "spoody-tracker",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 5199

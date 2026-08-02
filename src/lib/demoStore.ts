@@ -1,6 +1,6 @@
 import type { Sighting } from '../state/sightings';
 
-const KEY = 'webhead-tracker:my-sightings';
+const KEY = 'spoody-tracker:my-sightings';
 
 /** Demo mode: the viewer's own reports persist locally across reloads. */
 export function loadLocalSightings(): Sighting[] {
@@ -14,7 +14,7 @@ export function loadLocalSightings(): Sighting[] {
   }
 }
 
-const MINE_KEY = 'webhead-tracker:mine';
+const MINE_KEY = 'spoody-tracker:mine';
 
 /** Register a sighting id as the viewer's own (drives gold pins + YOU badges). */
 export function markMine(id: string): void {

@@ -9,7 +9,7 @@ const env = import.meta.env;
 
 export const config = {
   /** Site title shown in the logo plate, preloader, and ticker. */
-  siteName: (env.VITE_SITE_NAME as string) || 'WEBHEAD TRACKER',
+  siteName: (env.VITE_SITE_NAME as string) || 'SPOODY TRACKER',
   /** Short tagline used by the preloader boot sequence. */
   tagline:
     (env.VITE_TAGLINE as string) ||

@@ -3,7 +3,7 @@ import { isDemoMode } from '../config';
 
 /* ── Likes ("web-ups") ──────────────────────────────────────────────────── */
 
-const LIKED_KEY = 'webhead:liked';
+const LIKED_KEY = 'spoody:liked';
 
 function likedSet(): Set<string> {
   try {
@@ -38,7 +38,7 @@ export async function toggleLike(id: string): Promise<boolean> {
 
 /* ── Replies ────────────────────────────────────────────────────────────── */
 
-const REPLIES_KEY = (id: string) => `webhead:replies:${id}`;
+const REPLIES_KEY = (id: string) => `spoody:replies:${id}`;
 
 const DEMO_REPLY_SEED: Array<[string, string]> = [
   ['ROOFTOP-RITA', 'I SAW HIM TOO. HE WENT EAST.'],

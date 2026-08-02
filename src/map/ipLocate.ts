@@ -97,9 +97,36 @@ async function resolveLocation(): Promise<IpLoc | null> {
  * Cinematic boot move: swoop from the globe down to the viewer's area and
  * drop a "YOU ARE HERE" marker. No-op if the location can't be resolved.
  */
+/** Set once the viewer interacts, so the opening move never fights them. */
+let userTookControl = false;
+
+/** Hold on the globe this long before diving, so the opening always reads. */
+const GLOBE_BEAT_MS = 1100;
+/** Give the lookup this long before accepting we can't place the viewer. */
+const LOCATE_DEADLINE_MS = 9000;
+
 export async function flyToHome(map: MLMap): Promise<void> {
-  const loc = await primeLocation();
-  if (!loc) return;
+  /* Any real interaction cancels the opening move. */
+  const canvas = map.getCanvasContainer();
+  const claim = () => {
+    userTookControl = true;
+  };
+  for (const ev of ['pointerdown', 'wheel', 'touchstart'] as const) {
+    canvas.addEventListener(ev, claim, { once: true, passive: true });
+  }
+
+  /* Always show the globe for a beat first — even when the location is
+     already cached, the opening should read as "world, then you". */
+  const beat = new Promise((r) => setTimeout(r, GLOBE_BEAT_MS));
+
+  const located = primeLocation();
+  const deadline = new Promise<null>((r) => setTimeout(() => r(null), LOCATE_DEADLINE_MS));
+
+  const [loc] = await Promise.all([Promise.race([located, deadline]), beat]);
+  if (!loc) return; /* couldn't place them — the spinning globe stands in */
+
+  /* If the viewer already grabbed the map, they own the camera — don't yank it. */
+  if (userTookControl) return;
 
   map.flyTo({
     center: [loc.lng, loc.lat],
@@ -125,6 +152,14 @@ function showYouAreHere(map: MLMap, loc: IpLoc): Marker {
     <span class="yah-label">YOU ARE HERE</span>
     <span class="yah-dot"></span>
   `;
+  /* Tapping the beacon zooms right in on you. */
+  el.addEventListener('click', () => {
+    const at = marker.getLngLat();
+    map.flyTo({ center: [at.lng, at.lat], zoom: 16, speed: 1.4, curve: 1.3, essential: true });
+    el.classList.remove('settled');
+    setTimeout(() => el.classList.add('settled'), 5000);
+  });
+
   const marker = new Marker({ element: el, anchor: 'bottom' })
     .setLngLat([loc.lng, loc.lat])
     .addTo(map);

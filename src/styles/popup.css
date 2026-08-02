@@ -193,8 +193,22 @@
   flex-direction: column;
   align-items: center;
   gap: calc(1px * var(--px));
-  pointer-events: none;
+  /* clickable: tapping it zooms in on you */
+  pointer-events: auto;
+  cursor: pointer;
   image-rendering: pixelated;
+}
+
+.you-are-here:hover .yah-dot {
+  transform: scale(1.25);
+}
+
+.you-are-here:hover .yah-label {
+  opacity: 1;
+}
+
+.you-are-here:active {
+  transform: translateY(calc(1px * var(--px)));
 }
 
 .yah-label {

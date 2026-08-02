@@ -74,7 +74,12 @@ export async function submitSighting(input: ReportInput): Promise<ReportResult> 
     const { data, error } = await supabase().functions.invoke('report-sighting', { body: fd });
     if (error) {
       const status = (error as any)?.context?.status;
-      if (status === 429) return { ok: false, error: 'TOO MANY REPORTS. COOL DOWN A MINUTE.' };
+      if (status === 429) {
+        return {
+          ok: false,
+          error: 'REPORT LIMIT REACHED — 3 PER 10 MIN, 10 PER DAY. TRY LATER.',
+        };
+      }
       return { ok: false, error: 'TRANSMISSION FAILED. TRY AGAIN.' };
     }
     const newId = (data as any)?.id;

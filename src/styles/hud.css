@@ -488,3 +488,13 @@ h1.logo-plate {
   font-weight: normal;
   font-size: inherit;
 }
+
+/* A real space inside the heading for crawlers and screen readers,
+   with no visual footprint. */
+.sr-space {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}

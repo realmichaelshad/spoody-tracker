@@ -64,7 +64,10 @@ export function FrameChrome({ onReport }: Props) {
 
       <h1 class="logo-plate">
         <span class="word">{wordA}</span>
-        <span class="face" />
+        {/* Real space so the heading reads "SPOODY TRACKER", not one word,
+            to search engines and screen readers. Flex gap handles the look. */}
+        <span class="sr-space"> </span>
+        <span class="face" aria-hidden="true" />
         {wordB && <span class="word">{wordB}</span>}
       </h1>
 

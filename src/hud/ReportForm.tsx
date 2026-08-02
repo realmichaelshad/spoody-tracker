@@ -59,11 +59,6 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
     }
   }, [open?.lat, open?.lng]);
 
-  /* Pre-warm the photo scanner so ADD PHOTO feels instant. */
-  useEffect(() => {
-    if (open) void import('../lib/nsfw').then((m) => m.warmUpScanner());
-  }, [open !== null]);
-
   /* Optional anti-bot widget — only when a site key is configured. */
   useEffect(() => {
     if (!config.turnstileSiteKey || !turnstileRef.current || turnstileId.current) return;
@@ -86,6 +81,12 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
       document.head.appendChild(s);
     }
   });
+
+  /* Load the photo scanner only once the user reaches for a photo. Doing it
+     when the form opens froze the UI mid-interaction on a cold cache. */
+  const warmScanner = () => {
+    void import('../lib/nsfw').then((m) => m.warmUpScanner());
+  };
 
   const attachPhoto = async (file: File | undefined) => {
     if (!file) return;
@@ -226,7 +227,12 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
           {coarse && (
             <button
               class="px-btn loc-btn photo-btn"
-              onClick={() => cameraRef.current?.click()}
+              onPointerEnter={warmScanner}
+              onFocus={warmScanner}
+              onClick={() => {
+                warmScanner();
+                cameraRef.current?.click();
+              }}
               disabled={photoBusy}
             >
               {photoBusy ? 'SCANNING…' : '📷 TAKE PHOTO'}
@@ -234,7 +240,12 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
           )}
           <button
             class="px-btn loc-btn photo-btn"
-            onClick={() => fileRef.current?.click()}
+            onPointerEnter={warmScanner}
+            onFocus={warmScanner}
+            onClick={() => {
+              warmScanner();
+              fileRef.current?.click();
+            }}
             disabled={photoBusy}
           >
             {photoBusy

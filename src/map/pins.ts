@@ -8,9 +8,9 @@ import { relativeTime } from '../lib/time';
 
 const SRC = 'sightings';
 
-/** Load a sprite PNG and register it with the map at @3x density. */
+/** Load a sprite PNG and register it with the map at -3x density. */
 async function addSpriteImage(map: MLMap, name: string): Promise<void> {
-  const img = await map.loadImage(`/sprites/${name}@3x.png`);
+  const img = await map.loadImage(`/sprites/${name}-3x.png`);
   if (!map.hasImage(name)) map.addImage(name, img.data, { pixelRatio: 3 });
 }
 

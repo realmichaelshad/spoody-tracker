@@ -37,7 +37,7 @@
 .webup-btn .webup-icon {
   width: calc(8px * var(--px));
   height: calc(7px * var(--px));
-  background: url('/sprites/spider-glyph@3x.png') center / contain no-repeat;
+  background: url('/sprites/spider-glyph-3x.png') center / contain no-repeat;
   image-rendering: pixelated;
   /* neutral cyan-ish spider until liked */
   filter: invert(0.8) sepia(0.4) saturate(3) hue-rotate(160deg) brightness(1.1);

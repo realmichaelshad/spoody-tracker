@@ -16,7 +16,7 @@
   position: absolute;
   inset: 0;
   border: calc(12px * var(--px)) solid transparent;
-  border-image: url('/sprites/frame@3x.png') 36 round;
+  border-image: url('/sprites/frame-3x.png') 36 round;
 }
 
 /* ── Instrument overlay: faint scanlines + edge vignette ─────────────────── */
@@ -175,7 +175,7 @@
   gap: calc(2px * var(--px));
   padding: calc(2px * var(--px)) calc(5px * var(--px));
   border: calc(7px * var(--px)) solid transparent;
-  border-image: url('/sprites/logo-plate@3x.png') 21 fill round;
+  border-image: url('/sprites/logo-plate-3x.png') 21 fill round;
   pointer-events: auto;
 }
 
@@ -193,7 +193,7 @@
 .logo-plate .face {
   width: calc(16px * var(--px));
   height: calc(13px * var(--px));
-  background: url('/sprites/logo-face@3x.png') 0 0 / cover no-repeat;
+  background: url('/sprites/logo-face-3x.png') 0 0 / cover no-repeat;
 }
 
 /* ── Corner buttons ──────────────────────────────────────────────────────── */
@@ -224,7 +224,7 @@
   left: calc(4px * var(--px));
   width: calc(22px * var(--px));
   height: calc(22px * var(--px));
-  background-image: url('/sprites/menu-btn@3x.png');
+  background-image: url('/sprites/menu-btn-3x.png');
   background-size: 100% 100%;
 }
 
@@ -233,7 +233,7 @@
   right: calc(4px * var(--px));
   width: calc(24px * var(--px));
   height: calc(24px * var(--px));
-  background-image: url('/sprites/icon-plate@3x.png');
+  background-image: url('/sprites/icon-plate-3x.png');
   background-size: 100% 100%;
   display: grid;
   place-items: center;
@@ -243,7 +243,7 @@
   content: '';
   width: calc(15px * var(--px));
   height: calc(14px * var(--px));
-  background: url('/sprites/spider-glyph@3x.png') 0 0 / cover no-repeat;
+  background: url('/sprites/spider-glyph-3x.png') 0 0 / cover no-repeat;
 }
 
 /* ── Filter chips (left rail) ────────────────────────────────────────────── */
@@ -266,18 +266,18 @@
 }
 
 .chip.green {
-  background-image: url('/sprites/chip-green@3x.png');
+  background-image: url('/sprites/chip-green-3x.png');
 }
 
 .chip.red {
-  background-image: url('/sprites/chip-red@3x.png');
+  background-image: url('/sprites/chip-red-3x.png');
 }
 
 .chip::after {
   content: '';
   width: calc(15px * var(--px));
   height: calc(14px * var(--px));
-  background: url('/sprites/spider-glyph@3x.png') 0 0 / cover no-repeat;
+  background: url('/sprites/spider-glyph-3x.png') 0 0 / cover no-repeat;
 }
 
 .chip.off {
@@ -301,7 +301,7 @@
   flex: 1;
   height: 100%;
   border: calc(4px * var(--px)) solid transparent;
-  border-image: url('/sprites/inset@3x.png') 12 fill round;
+  border-image: url('/sprites/inset-3x.png') 12 fill round;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -329,7 +329,7 @@
   position: relative;
   width: calc(16px * var(--px));
   height: calc(16px * var(--px));
-  background-image: url('/sprites/sound-btn@3x.png');
+  background-image: url('/sprites/sound-btn-3x.png');
   background-size: 100% 100%;
   flex: none;
 }
@@ -355,7 +355,7 @@
   z-index: 2;
   width: calc(20px * var(--px));
   height: calc(24px * var(--px));
-  background-image: url('/sprites/hero@3x.png');
+  background-image: url('/sprites/hero-3x.png');
   background-size: calc(40px * var(--px)) 100%;
   animation: hero-sway 1.6s steps(1) infinite;
 }

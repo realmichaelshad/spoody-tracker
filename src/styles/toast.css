@@ -58,7 +58,7 @@
   max-height: calc(120px * var(--px));
   overflow-y: auto;
   border: calc(6px * var(--px)) solid transparent;
-  border-image: url('/sprites/panel@3x.png') 18 fill round;
+  border-image: url('/sprites/panel-3x.png') 18 fill round;
   z-index: 17;
   pointer-events: auto;
   font-family: var(--font-ui);
@@ -146,7 +146,7 @@
   text-align: left;
   width: calc(78px * var(--px));
   border: calc(6px * var(--px)) solid transparent;
-  border-image: url('/sprites/panel@3x.png') 18 fill round;
+  border-image: url('/sprites/panel-3x.png') 18 fill round;
   background: none;
   cursor: pointer;
   font-family: var(--font-ui);
@@ -168,7 +168,7 @@
   flex: none;
   width: calc(12px * var(--px));
   height: calc(12px * var(--px));
-  background: url('/sprites/pin-sighting@3x.png') 0 0 / cover no-repeat;
+  background: url('/sprites/pin-sighting-3x.png') 0 0 / cover no-repeat;
 }
 
 .toast-body {

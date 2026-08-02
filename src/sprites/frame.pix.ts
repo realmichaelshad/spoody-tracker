@@ -4,7 +4,7 @@ import { sprite } from './palette';
  * Main HUD frame — chunky blue bevel tube with rounded corners.
  * 27x27 9-slice tile; cross-section (outside -> in):
  * outline, 3px light bevel, 2px mid, 2px dark, outline seam, hole.
- * Use: border-image: url(/sprites/frame@3x.png) 36 fill / calc(12px * var(--px-ratio)) round;
+ * Use: border-image: url(/sprites/frame-3x.png) 36 fill / calc(12px * var(--px-ratio)) round;
  */
 export const frame = sprite({
   name: 'frame',

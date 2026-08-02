@@ -1,6 +1,6 @@
 /**
  * Compiles src/sprites/*.pix.ts pixel-matrix sources into PNGs under
- * public/sprites/ (1x and nearest-neighbor @3x) plus a sprites.json manifest.
+ * public/sprites/ (1x and nearest-neighbor -3x) plus a sprites.json manifest.
  *
  * Rules enforced here:
  *  - every grid char must map to a PALETTE color ('.' = transparent)
@@ -76,7 +76,7 @@ async function main() {
       const s = exp as Sprite;
       if (!s || typeof s !== 'object' || !('rows' in s) || !('name' in s)) continue;
       writeFileSync(join(OUT_DIR, `${s.name}.png`), renderPng(s, 1));
-      writeFileSync(join(OUT_DIR, `${s.name}@3x.png`), renderPng(s, SCALE));
+      writeFileSync(join(OUT_DIR, `${s.name}-3x.png`), renderPng(s, SCALE));
       manifest[s.name] = {
         w: s.rows[0].length,
         h: s.rows.length,

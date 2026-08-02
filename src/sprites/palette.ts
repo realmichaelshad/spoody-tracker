@@ -1,7 +1,7 @@
 /**
  * Sprite framework: pixel art is authored as ASCII grids where each character
  * is one pixel mapped to a named palette color. `scripts/build-sprites.ts`
- * compiles every exported Sprite into crisp PNGs (1x and @3x).
+ * compiles every exported Sprite into crisp PNGs (1x and -3x).
  *
  * The palette below is the ONLY set of colors sprites may use — the build
  * fails on anything else, keeping all art on the extracted HUD palette.
@@ -45,7 +45,7 @@ export type PaletteName = keyof typeof PALETTE;
 export type CharMap = Record<string, PaletteName>;
 
 export interface Sprite {
-  /** Output file base name, e.g. "frame" -> frame.png + frame@3x.png */
+  /** Output file base name, e.g. "frame" -> frame.png + frame-3x.png */
   name: string;
   map: CharMap;
   /** One string per pixel row; every row must be the same length. */

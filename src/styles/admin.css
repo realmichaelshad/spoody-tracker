@@ -9,7 +9,7 @@
 .admin-note,
 .admin-login {
   border: calc(6px * var(--px)) solid transparent;
-  border-image: url('/sprites/panel@3x.png') 18 fill round;
+  border-image: url('/sprites/panel-3x.png') 18 fill round;
   font-family: var(--font-ui);
   color: var(--cyan);
   text-align: center;

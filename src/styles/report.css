@@ -13,7 +13,7 @@
 .report-panel {
   width: min(calc(120px * var(--px)), calc(100vw - 24px));
   border: calc(7px * var(--px)) solid transparent;
-  border-image: url('/sprites/logo-plate@3x.png') 21 fill round;
+  border-image: url('/sprites/logo-plate-3x.png') 21 fill round;
   padding: calc(2px * var(--px)) calc(3px * var(--px)) calc(3px * var(--px));
   font-family: var(--font-ui);
   color: var(--cyan);

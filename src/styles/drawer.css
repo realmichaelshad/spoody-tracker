@@ -15,7 +15,7 @@
   bottom: calc(14px * var(--px));
   width: min(calc(110px * var(--px)), 82vw);
   border: calc(7px * var(--px)) solid transparent;
-  border-image: url('/sprites/logo-plate@3x.png') 21 fill round;
+  border-image: url('/sprites/logo-plate-3x.png') 21 fill round;
   display: flex;
   flex-direction: column;
   animation: drawer-in 160ms steps(4);
@@ -230,11 +230,11 @@
 }
 
 .help-pin {
-  background: url('/sprites/pin-sighting@3x.png') 0 0 / cover no-repeat;
+  background: url('/sprites/pin-sighting-3x.png') 0 0 / cover no-repeat;
 }
 
 .help-web {
-  background: url('/sprites/cluster-web@3x.png') 0 0 / cover no-repeat;
+  background: url('/sprites/cluster-web-3x.png') 0 0 / cover no-repeat;
 }
 
 .help-foot {

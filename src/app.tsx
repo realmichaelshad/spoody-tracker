@@ -7,6 +7,7 @@ import { NotificationCenter } from './hud/NotificationCenter';
 import { Radar } from './hud/Radar';
 import { createMap } from './map/createMap';
 import { installPins, flyToSighting } from './map/pins';
+import { globeSpin } from './map/globeSpin';
 import { addSightings, sightings, latestArrival } from './state/sightings';
 import { isDemoMode } from './config';
 import { sfx, unlockAudio } from './audio/sfx';
@@ -37,6 +38,10 @@ export function App() {
       }
       await installPins(map);
       setMapReady(map);
+      /* Dev-only handle so the map can be inspected from the console. Named
+         __map, not map: the container carries id="map", which already claims
+         window.map via named access on the global. Stripped from prod builds. */
+      if (import.meta.env.DEV) (window as unknown as { __map?: unknown }).__map = map;
     });
 
     /* No startup gate: audio unlocks on the first real interaction. */
@@ -72,6 +77,16 @@ export function App() {
     };
   }, []);
 
+  /* Hold the globe still while the user is aiming at it. Without this the
+     idle spin restarts after 10s of deliberating and slides the map out from
+     under the tap. */
+  useEffect(() => {
+    const spin = globeSpin();
+    if (!spin) return;
+    if (pickingOnMap.value) spin.suspend();
+    else spin.resume();
+  }, [pickingOnMap.value]);
+
   const openReport = () => {
     sfx.blip();
     reportOpen.value = {};
@@ -103,7 +118,47 @@ export function App() {
           if (mapRef.current) flyToSighting(mapRef.current, s);
         }}
       />
-      {pickingOnMap.value && <div class="pick-hint">TAP THE MAP TO DROP YOUR PIN</div>}
+      {pickingOnMap.value && (
+        <>
+          <div class="pick-hint">TAP THE MAP TO DROP YOUR PIN</div>
+          {/* Wheel zoom is quantised and there is no nav control, so on a phone
+              there was no way to zoom out far enough to find your own street.
+              These only exist while picking, so they never crowd the HUD. */}
+          <div class="pick-zoom">
+            <button
+              class="pick-zoom-btn"
+              aria-label="Zoom in"
+              onClick={() => {
+                mapRef.current?.zoomIn({ duration: 220 });
+                sfx.zoom(1);
+              }}
+            >
+              +
+            </button>
+            <button
+              class="pick-zoom-btn"
+              aria-label="Zoom out"
+              onClick={() => {
+                mapRef.current?.zoomOut({ duration: 220 });
+                sfx.zoom(-1);
+              }}
+            >
+              −
+            </button>
+            <button
+              class="pick-zoom-btn pick-cancel"
+              aria-label="Cancel picking"
+              onClick={() => {
+                pickingOnMap.value = false;
+                document.body.classList.remove('picking');
+                sfx.blip();
+              }}
+            >
+              ×
+            </button>
+          </div>
+        </>
+      )}
       <ReportForm
         onPickOnMap={() => {
           document.body.classList.add('picking');

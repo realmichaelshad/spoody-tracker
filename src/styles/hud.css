@@ -432,10 +432,13 @@
     bottom: calc(32px * var(--px));
   }
 
+  /* Stay hung off the spider button that opened it. Setting `left` here beat
+     the desktop `right` anchor while `width` stayed fixed at 168px, so on a
+     375px screen the panel pinned to the far side from its own button. */
   .notif-panel {
-    width: auto;
-    left: calc(14px * var(--px));
+    left: auto;
     right: calc(4px * var(--px));
+    width: min(calc(100vw - 12px * var(--px)), calc(96px * var(--px)));
   }
 
   /* Alerts drop from under the logo — clear of ticker, CTA, and Spidey */

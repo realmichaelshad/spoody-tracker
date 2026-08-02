@@ -156,12 +156,17 @@
   font-size: calc(5px * var(--px));
 }
 
-/* Picking-on-map mode: crosshair + hint bar */
+/* Picking-on-map mode: crosshair + hint bar.
+   Anchored to the bottom, not the top: at phone sizes the logo plate runs to
+   ~66px and the hint sat underneath it, clipped. Down here it is also next to
+   the thumb, which is where the tapping happens. */
 .pick-hint {
   position: absolute;
-  top: calc(20px * var(--px));
+  bottom: calc(46px * var(--px));
   left: 50%;
   transform: translateX(-50%);
+  max-width: calc(100vw - 16px * var(--px));
+  text-align: center;
   z-index: 15;
   font-family: var(--font-label);
   font-size: calc(8px * var(--px));
@@ -182,4 +187,49 @@
 
 .picking .maplibregl-canvas {
   cursor: crosshair !important;
+}
+
+/* Zoom + cancel, only while picking. Right side so it falls under the thumb
+   and clear of the ticker. */
+.pick-zoom {
+  position: absolute;
+  right: calc(6px * var(--px));
+  bottom: calc(46px * var(--px));
+  display: flex;
+  flex-direction: column;
+  gap: calc(2px * var(--px));
+  z-index: 16;
+}
+
+.pick-zoom-btn {
+  width: calc(15px * var(--px));
+  height: calc(15px * var(--px));
+  min-width: 44px;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  background: var(--panel);
+  border: calc(1px * var(--px)) solid var(--yellow);
+  color: var(--yellow);
+  font-family: var(--font-ui);
+  font-size: calc(11px * var(--px));
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.pick-zoom-btn:active {
+  background: var(--yellow);
+  color: var(--outline);
+}
+
+.pick-cancel {
+  border-color: var(--bad);
+  color: var(--bad);
+  margin-top: calc(3px * var(--px));
+}
+
+.pick-cancel:active {
+  background: var(--bad);
+  color: var(--outline);
 }

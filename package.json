@@ -11,7 +11,9 @@
     "preview": "vite preview",
     "sprites": "tsx scripts/build-sprites.ts",
     "seed": "tsx scripts/seed.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "setup-sql": "tsx scripts/build-setup-sql.ts",
+    "deploy-functions": "supabase functions deploy report-sighting --no-verify-jwt && supabase functions deploy flag-sighting --no-verify-jwt && supabase functions deploy like-sighting --no-verify-jwt && supabase functions deploy reply-sighting --no-verify-jwt && supabase functions deploy admin --no-verify-jwt"
   },
   "dependencies": {
     "@fontsource-variable/bitcount-prop-single": "^5.3.0",

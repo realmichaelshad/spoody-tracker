@@ -36,7 +36,12 @@ export const latestArrival = signal<Sighting | null>(null);
 export function addSightings(list: Sighting[], opts: { arrival?: boolean } = {}): void {
   if (!list.length) return;
   const next = new globalThis.Map(sightings.value);
-  for (const s of list) next.set(s.id, s);
+  for (const s of list) {
+    /* Merge rather than replace: a partial update (e.g. a realtime row that
+       omits a field) must never blank out data we already hold. */
+    const prev = next.get(s.id);
+    next.set(s.id, prev ? { ...prev, ...s } : s);
+  }
   sightings.value = next;
   sightingsVersion.value++;
   if (opts.arrival) latestArrival.value = list[list.length - 1];

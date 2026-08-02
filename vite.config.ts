@@ -7,6 +7,11 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['maplibre-gl'],
   },
+  /* MapLibre spawns an ES-module worker; without this Vite emits no worker
+     chunk in the production build and the map silently renders blank. */
+  worker: {
+    format: 'es',
+  },
   build: {
     rollupOptions: {
       input: {

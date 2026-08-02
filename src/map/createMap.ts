@@ -1,5 +1,10 @@
-import { Map as MLMap } from 'maplibre-gl';
+import { Map as MLMap, setWorkerUrl } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+/* MapLibre resolves its worker via `new URL(..., import.meta.url)` at runtime,
+   which the bundler cannot see — so the worker is never emitted and the map
+   renders blank in production. Importing it as an explicit asset URL makes
+   the bundler ship it, and setWorkerUrl points MapLibre at the built file. */
+import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import styleJson from './style/spidy-dark.json';
 import { config } from '../config';
 import { installQuantizedZoom } from './quantizedZoom';
@@ -9,6 +14,8 @@ import { flyToHome } from './ipLocate';
 interface CreateMapOptions {
   onZoomStep?: (dir: 1 | -1) => void;
 }
+
+setWorkerUrl(maplibreWorkerUrl);
 
 /**
  * Boots the MapLibre map: committed retro style, globe projection,
@@ -45,6 +52,11 @@ export function createMap(container: HTMLElement, opts: CreateMapOptions = {}): 
 
   installQuantizedZoom(map, opts.onZoomStep);
   installGlobeSpin(map);
+
+  /* Surface map failures instead of rendering a silently blank canvas. */
+  map.on('error', (e: { error?: Error }) => {
+    console.error('[map]', e.error?.message ?? e);
+  });
 
   if (import.meta.env.DEV) {
     (window as any).__map = map; // debugging convenience in dev only

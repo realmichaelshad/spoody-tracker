@@ -51,8 +51,27 @@ export function saveLocalSighting(s: Sighting): void {
       old.photoUrl = null;
       old.photoState = 'none';
     }
-    localStorage.setItem(KEY, JSON.stringify(trimmed));
+    try {
+      localStorage.setItem(KEY, JSON.stringify(trimmed));
+    } catch {
+      /* Over quota (photos are heavy): keep the reports, drop older photos
+         rather than losing the posts entirely. */
+      for (const item of trimmed.slice(0, -1)) {
+        item.photoUrl = null;
+        item.photoState = 'none';
+      }
+      try {
+        localStorage.setItem(KEY, JSON.stringify(trimmed));
+      } catch {
+        /* still too big — save text-only for everything */
+        for (const item of trimmed) {
+          item.photoUrl = null;
+          item.photoState = 'none';
+        }
+        localStorage.setItem(KEY, JSON.stringify(trimmed));
+      }
+    }
   } catch {
-    /* storage full/blocked — non-fatal */
+    /* storage blocked entirely (private mode) — non-fatal */
   }
 }

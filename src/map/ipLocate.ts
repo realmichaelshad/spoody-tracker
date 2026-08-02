@@ -81,7 +81,7 @@ export async function flyToHome(map: MLMap): Promise<void> {
   if (!loc) return;
   map.flyTo({
     center: [loc.lng, loc.lat],
-    zoom: precise ? 13 : 10,
+    zoom: precise ? 13 : 9,
     speed: 0.75, /* slow cinematic swoop from the globe down to home */
     curve: 1.7,
     essential: true,

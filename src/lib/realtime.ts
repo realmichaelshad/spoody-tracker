@@ -30,7 +30,14 @@ const POLL_MS = 30_000;
  * If the realtime channel can't join (e.g. free-tier connection cap),
  * degrades to 30s polling of rows newer than the latest local one.
  */
+let started = false;
+
 export async function startRealtime(): Promise<void> {
+  /* Idempotent: re-entering would throw ("cannot add postgres_changes
+     callbacks after subscribe()") and leave the app with no live feed. */
+  if (started) return;
+  started = true;
+
   const sb = supabase();
   let newest = '1970-01-01T00:00:00Z';
 

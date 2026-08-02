@@ -6,3 +6,5 @@ dist/
 *.log
 .DS_Store
 .vite/
+ADMIN-TOKEN.local.txt
+*.local.txt

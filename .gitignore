@@ -8,3 +8,5 @@ dist/
 .vite/
 ADMIN-TOKEN.local.txt
 *.local.txt
+.seed-progress.local.json
+seed-run.local.log

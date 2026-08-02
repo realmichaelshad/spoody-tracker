@@ -56,7 +56,56 @@ Deno.serve(async (req) => {
   }
 
   if (req.method === 'POST') {
-    const { id, action } = await req.json().catch(() => ({}));
+    const body = await req.json().catch(() => ({}));
+
+    /* Seed a sighting as the site owner. Skips the per-IP rate limit that
+       applies to visitors, because this is the operator posting, not a
+       stranger. Token-gated like every other admin action. */
+    if (body.action === 'seed') {
+      const lat = Number(body.lat);
+      const lng = Number(body.lng);
+      const name = String(body.name ?? '').trim().slice(0, 24);
+      const message = String(body.message ?? '').trim().slice(0, 140);
+      const placeLabel = String(body.place_label ?? '').trim().slice(0, 80) || null;
+      if (!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180)
+        return json({ error: 'bad location' }, 400);
+      if (!name || !message) return json({ error: 'missing fields' }, 400);
+
+      /* Optional generated image, sent as base64 PNG. */
+      let photoPath: string | null = null;
+      if (typeof body.photo_base64 === 'string' && body.photo_base64.length > 40) {
+        try {
+          const bytes = Uint8Array.from(atob(body.photo_base64), (c) => c.charCodeAt(0));
+          if (bytes.byteLength <= 2 * 1024 * 1024) {
+            const path = `${new Date().getFullYear()}/${crypto.randomUUID()}.png`;
+            const { error: upErr } = await supabase.storage
+              .from('photos')
+              .upload(path, bytes, { contentType: 'image/png' });
+            if (!upErr) photoPath = path;
+          }
+        } catch {
+          /* bad base64 — post without the image rather than failing */
+        }
+      }
+
+      const { data: row, error } = await supabase
+        .from('sightings')
+        .insert({
+          lat,
+          lng,
+          name,
+          message,
+          place_label: placeLabel,
+          photo_path: photoPath,
+          photo_state: photoPath ? 'screened' : 'none',
+        })
+        .select()
+        .single();
+      if (error) return json({ error: 'insert failed' }, 500);
+      return json({ ok: true, id: row.id, photo: !!photoPath });
+    }
+
+    const { id, action } = body;
     if (!id || !action) return json({ error: 'bad request' }, 400);
 
     switch (action) {

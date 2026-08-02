@@ -56,80 +56,126 @@ function loadEnv(): { url: string; key: string } {
 }
 
 /**
- * A generated pixel "photo" — a night skyline with a small red figure on a
- * rooftop. Deterministic per seed so each place looks different. Original
- * artwork, nothing scraped.
+ * A generated pixel "photo". Four framings so the feed doesn't repeat:
+ * a skyline, a deliberately terrible blurry shot, a rooftop silhouette,
+ * and a close-up. Deterministic per place. All drawn here in code — no
+ * scraped imagery, no real person depicted.
  */
-function makePhoto(seed: Seed): Buffer {
-  const W = 160;
-  const H = 100;
+export function makePhoto(seed: Seed): Buffer {
+  const W = 180;
+  const H = 112;
   const png = new PNG({ width: W, height: H });
+  const shot = seed.shot ?? 'skyline';
 
   let h = 0;
-  for (const ch of seed.place) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  for (const ch of seed.place + shot) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
   const rnd = () => ((h = (h * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
 
-  const put = (x: number, y: number, c: [number, number, number]) => {
+  type RGB = [number, number, number];
+  const NAVY: RGB = [13, 37, 71];
+  const EDGE: RGB = [21, 79, 128];
+  const LIT: RGB = [255, 217, 136];
+  const STAR: RGB = [215, 245, 255];
+  const RED: RGB = [216, 49, 42];
+  const SUIT: RGB = [19, 40, 83];
+
+  const put = (x: number, y: number, c: RGB, a = 1) => {
+    x = Math.round(x);
+    y = Math.round(y);
     if (x < 0 || y < 0 || x >= W || y >= H) return;
     const i = (y * W + x) << 2;
-    png.data[i] = c[0];
-    png.data[i + 1] = c[1];
-    png.data[i + 2] = c[2];
+    png.data[i] = Math.round(png.data[i] * (1 - a) + c[0] * a);
+    png.data[i + 1] = Math.round(png.data[i + 1] * (1 - a) + c[1] * a);
+    png.data[i + 2] = Math.round(png.data[i + 2] * (1 - a) + c[2] * a);
     png.data[i + 3] = 255;
   };
 
-  /* sky gradient, deep navy to a lighter horizon */
+  /* sky */
   for (let y = 0; y < H; y++) {
     const t = y / H;
-    const c: [number, number, number] = [
-      Math.round(3 + t * 18),
-      Math.round(24 + t * 46),
-      Math.round(52 + t * 60),
+    const c: RGB = [
+      Math.round(3 + t * 20),
+      Math.round(24 + t * 50),
+      Math.round(52 + t * 64),
     ];
     for (let x = 0; x < W; x++) put(x, y, c);
   }
+  for (let i = 0; i < 45; i++) put(rnd() * W, rnd() * H * 0.55, STAR);
 
-  /* a few stars */
-  for (let i = 0; i < 40; i++) {
-    put(Math.floor(rnd() * W), Math.floor(rnd() * H * 0.5), [215, 245, 255]);
+  /* figure, drawn at a given scale */
+  const figure = (fx: number, fy: number, k: number) => {
+    const px = (dx: number, dy: number, c: RGB) => {
+      for (let a = 0; a < k; a++)
+        for (let b = 0; b < k; b++) put(fx + dx * k + a, fy + dy * k + b, c);
+    };
+    px(0, -1, RED); px(-1, 0, RED); px(0, 0, RED); px(1, 0, RED);
+    px(-2, 1, RED); px(2, 1, RED);
+    px(0, 1, SUIT); px(0, 2, SUIT); px(-1, 2, SUIT); px(1, 2, SUIT);
+    px(-1, 3, SUIT); px(1, 3, SUIT);
+  };
+
+  const web = (fx: number, fy: number, len: number) => {
+    for (let i = 0; i < len; i++) put(fx - i * 0.8, fy - i, STAR, 0.85);
+  };
+
+  if (shot === 'skyline' || shot === 'blurry') {
+    let x = 0;
+    while (x < W) {
+      const bw = 12 + Math.floor(rnd() * 20);
+      const bh = 28 + Math.floor(rnd() * 52);
+      const top = H - bh;
+      for (let bx = x; bx < Math.min(W, x + bw); bx++) {
+        for (let by = top; by < H; by++) put(bx, by, NAVY);
+        put(bx, top, EDGE);
+      }
+      for (let wy = top + 5; wy < H - 5; wy += 7) {
+        for (let wx = x + 3; wx < x + bw - 3; wx += 6) {
+          if (rnd() > 0.45) { put(wx, wy, LIT); put(wx + 1, wy, LIT); }
+        }
+      }
+      x += bw + 2;
+    }
+    const fx = 55 + rnd() * 80;
+    const fy = 26 + rnd() * 24;
+    web(fx, fy, 30);
+    figure(fx, fy, shot === 'blurry' ? 2 : 3);
+  } else if (shot === 'rooftop') {
+    /* low horizon, one big roofline, figure crouched on the edge */
+    const roof = Math.round(H * 0.62);
+    for (let x = 0; x < W; x++) for (let y = roof; y < H; y++) put(x, y, NAVY);
+    for (let x = 0; x < W; x++) put(x, roof, EDGE);
+    for (let x = 6; x < W - 6; x += 9) {
+      if (rnd() > 0.5) { put(x, roof + 8, LIT); put(x + 1, roof + 8, LIT); }
+    }
+    const fx = 40 + rnd() * 100;
+    figure(fx, roof - 14, 3);
+  } else {
+    /* closeup: dark wall texture, figure large and off-centre */
+    for (let y = 0; y < H; y++)
+      for (let x = 0; x < W; x++)
+        if (rnd() > 0.82) put(x, y, NAVY, 0.5);
+    const fx = 60 + rnd() * 60;
+    const fy = 34 + rnd() * 20;
+    web(fx, fy, 24);
+    figure(fx, fy, 6);
   }
 
-  /* skyline: blocks of varying height with lit windows */
-  let x = 0;
-  while (x < W) {
-    const bw = 10 + Math.floor(rnd() * 18);
-    const bh = 25 + Math.floor(rnd() * 45);
-    const top = H - bh;
-    for (let bx = x; bx < Math.min(W, x + bw); bx++) {
-      for (let by = top; by < H; by++) put(bx, by, [13, 37, 71]);
-      put(bx, top, [21, 79, 128]);
-    }
-    for (let wy = top + 4; wy < H - 4; wy += 6) {
-      for (let wx = x + 3; wx < x + bw - 3; wx += 5) {
-        if (rnd() > 0.45) {
-          put(wx, wy, [255, 217, 136]);
-          put(wx + 1, wy, [255, 217, 136]);
+  /* blurry: smear the whole frame, because the joke is it's a bad photo */
+  if (shot === 'blurry') {
+    const copy = Buffer.from(png.data);
+    const at = (x: number, y: number, o: number) =>
+      copy[((Math.min(H - 1, Math.max(0, y)) * W + Math.min(W - 1, Math.max(0, x))) << 2) + o];
+    for (let y = 0; y < H; y++) {
+      for (let x = 0; x < W; x++) {
+        const i = (y * W + x) << 2;
+        for (let o = 0; o < 3; o++) {
+          png.data[i + o] = Math.round(
+            (at(x - 2, y, o) + at(x - 1, y, o) + at(x, y, o) + at(x + 1, y, o) + at(x + 2, y, o) +
+             at(x, y - 1, o) + at(x, y + 1, o)) / 7,
+          );
         }
       }
     }
-    x += bw + 2;
-  }
-
-  /* the figure: a small red shape on a rooftop, mid-swing */
-  const fx = 60 + Math.floor(rnd() * 45);
-  const fy = 30 + Math.floor(rnd() * 20);
-  const RED: [number, number, number] = [216, 49, 42];
-  const BLUE: [number, number, number] = [19, 40, 83];
-  for (const [dx, dy, col] of [
-    [0, 0, RED], [1, 0, RED], [-1, 0, RED],
-    [0, -1, RED], [0, 1, BLUE], [0, 2, BLUE],
-    [-1, 2, BLUE], [1, 2, BLUE], [-2, 1, RED], [2, 1, RED],
-  ] as Array<[number, number, [number, number, number]]>) {
-    put(fx + dx, fy + dy, col);
-  }
-  /* web line up to the corner */
-  for (let i = 0; i < 30; i++) {
-    put(fx - Math.floor(i * 0.8), fy - 1 - i, [215, 245, 255]);
   }
 
   return PNG.sync.write(png);

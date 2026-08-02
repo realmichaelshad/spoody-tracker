@@ -1,13 +1,13 @@
 /**
  * Opening-week sightings — the house's own posts.
  *
- * Invented codenames at real, recognisable places. Written the way actual
- * people post: uneven length, some jokes, some flat observations, a few
- * that are barely anything. Nothing here impersonates a real person or
- * uses anyone's artwork.
+ * Written in ordinary internet voice: meme cadence, uneven caps, some
+ * jokes that land and some that are deliberately flat. Invented codenames
+ * at real, recognisable places. Nothing here impersonates a real person,
+ * quotes a real account, or uses anyone's artwork.
  *
- * `photo` is an optional generated pixel image (see makePhoto in seed.ts) —
- * not a scraped picture of anything real.
+ * `photo` attaches a generated pixel scene (see makePhoto in seed.ts);
+ * `shot` picks which kind. All original, drawn in code.
  */
 export interface Seed {
   name: string;
@@ -15,61 +15,62 @@ export interface Seed {
   place: string;
   lat: number;
   lng: number;
-  /** give this one a generated image */
   photo?: boolean;
+  /** skyline | blurry | rooftop | closeup — blurry is the "bad photo" bit */
+  shot?: 'skyline' | 'blurry' | 'rooftop' | 'closeup';
 }
 
 export const SEEDS: Seed[] = [
-  /* ── Wave 1: launch night, big cities, the loudest ones ───────────── */
-  { name: 'ROOFTOP-RITA', message: 'HE LANDED ON THE OBSERVATION DECK, WAVED, AND LEFT. SECURITY IS STILL CONFUSED.', place: 'EMPIRE STATE BUILDING, US', lat: 40.7484, lng: -73.9857, photo: true },
-  { name: 'BODEGA-BEN', message: 'MY GUY BOUGHT A BACON EGG AND CHEESE AND PAID IN EXACT CHANGE. NEW YORKER CONFIRMED', place: 'BROOKLYN, US', lat: 40.6782, lng: -73.9442 },
-  { name: 'SHIBUYA-SPOTTER', message: 'CROSSED WITH THE CROWD. NOBODY LOOKED UP. VERY TOKYO OF THEM.', place: 'SHIBUYA CROSSING, JP', lat: 35.6595, lng: 139.7004, photo: true },
-  { name: 'BAGUETTE-BANDIT', message: 'SWUNG PAST THE SECOND FLOOR AND A MAN DROPPED HIS ENTIRE CROISSANT. RIP', place: 'EIFFEL TOWER, FR', lat: 48.8584, lng: 2.2945, photo: true },
-  { name: 'THAMES-TOM', message: 'HANGING OFF BIG BEN AT 3AM ASKING IF ANYONE HAD A PHONE CHARGER', place: 'BIG BEN, UK', lat: 51.5007, lng: -0.1246 },
-  { name: 'CRISTO-CAM', message: 'SAT ON THE SHOULDER FOR TEN MINUTES JUST LOOKING AT THE VIEW. mood honestly', place: 'CHRIST THE REDEEMER, BR', lat: -22.9519, lng: -43.2105, photo: true },
-  { name: 'QUEENS-KID-04', message: 'bro was on my fire escape. i said hi. he said hi. i have not slept since', place: 'QUEENS, US', lat: 40.7282, lng: -73.7949 },
-  { name: 'DUNE-RUNNER-9', message: 'WEBBED STRAIGHT UP THE SIDE OF THE BURJ. DID NOT STOP ONCE. NOT ONCE.', place: 'BURJ KHALIFA, AE', lat: 25.1972, lng: 55.2744, photo: true },
-  { name: 'OPERA-OMAR', message: 'PERCHED ON THE SAILS AT SUNSET. THE SEAGULLS WERE NOT HAPPY ABOUT IT', place: 'SYDNEY OPERA HOUSE, AU', lat: -33.8568, lng: 151.2153 },
-  { name: 'MISSION-MARA', message: 'he swung past taqueria and i swear he looked at my burrito', place: 'SAN FRANCISCO, US', lat: 37.7599, lng: -122.4148 },
-  { name: 'TIMES-SQ-TARA', message: 'ON THE BILLBOARD. THE BILLBOARD WAS AN AD FOR SPIDER-MAN. LET THAT SINK IN', place: 'TIMES SQUARE, US', lat: 40.758, lng: -73.9855, photo: true },
-  { name: 'ZOCALO-ZARA', message: 'SWUNG ACROSS THE SQUARE AND A MARIACHI BAND STARTED PLAYING. CINEMA.', place: 'MEXICO CITY, MX', lat: 19.4326, lng: -99.1332 },
+  /* ── Wave 1: launch night. Loudest, funniest, biggest cities ──────── */
+  { name: 'ROOFTOP-RITA', message: 'no because why did he land, WAVE, and leave. sir. explain yourself', place: 'EMPIRE STATE BUILDING, US', lat: 40.7484, lng: -73.9857, photo: true, shot: 'skyline' },
+  { name: 'BODEGA-BEN', message: 'bought a bacon egg and cheese and paid in EXACT CHANGE. new yorker confirmed', place: 'BROOKLYN, US', lat: 40.6782, lng: -73.9442, photo: true, shot: 'closeup' },
+  { name: 'SHIBUYA-SPOTTER', message: 'crossed with the crowd and NOBODY looked up. very tokyo of them honestly', place: 'SHIBUYA CROSSING, JP', lat: 35.6595, lng: 139.7004, photo: true, shot: 'skyline' },
+  { name: 'BAGUETTE-BANDIT', message: 'a man dropped an entire croissant. that pastry is a casualty of war. rip king', place: 'EIFFEL TOWER, FR', lat: 48.8584, lng: 2.2945, photo: true, shot: 'skyline' },
+  { name: 'THAMES-TOM', message: 'hanging off big ben at 3am asking if anyone had a charger. we are the same', place: 'BIG BEN, UK', lat: 51.5007, lng: -0.1246, photo: true, shot: 'blurry' },
+  { name: 'CRISTO-CAM', message: 'sat on the shoulder for ten minutes just looking at the view. no thoughts. head empty', place: 'CHRIST THE REDEEMER, BR', lat: -22.9519, lng: -43.2105, photo: true, shot: 'skyline' },
+  { name: 'QUEENS-KID-04', message: 'bro was on my fire escape. i said hi. he said hi. i have not slept since', place: 'QUEENS, US', lat: 40.7282, lng: -73.7949, photo: true, shot: 'closeup' },
+  { name: 'DUNE-RUNNER-9', message: 'went up the burj without stopping ONCE. meanwhile i take the elevator to floor 2', place: 'BURJ KHALIFA, AE', lat: 25.1972, lng: 55.2744, photo: true, shot: 'skyline' },
+  { name: 'OPERA-OMAR', message: 'perched on the sails at sunset. the seagulls filed a formal complaint', place: 'SYDNEY OPERA HOUSE, AU', lat: -33.8568, lng: 151.2153, photo: true, shot: 'rooftop' },
+  { name: 'MISSION-MARA', message: 'he swung past the taqueria and i SWEAR he looked at my burrito. not today', place: 'SAN FRANCISCO, US', lat: 37.7599, lng: -122.4148, photo: true, shot: 'blurry' },
+  { name: 'TIMES-SQ-TARA', message: 'sitting on a billboard. the billboard was an ad for spider-man. let that sink in', place: 'TIMES SQUARE, US', lat: 40.758, lng: -73.9855, photo: true, shot: 'skyline' },
+  { name: 'ZOCALO-ZARA', message: 'swung across the square and a mariachi band started playing UNPROMPTED. cinema', place: 'MEXICO CITY, MX', lat: 19.4326, lng: -99.1332, photo: true, shot: 'rooftop' },
 
-  /* ── Wave 2: still busy, more variety, quieter voices mixed in ───── */
-  { name: 'GATE-KEEPER-77', message: 'RAN ALONG THE WALL FOR ABOUT A MILE THEN VANISHED INTO THE FOG', place: 'GREAT WALL, CN', lat: 40.4319, lng: 116.5704, photo: true },
-  { name: 'COLOSSEUM-CIRO', message: 'DOING FLIPS IN THE ARENA LIKE HE WAS AUDITIONING FOR SOMETHING', place: 'COLOSSEUM, IT', lat: 41.8902, lng: 12.4922 },
-  { name: 'TOWER-TILLY', message: 'ON THE CN TOWER EDGEWALK. NO HARNESS. SHOW OFF.', place: 'CN TOWER, CA', lat: 43.6426, lng: -79.3871, photo: true },
-  { name: 'ANDES-ANA', message: 'CAUGHT HIM RESTING ON THE STONE STEPS. SAID THE ALTITUDE IS ROUGH. relatable', place: 'MACHU PICCHU, PE', lat: -13.1631, lng: -72.545 },
-  { name: 'LAGOS-LEKAN', message: 'THIRD MAINLAND BRIDGE DURING TRAFFIC. HONESTLY THE FASTEST COMMUTE IN THE CITY', place: 'LAGOS, NG', lat: 6.5244, lng: 3.3792 },
-  { name: 'TAJ-TARA', message: 'SITTING CROSS-LEGGED ON THE DOME AT SUNRISE. HONESTLY? PEACEFUL.', place: 'TAJ MAHAL, IN', lat: 27.1751, lng: 78.0421, photo: true },
-  { name: 'BRIDGE-BENNY', message: 'SWUNG UNDER THE GOLDEN GATE AND THE FOG ATE HIM WHOLE', place: 'GOLDEN GATE BRIDGE, US', lat: 37.8199, lng: -122.4783 },
-  { name: 'MARINA-MO', message: 'WEBBED BETWEEN THE TOWERS. TOURISTS THOUGHT IT WAS PART OF THE LIGHT SHOW', place: 'MARINA BAY SANDS, SG', lat: 1.2834, lng: 103.8607, photo: true },
-  { name: 'SEOUL-SUNNY', message: 'ON NAMSAN TOWER TYING A LOVE LOCK. FOR WHO. FOR WHO??', place: 'N SEOUL TOWER, KR', lat: 37.5512, lng: 126.9882 },
-  { name: 'PYRAMID-PARI', message: 'STOOD ON THE VERY TOP. THE TOUR GUIDE PRETENDED NOT TO SEE IT', place: 'GIZA PYRAMIDS, EG', lat: 29.9792, lng: 31.1342, photo: true },
-  { name: 'BOSPHORUS-BEY', message: 'CROSSED BETWEEN TWO CONTINENTS IN ABOUT FOUR SECONDS', place: 'ISTANBUL, TR', lat: 41.0451, lng: 29.0335 },
-  { name: 'AMSTEL-ARIE', message: 'HE BORROWED A BIKE, RODE IT ONE BLOCK, AND PUT IT BACK EXACTLY WHERE IT WAS', place: 'AMSTERDAM, NL', lat: 52.3676, lng: 4.9041 },
-  { name: 'SAGRADA-SAM', message: 'CLIMBED A SPIRE THAT IS STILL UNDER CONSTRUCTION. BOLD CHOICE HONESTLY', place: 'BARCELONA, ES', lat: 41.4036, lng: 2.1744 },
-  { name: 'TABLE-TOP-TESS', message: 'ON THE CABLE CAR LINE ABOVE THE CITY. WAVED AT THE WHOLE CAR.', place: 'CAPE TOWN, ZA', lat: -33.9628, lng: 18.4098, photo: true },
-  { name: 'VEGAS-VIC', message: 'ON THE SPHERE. FOR ONE SECOND THE WHOLE THING SHOWED A SPIDER. COINCIDENCE???', place: 'LAS VEGAS, US', lat: 36.1215, lng: -115.1678, photo: true },
-  { name: 'CHI-TOWN-CJ', message: 'THE BEAN. HE WAS LOOKING AT HIS REFLECTION IN THE BEAN. we are the same', place: 'CHICAGO, US', lat: 41.8827, lng: -87.6233 },
+  /* ── Wave 2: later that night ─────────────────────────────────────── */
+  { name: 'GATE-KEEPER-77', message: 'ran a full mile along the wall then vanished into fog. he understood the assignment', place: 'GREAT WALL, CN', lat: 40.4319, lng: 116.5704, photo: true, shot: 'skyline' },
+  { name: 'COLOSSEUM-CIRO', message: 'doing flips in the arena like he was auditioning. nobody asked but ok', place: 'COLOSSEUM, IT', lat: 41.8902, lng: 12.4922, photo: true, shot: 'rooftop' },
+  { name: 'TOWER-TILLY', message: 'edgewalk. NO harness. this is not the flex he thinks it is', place: 'CN TOWER, CA', lat: 43.6426, lng: -79.3871, photo: true, shot: 'skyline' },
+  { name: 'ANDES-ANA', message: 'caught him resting on the steps. said the altitude is rough. FINALLY something we share', place: 'MACHU PICCHU, PE', lat: -13.1631, lng: -72.545, photo: true, shot: 'rooftop' },
+  { name: 'LAGOS-LEKAN', message: 'third mainland bridge during traffic. fastest commute in the city and it is not close', place: 'LAGOS, NG', lat: 6.5244, lng: 3.3792, photo: true, shot: 'skyline' },
+  { name: 'TAJ-TARA', message: 'cross legged on the dome at sunrise like he pays rent there. the audacity', place: 'TAJ MAHAL, IN', lat: 27.1751, lng: 78.0421, photo: true, shot: 'rooftop' },
+  { name: 'BRIDGE-BENNY', message: 'swung under the golden gate and the fog just ATE him. gone. no notes', place: 'GOLDEN GATE BRIDGE, US', lat: 37.8199, lng: -122.4783, photo: true, shot: 'blurry' },
+  { name: 'MARINA-MO', message: 'webbed between the towers and tourists thought it was part of the light show LMAO', place: 'MARINA BAY SANDS, SG', lat: 1.2834, lng: 103.8607, photo: true, shot: 'skyline' },
+  { name: 'SEOUL-SUNNY', message: 'tying a love lock on namsan tower. FOR WHO. sir who is she', place: 'N SEOUL TOWER, KR', lat: 37.5512, lng: 126.9882, photo: true, shot: 'closeup' },
+  { name: 'PYRAMID-PARI', message: 'stood on the actual top and the tour guide pretended not to see it. real ones know', place: 'GIZA PYRAMIDS, EG', lat: 29.9792, lng: 31.1342, photo: true, shot: 'skyline' },
+  { name: 'BOSPHORUS-BEY', message: 'crossed two continents in four seconds. my bus takes 40 minutes for one bridge', place: 'ISTANBUL, TR', lat: 41.0451, lng: 29.0335, photo: true, shot: 'rooftop' },
+  { name: 'AMSTEL-ARIE', message: 'borrowed a bike, rode it ONE block, put it back exactly where it was. a gentleman', place: 'AMSTERDAM, NL', lat: 52.3676, lng: 4.9041, photo: true, shot: 'closeup' },
+  { name: 'SAGRADA-SAM', message: 'climbed a spire that is still under construction. bold. structurally questionable', place: 'BARCELONA, ES', lat: 41.4036, lng: 2.1744, photo: true, shot: 'skyline' },
+  { name: 'TABLE-TOP-TESS', message: 'hanging off the cable car line waving at everyone inside. main character behavior', place: 'CAPE TOWN, ZA', lat: -33.9628, lng: 18.4098, photo: true, shot: 'rooftop' },
+  { name: 'VEGAS-VIC', message: 'on the sphere. for ONE second the whole thing showed a spider. coincidence??? i think NOT', place: 'LAS VEGAS, US', lat: 36.1215, lng: -115.1678, photo: true, shot: 'skyline' },
+  { name: 'CHI-TOWN-CJ', message: 'staring at himself in the bean for a solid minute. we are so alike it hurts', place: 'CHICAGO, US', lat: 41.8827, lng: -87.6233, photo: true, shot: 'closeup' },
 
-  /* ── Wave 3: next day, thinning out ──────────────────────────────── */
-  { name: 'RED-SQUARE-ROB', message: 'ON THE ONION DOMES. GONE BEFORE ANYONE COULD FOCUS A CAMERA', place: 'MOSCOW, RU', lat: 55.7539, lng: 37.6208 },
-  { name: 'PARTHENON-PIA', message: 'SITTING ON THE STEPS AT DUSK LIKE HE PAID ADMISSION', place: 'ATHENS, GR', lat: 37.9715, lng: 23.7267, photo: true },
-  { name: 'REYKJAVIK-RUNE', message: 'WATCHING THE NORTHERN LIGHTS. JUST STANDING THERE. DIDNT SAY ANYTHING.', place: 'REYKJAVIK, IS', lat: 64.1466, lng: -21.9426 },
-  { name: 'PRAGUE-PETRA', message: 'RUNNING ALONG CHARLES BRIDGE AT MIDNIGHT. THE STATUES SAW EVERYTHING', place: 'PRAGUE, CZ', lat: 50.0865, lng: 14.4114 },
-  { name: 'HALONG-HUY', message: 'JUMPING BETWEEN THE LIMESTONE ROCKS. EVERY BOAT STOPPED TO WATCH.', place: 'HA LONG BAY, VN', lat: 20.9101, lng: 107.1839, photo: true },
-  { name: 'NAIROBI-NIA', message: 'ON THE KICC HELIPAD AT GOLDEN HOUR. BEST VIEW IN THE CITY HE SAID', place: 'NAIROBI, KE', lat: -1.2884, lng: 36.8233 },
-  { name: 'BERLIN-BIRGIT', message: 'on top of the tv tower. just sitting. for like an hour.', place: 'BERLIN, DE', lat: 52.5208, lng: 13.4094 },
-  { name: 'PATAGONIA-PAZ', message: 'ON A GLACIER. IN THE SUIT. NO JACKET. THE MAN IS BUILT DIFFERENT', place: 'PATAGONIA, AR', lat: -50.4967, lng: -73.1377, photo: true },
-  { name: 'MUMBAI-MEERA', message: 'GATEWAY OF INDIA, EARLY MORNING. THE PIGEONS LOST THEIR MINDS', place: 'MUMBAI, IN', lat: 18.922, lng: 72.8347 },
-  { name: 'BANGKOK-BOON', message: 'saw him near the temple. or i saw a very fast red thing. same energy', place: 'BANGKOK, TH', lat: 13.7524, lng: 100.4935 },
+  /* ── Wave 3: next day, calmer ─────────────────────────────────────── */
+  { name: 'RED-SQUARE-ROB', message: 'on the onion domes. gone before anyone focused a camera. caught in 0k', place: 'MOSCOW, RU', lat: 55.7539, lng: 37.6208, photo: true, shot: 'blurry' },
+  { name: 'PARTHENON-PIA', message: 'sitting on the steps at dusk like he paid admission. he did not pay admission', place: 'ATHENS, GR', lat: 37.9715, lng: 23.7267, photo: true, shot: 'rooftop' },
+  { name: 'REYKJAVIK-RUNE', message: 'just standing there watching the northern lights. didnt say anything. felt rude to interrupt', place: 'REYKJAVIK, IS', lat: 64.1466, lng: -21.9426, photo: true, shot: 'skyline' },
+  { name: 'PRAGUE-PETRA', message: 'running along charles bridge at midnight. the statues saw everything and said nothing', place: 'PRAGUE, CZ', lat: 50.0865, lng: 14.4114, photo: true, shot: 'blurry' },
+  { name: 'HALONG-HUY', message: 'jumping between the rocks. every single boat stopped. free show honestly', place: 'HA LONG BAY, VN', lat: 20.9101, lng: 107.1839, photo: true, shot: 'rooftop' },
+  { name: 'NAIROBI-NIA', message: 'on the kicc helipad at golden hour. said its the best view in the city. he is right', place: 'NAIROBI, KE', lat: -1.2884, lng: 36.8233, photo: true, shot: 'skyline' },
+  { name: 'BERLIN-BIRGIT', message: 'on top of the tv tower. just sitting. for like an hour. king of doing nothing', place: 'BERLIN, DE', lat: 52.5208, lng: 13.4094, photo: true, shot: 'rooftop' },
+  { name: 'PATAGONIA-PAZ', message: 'on a glacier. in the suit. NO jacket. bro is built different and i am cold just watching', place: 'PATAGONIA, AR', lat: -50.4967, lng: -73.1377, photo: true, shot: 'skyline' },
+  { name: 'MUMBAI-MEERA', message: 'gateway of india at sunrise. the pigeons lost their entire minds', place: 'MUMBAI, IN', lat: 18.922, lng: 72.8347, photo: true, shot: 'closeup' },
+  { name: 'BANGKOK-BOON', message: 'saw him near the temple. or i saw a very fast red thing. same energy tbh', place: 'BANGKOK, TH', lat: 13.7524, lng: 100.4935, photo: true, shot: 'blurry' },
 
-  /* ── Wave 4: tail end, sparse and low-key ────────────────────────── */
-  { name: 'DUBLIN-DEE', message: 'ha penny bridge. 6am. nobody else was awake to see it.', place: 'DUBLIN, IE', lat: 53.3465, lng: -6.2632 },
-  { name: 'OSLO-OVE', message: 'ON THE OPERA HOUSE ROOF. WALKED DOWN THE SLOPE LIKE A NORMAL PERSON.', place: 'OSLO, NO', lat: 59.9075, lng: 10.7529 },
-  { name: 'LIMA-LUCHO', message: 'cliffs by the water. he was just watching the surfers.', place: 'LIMA, PE', lat: -12.1315, lng: -77.0303 },
-  { name: 'WARSAW-WIKTOR', message: 'OLD TOWN SQUARE. GONE IN A SECOND. MY PHOTO IS ONE BLURRY RED PIXEL', place: 'WARSAW, PL', lat: 52.2497, lng: 21.0122 },
-  { name: 'PERTH-PIP', message: 'kings park. quiet morning. barely anyone around. still counts.', place: 'PERTH, AU', lat: -31.9614, lng: 115.8342 },
-  { name: 'MONTREAL-MAX', message: 'up on the cross at night. didnt do anything. just sat there.', place: 'MONTREAL, CA', lat: 45.5048, lng: -73.5878 },
-  { name: 'HELSINKI-HANNA', message: 'CATHEDRAL STEPS. SNOWING. HE LOOKED COLD HONESTLY.', place: 'HELSINKI, FI', lat: 60.1699, lng: 24.9384 },
+  /* ── Wave 4: tail end, quiet ──────────────────────────────────────── */
+  { name: 'DUBLIN-DEE', message: 'ha penny bridge. 6am. nobody awake to see it except me and a very confused swan', place: 'DUBLIN, IE', lat: 53.3465, lng: -6.2632, photo: true, shot: 'blurry' },
+  { name: 'OSLO-OVE', message: 'walked down the opera house roof like a normal person. weirdly the strangest part', place: 'OSLO, NO', lat: 59.9075, lng: 10.7529 },
+  { name: 'LIMA-LUCHO', message: 'on the cliffs just watching the surfers. not helping. just watching.', place: 'LIMA, PE', lat: -12.1315, lng: -77.0303, photo: true, shot: 'rooftop' },
+  { name: 'WARSAW-WIKTOR', message: 'old town square. gone in a second. my photo is one (1) blurry red pixel', place: 'WARSAW, PL', lat: 52.2497, lng: 21.0122, photo: true, shot: 'blurry' },
+  { name: 'PERTH-PIP', message: 'kings park, quiet morning, barely anyone around. still counts. i was there.', place: 'PERTH, AU', lat: -31.9614, lng: 115.8342 },
+  { name: 'MONTREAL-MAX', message: 'up on the cross at night doing absolutely nothing. relatable king', place: 'MONTREAL, CA', lat: 45.5048, lng: -73.5878, photo: true, shot: 'skyline' },
+  { name: 'HELSINKI-HANNA', message: 'cathedral steps. snowing. he looked cold. somebody get this man a coat', place: 'HELSINKI, FI', lat: 60.1699, lng: 24.9384, photo: true, shot: 'closeup' },
 ];

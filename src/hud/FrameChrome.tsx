@@ -1,4 +1,5 @@
-import { config } from '../config';
+import type { ComponentChildren } from 'preact';
+import { config, HOUSE_LINES } from '../config';
 import { openPanel } from '../state/settings';
 import { newestFirst, sightings } from '../state/sightings';
 import { unreadCount, notifOpen, openNotifications, closeNotifications } from '../state/notifications';
@@ -8,16 +9,44 @@ interface Props {
   onReport?: () => void;
 }
 
-/** Ticker copy: stream the latest sighting headlines, fall back to the promo line. */
-function tickerText(): string {
+const SEP = '   •   ';
+
+/**
+ * Ticker content: live sighting headlines with the creator credit and a
+ * couple of house lines mixed in, so the crawl never reads like pure log.
+ */
+function tickerContent(): ComponentChildren[] {
   void sightings.value;
   const latest = newestFirst(8);
-  if (!latest.length) {
-    return `${config.siteName} ONLINE — INTERACT WITH THE MAP TO VIEW SIGHTINGS ALL OVER THE WORLD — REPORT YOUR OWN SIGHTING TO PUT IT ON THE MAP`;
+
+  const lines: ComponentChildren[] = [];
+
+  if (config.creatorUrl) {
+    lines.push(
+      <a class="ticker-link" href={config.creatorUrl} target="_blank" rel="noopener noreferrer">
+        ★ BUILT BY {config.creatorHandle} — FOLLOW ON X
+      </a>,
+    );
   }
-  return latest
-    .map((s) => `★ ${s.name}${s.placeLabel ? ` NEAR ${s.placeLabel}` : ''}: ${s.message}`)
-    .join('   •   ');
+
+  if (latest.length) {
+    lines.push(
+      ...latest.map(
+        (s) => `★ ${s.name}${s.placeLabel ? ` NEAR ${s.placeLabel}` : ''}: ${s.message}`,
+      ),
+    );
+  } else {
+    lines.push(`${config.siteName} ONLINE — SPOT SOMETHING? PUT IT ON THE MAP`);
+  }
+
+  /* Slip the goofy ones in so they land between real reports. */
+  HOUSE_LINES.forEach((line, i) => {
+    const at = Math.min(lines.length, 2 + i * 3);
+    lines.splice(at, 0, line);
+  });
+
+  /* Interleave separators without a trailing one. */
+  return lines.flatMap((l, i) => (i === 0 ? [l] : [SEP, l]));
 }
 
 /**
@@ -64,7 +93,7 @@ export function FrameChrome({ onReport }: Props) {
 
       <div class="ticker-bar">
         <div class="ticker-track">
-          <div class="ticker-text">{tickerText()}</div>
+          <div class="ticker-text">{tickerContent()}</div>
         </div>
       </div>
 

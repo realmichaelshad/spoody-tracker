@@ -468,3 +468,15 @@ textarea:focus-visible {
   outline: calc(1px * var(--px)) solid var(--yellow);
   outline-offset: calc(0.5px * var(--px));
 }
+
+/* Creator credit inside the ticker — clickable, stands out from reports */
+.ticker-link {
+  color: var(--yellow);
+  text-decoration: none;
+  pointer-events: auto;
+}
+
+.ticker-link:hover {
+  color: var(--white, #e6f5f8);
+  text-decoration: underline;
+}

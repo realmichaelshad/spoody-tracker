@@ -21,7 +21,20 @@ export const config = {
   supabaseAnonKey: (env.VITE_SUPABASE_ANON_KEY as string) || '',
   /** Optional Cloudflare Turnstile site key (anti-bot). Empty = disabled. */
   turnstileSiteKey: (env.VITE_TURNSTILE_SITE_KEY as string) || '',
+  /** Creator credit shown in the ticker. Blank the URL to hide it. */
+  creatorHandle: (env.VITE_CREATOR_HANDLE as string) || '@REALMICHAELSHAD',
+  creatorUrl: (env.VITE_CREATOR_URL as string) || 'https://x.com/realmichaelshad',
 } as const;
+
+/**
+ * House lines the ticker mixes in between live sightings.
+ * Keep them short — the crawl reads best under ~50 characters.
+ */
+export const HOUSE_LINES: string[] = [
+  'LIFE IS LIKE A DISH — SOMETIMES YOU ARE THE FORK',
+  'THIS MAP IS 100% ACCURATE AND 0% VERIFIED',
+  'PLEASE DO NOT CLIMB A BUILDING FOR A BETTER PHOTO',
+];
 
 /** True when no backend is configured — the app runs fully client-side with demo data. */
 export const isDemoMode = !config.supabaseUrl || !config.supabaseAnonKey;

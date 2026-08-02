@@ -480,3 +480,11 @@ textarea:focus-visible {
   color: var(--white, #e6f5f8);
   text-decoration: underline;
 }
+
+/* The logo plate doubles as the page's <h1> — reset heading defaults so it
+   still lays out exactly as the pixel plate. */
+h1.logo-plate {
+  margin: 0;
+  font-weight: normal;
+  font-size: inherit;
+}

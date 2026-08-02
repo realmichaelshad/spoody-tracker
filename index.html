@@ -4,32 +4,87 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
     <meta name="theme-color" content="#031834" />
+
+    <title>Spoody Tracker — Live World Map of Spider-Man Sightings</title>
     <meta
       name="description"
-      content="A retro pixel-art community sightings tracker. Report a sighting anywhere on Earth and watch it appear live for everyone."
+      content="Report a Spider-Man sighting anywhere on Earth and watch it appear live for everyone. A free retro pixel-art world map — no account needed. Spin the globe, drop a pin, add a photo."
     />
-    <title>SPOODY TRACKER</title>
+    <link rel="canonical" href="https://spoodytracker.com/" />
+
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/logo.png" />
 
+    <!-- Speed up the first map paint -->
+    <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin />
+    <link rel="dns-prefetch" href="https://tiles.openfreemap.org" />
+
     <!-- Link previews (social cards) -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="SPOODY TRACKER" />
+    <meta property="og:site_name" content="Spoody Tracker" />
+    <meta property="og:url" content="https://spoodytracker.com/" />
+    <meta property="og:title" content="Spoody Tracker — Live World Map of Spider-Man Sightings" />
     <meta
       property="og:description"
-      content="Report a sighting anywhere on Earth and watch it appear live for everyone. A retro pixel-art community tracker."
+      content="Report a sighting anywhere on Earth and watch it appear live for everyone. Free, no account needed."
     />
-    <meta property="og:image" content="/logo.png" />
+    <meta property="og:image" content="https://spoodytracker.com/logo.png" />
+    <meta property="og:image:alt" content="Spoody Tracker pixel-art logo" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="SPOODY TRACKER" />
+    <meta name="twitter:title" content="Spoody Tracker — Live World Map of Spider-Man Sightings" />
     <meta
       name="twitter:description"
       content="Report a sighting anywhere on Earth and watch it appear live for everyone."
     />
-    <meta name="twitter:image" content="/logo.png" />
+    <meta name="twitter:image" content="https://spoodytracker.com/logo.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Spoody Tracker",
+        "url": "https://spoodytracker.com/",
+        "applicationCategory": "EntertainmentApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript and WebGL",
+        "description": "A live world map where anyone can report a Spider-Man sighting and watch it appear instantly for everyone else. Retro pixel-art interface, no account required.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "isAccessibleForFree": true
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>
+
+    <!--
+      Crawlable copy for search engines and no-JS visitors. The live app
+      replaces nothing here — it mounts into #app above — so this stays a
+      truthful description of the page rather than hidden keyword filler.
+    -->
+    <noscript>
+      <main class="noscript-intro">
+        <h1>Spoody Tracker — a live world map of Spider-Man sightings</h1>
+        <p>
+          Spoody Tracker is a free, community-powered world map. Spot something?
+          Drop a pin anywhere on Earth, write what you saw, add a photo, and it
+          appears instantly for everyone else looking at the map.
+        </p>
+        <ul>
+          <li>Spin a pixel-art globe and zoom from space down to your street.</li>
+          <li>Post a sighting in seconds — no account, no sign-up.</li>
+          <li>Like and reply to other people's reports.</li>
+          <li>Works on phones and desktop, completely free.</li>
+        </ul>
+        <p>
+          This page needs JavaScript enabled to show the interactive map.
+        </p>
+        <p>
+          Unofficial fan project. Not affiliated with, endorsed by, or connected
+          to Marvel, Sony Pictures, or any film studio. All artwork is original.
+        </p>
+      </main>
+    </noscript>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "spoody-tracker",
+  "compatibility_date": "2026-08-01",
+  // Static site: Cloudflare serves the built files directly, no server code.
+  "assets": {
+    "directory": "./dist",
+    // index.html and admin.html are both real files, so a plain 404 page is
+    // correct here — do not rewrite unknown paths to the app shell.
+    "not_found_handling": "404-page"
+  }
+}

@@ -62,11 +62,11 @@ export function FrameChrome({ onReport }: Props) {
       <div class="map-fx" />
       <div class="hud-frame" />
 
-      <div class="logo-plate">
+      <h1 class="logo-plate">
         <span class="word">{wordA}</span>
         <span class="face" />
         {wordB && <span class="word">{wordB}</span>}
-      </div>
+      </h1>
 
       <button
         class="hud-btn menu-btn"

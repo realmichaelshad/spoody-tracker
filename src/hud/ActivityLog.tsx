@@ -2,7 +2,7 @@ import { useState } from 'preact/hooks';
 import { newestFirst, sightings, type Sighting } from '../state/sightings';
 import { relativeTime } from '../lib/time';
 import { openPanel } from '../state/settings';
-import { hasLiked, toggleLike } from '../lib/social';
+import { hasLiked, toggleLike, deleteSighting } from '../lib/social';
 import { sfx } from '../audio/sfx';
 import { isMine } from '../lib/demoStore';
 
@@ -12,6 +12,7 @@ interface Props {
 
 function FeedItem({ s, onJump }: { s: Sighting; onJump: (id: string) => void }) {
   const [liked, setLiked] = useState(hasLiked(s.id));
+  const [confirming, setConfirming] = useState(false);
 
   return (
     <article class="feed-item">
@@ -51,7 +52,7 @@ function FeedItem({ s, onJump }: { s: Sighting; onJump: (id: string) => void }) 
           class={`webup-btn ${liked ? 'on' : ''}`}
           aria-label="Web-up this sighting"
           onClick={() => {
-            sfx.blip();
+            sfx.like();
             setLiked((v) => !v);
             void toggleLike(s.id).then(setLiked);
           }}
@@ -68,6 +69,24 @@ function FeedItem({ s, onJump }: { s: Sighting; onJump: (id: string) => void }) 
         >
           {(s.replyCount ?? 0) > 0 ? `${s.replyCount} REPLIES` : 'REPLY'}
         </button>
+        {isMine(s.id) && (
+          <button
+            class="feed-delete"
+            title="Delete your sighting"
+            onClick={async () => {
+              if (!confirming) {
+                setConfirming(true);
+                sfx.blip();
+                setTimeout(() => setConfirming(false), 4000);
+                return;
+              }
+              const res = await deleteSighting(s.id);
+              res.ok ? sfx.deleted() : sfx.error();
+            }}
+          >
+            {confirming ? 'SURE?' : 'DELETE'}
+          </button>
+        )}
         <button
           class="feed-goto"
           onClick={() => {

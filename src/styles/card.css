@@ -205,3 +205,40 @@
   font-size: calc(4.5px * var(--px));
   color: var(--bad-lt);
 }
+
+/* Delete — only shown on your own sightings. Two-step so it can't misfire. */
+.card-delete,
+.feed-delete {
+  font-family: var(--font-ui);
+  font-size: calc(4.5px * var(--px));
+  letter-spacing: 0.08em;
+  color: var(--bad-lt);
+  background: none;
+  border: calc(1px * var(--px)) solid var(--bad-dk, #9f3e34);
+  padding: calc(1px * var(--px)) calc(2px * var(--px));
+  cursor: pointer;
+}
+
+.card-delete {
+  margin-left: auto;
+}
+
+.card-delete:hover,
+.feed-delete:hover {
+  border-color: var(--bad);
+  color: var(--bad-pale);
+}
+
+/* Armed state — unmistakable before anything is destroyed */
+.card-delete.confirming {
+  background: var(--bad);
+  color: var(--outline);
+  border-color: var(--outline);
+  animation: delete-armed 0.8s steps(2) infinite;
+}
+
+@keyframes delete-armed {
+  50% {
+    filter: brightness(1.25);
+  }
+}

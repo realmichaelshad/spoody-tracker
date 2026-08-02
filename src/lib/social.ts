@@ -148,3 +148,34 @@ function bumpReplyCount(id: string, delta: number): void {
   const s = sightings.value.get(id);
   if (s) addSightings([{ ...s, replyCount: Math.max(0, (s.replyCount ?? 0) + delta) }]);
 }
+
+/* ── Delete your own sighting ───────────────────────────────────────────── */
+
+/**
+ * Remove a sighting you posted. Demo mode deletes locally; with a backend
+ * the edge function verifies ownership by the salted IP hash recorded at
+ * post time, so only the original poster can remove it.
+ */
+export async function deleteSighting(id: string): Promise<{ ok: boolean; error?: string }> {
+  const { removeSighting } = await import('../state/sightings');
+
+  if (isDemoMode) {
+    const { forgetLocalSighting } = await import('./demoStore');
+    forgetLocalSighting(id);
+    removeSighting(id);
+    return { ok: true };
+  }
+
+  const { supabase } = await import('./supabaseClient');
+  const { error } = await supabase()
+    .functions.invoke('delete-sighting', { body: { sighting_id: id } })
+    .catch(() => ({ error: { message: 'network' } as any }));
+
+  if (error) {
+    const status = (error as any)?.context?.status;
+    if (status === 403) return { ok: false, error: 'THAT ONE ISN\u2019T YOURS TO DELETE.' };
+    return { ok: false, error: 'COULD NOT DELETE. TRY AGAIN.' };
+  }
+  removeSighting(id);
+  return { ok: true };
+}

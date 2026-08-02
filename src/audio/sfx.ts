@@ -78,4 +78,27 @@ export const sfx = {
   /** toggle flip */
   toggle: (on: boolean) =>
     play([{ freq: on ? 700 : 400, dur: 0.06 }, { freq: on ? 1000 : 300, at: 0.07, dur: 0.06 }]),
+  /** something removed — descending sweep, resolves rather than scolds */
+  deleted: () =>
+    play([
+      { freq: 520, at: 0, dur: 0.07, wave: 'triangle', slideTo: 300 },
+      { freq: 300, at: 0.07, dur: 0.06, wave: 'triangle', slideTo: 180 },
+      { freq: 160, at: 0.14, dur: 0.1, wave: 'sine', vol: 0.05 },
+    ]),
+  /** report accepted — bright confirming chirp */
+  posted: () =>
+    play([
+      { freq: 660, at: 0, dur: 0.07 },
+      { freq: 880, at: 0.07, dur: 0.07 },
+      { freq: 1320, at: 0.14, dur: 0.12, wave: 'triangle' },
+    ]),
+  /** liked something */
+  like: () =>
+    play([
+      { freq: 880, dur: 0.05, wave: 'triangle' },
+      { freq: 1245, at: 0.05, dur: 0.08, wave: 'triangle' },
+    ]),
+  /** a reply landed */
+  reply: () =>
+    play([{ freq: 740, dur: 0.05 }, { freq: 990, at: 0.06, dur: 0.07 }]),
 };

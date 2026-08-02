@@ -4,6 +4,7 @@ import { submitSighting } from '../lib/api';
 import { compressImage } from '../lib/imageCompress';
 import { primePlaceLabel } from '../lib/geocode';
 import { config } from '../config';
+import { sfx } from '../audio/sfx';
 
 declare global {
   interface Window {
@@ -156,6 +157,7 @@ export function ReportForm({ onPickOnMap, onDone }: Props) {
       setError(res.error ?? 'SOMETHING WENT WRONG.');
       return;
     }
+    sfx.posted();
     const { lat, lng } = open;
     reportOpen.value = null;
     setMessage('');

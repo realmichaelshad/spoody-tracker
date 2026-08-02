@@ -2,10 +2,11 @@ import { useEffect, useState } from 'preact/hooks';
 import type { Sighting, Reply } from '../state/sightings';
 import { sightings } from '../state/sightings';
 import { relativeTime } from '../lib/time';
-import { hasLiked, toggleLike, getReplies, addReply } from '../lib/social';
+import { hasLiked, toggleLike, getReplies, addReply, deleteSighting } from '../lib/social';
 import { flagSighting } from '../lib/flags';
 import { isMine } from '../lib/demoStore';
 import { sfx } from '../audio/sfx';
+import { closeSightingPopup } from '../map/popup';
 
 interface Props {
   sighting: Sighting;
@@ -25,6 +26,8 @@ export function SightingCard({ sighting }: Props) {
   const [replyTo, setReplyTo] = useState<Reply | null>(null);
   const [busy, setBusy] = useState(false);
   const [flagged, setFlagged] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteErr, setDeleteErr] = useState('');
 
   useEffect(() => {
     if (showReplies && replies === null) {
@@ -33,7 +36,7 @@ export function SightingCard({ sighting }: Props) {
   }, [showReplies]);
 
   const like = () => {
-    sfx.blip();
+    sfx.like();
     /* Optimistic: the button must respond on the same frame as the tap.
        The server round-trip settles in the background. */
     setLiked((v) => !v);
@@ -51,7 +54,7 @@ export function SightingCard({ sighting }: Props) {
       setReplyErr(res.error ?? 'FAILED.');
       return;
     }
-    sfx.blip();
+    sfx.reply();
     setReplyMsg('');
     setReplyTo(null);
     if (res.reply) setReplies([...(replies ?? []), res.reply]);
@@ -124,17 +127,44 @@ export function SightingCard({ sighting }: Props) {
         >
           REPLIES ({s.replyCount ?? 0})
         </button>
-        <button
-          class="card-flag"
-          disabled={flagged}
-          onClick={() => {
-            setFlagged(true);
-            void flagSighting(s.id);
-          }}
-        >
-          {flagged ? 'FLAGGED' : 'FLAG'}
-        </button>
+        {isMine(s.id) ? (
+          <button
+            class={`card-delete ${confirmDelete ? 'confirming' : ''}`}
+            onClick={async () => {
+              if (!confirmDelete) {
+                setConfirmDelete(true);
+                sfx.blip();
+                setTimeout(() => setConfirmDelete(false), 4000);
+                return;
+              }
+              const res = await deleteSighting(s.id);
+              if (res.ok) {
+                sfx.deleted();
+                closeSightingPopup();
+              } else {
+                sfx.error();
+                setDeleteErr(res.error ?? 'FAILED.');
+                setConfirmDelete(false);
+              }
+            }}
+          >
+            {confirmDelete ? 'TAP AGAIN TO DELETE' : 'DELETE'}
+          </button>
+        ) : (
+          <button
+            class="card-flag"
+            disabled={flagged}
+            onClick={() => {
+              setFlagged(true);
+              sfx.blip();
+              void flagSighting(s.id);
+            }}
+          >
+            {flagged ? 'FLAGGED' : 'FLAG'}
+          </button>
+        )}
       </div>
+      {deleteErr && <div class="reply-err">{deleteErr}</div>}
 
       {showReplies && (
         <div class="reply-thread">

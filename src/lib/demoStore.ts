@@ -75,3 +75,15 @@ export function saveLocalSighting(s: Sighting): void {
     /* storage blocked entirely (private mode) — non-fatal */
   }
 }
+
+/** Drop a locally-stored sighting (demo mode delete). */
+export function forgetLocalSighting(id: string): void {
+  try {
+    const kept = loadLocalSightings().filter((s) => s.id !== id);
+    localStorage.setItem(KEY, JSON.stringify(kept));
+    const mine = JSON.parse(localStorage.getItem(MINE_KEY) ?? '[]') as string[];
+    localStorage.setItem(MINE_KEY, JSON.stringify(mine.filter((m) => m !== id)));
+  } catch {
+    /* storage blocked — non-fatal */
+  }
+}

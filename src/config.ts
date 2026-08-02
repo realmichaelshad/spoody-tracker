@@ -30,11 +30,7 @@ export const config = {
  * House lines the ticker mixes in between live sightings.
  * Keep them short — the crawl reads best under ~50 characters.
  */
-export const HOUSE_LINES: string[] = [
-  'LIFE IS LIKE A DISH — SOMETIMES YOU ARE THE FORK',
-  'THIS MAP IS 100% ACCURATE AND 0% VERIFIED',
-  'PLEASE DO NOT CLIMB A BUILDING FOR A BETTER PHOTO',
-];
+export const HOUSE_LINES: string[] = ['LIFE IS LIKE A DISH'];
 
 /** True when no backend is configured — the app runs fully client-side with demo data. */
 export const isDemoMode = !config.supabaseUrl || !config.supabaseAnonKey;

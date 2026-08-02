@@ -39,9 +39,11 @@ function tickerContent(): ComponentChildren[] {
     lines.push(`${config.siteName} ONLINE — SPOT SOMETHING? PUT IT ON THE MAP`);
   }
 
-  /* Slip the goofy ones in so they land between real reports. */
+  /* Spread the house lines evenly through the crawl so they never bunch up,
+     however many sightings happen to be loaded. */
+  const gap = (lines.length + HOUSE_LINES.length) / (HOUSE_LINES.length + 1);
   HOUSE_LINES.forEach((line, i) => {
-    const at = Math.min(lines.length, 2 + i * 3);
+    const at = Math.min(lines.length, Math.round(gap * (i + 1)));
     lines.splice(at, 0, line);
   });
 

@@ -30,7 +30,10 @@ export const config = {
  * House lines the ticker mixes in between live sightings.
  * Keep them short — the crawl reads best under ~50 characters.
  */
-export const HOUSE_LINES: string[] = ['LIFE IS LIKE A DISH'];
+export const HOUSE_LINES: string[] = [
+  'LIFE IS LIKE A DISH',
+  'I ONLY DEAL WITH BIG PATATOS SO NOT YOUR MOM',
+];
 
 /** True when no backend is configured — the app runs fully client-side with demo data. */
 export const isDemoMode = !config.supabaseUrl || !config.supabaseAnonKey;

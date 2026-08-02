@@ -31,7 +31,7 @@ export const config = {
  * Keep them short — the crawl reads best under ~50 characters.
  */
 export const HOUSE_LINES: string[] = [
-  'LIFE IS LIKE A DISH',
+  'LIFE IS LIKE A DIH',
   'I ONLY DEAL WITH BIG PATATOS SO NOT YOUR MOM',
 ];
 

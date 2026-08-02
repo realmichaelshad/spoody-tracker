@@ -90,5 +90,7 @@ function writeSvg(path: string): void {
 }
 
 writePng(join(ROOT, 'public', 'logo.png'), 43); // ~1024px
-writePng(join(ROOT, 'public', 'favicon.png'), 3); // 72px-ish
 writeSvg(join(ROOT, 'public', 'logo.svg'));
+
+/* The favicon is NOT derived from this plate. At 16-32px the frame and bevel
+   swallow the face, so it gets its own drawing — see scripts/build-favicon.ts. */

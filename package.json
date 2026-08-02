@@ -10,6 +10,7 @@
     "build": "npm run sprites && tsc --noEmit && vite build",
     "preview": "vite preview",
     "sprites": "tsx scripts/build-sprites.ts",
+    "icons": "tsx scripts/build-logo.ts && tsx scripts/build-favicon.ts",
     "seed": "tsx scripts/seed.ts",
     "typecheck": "tsc --noEmit",
     "setup-sql": "tsx scripts/build-setup-sql.ts",

@@ -1,5 +1,9 @@
 # SPOODY TRACKER
 
+[![Spoody Tracker — live world map of sightings](public/og-card.png)](https://spoodytracker.com)
+
+**Play it live: [spoodytracker.com](https://spoodytracker.com)** — no account, drop a sighting, watch it appear for everyone.
+
 A retro pixel-art **community sightings map**. Anyone on Earth can drop a
 sighting — codename, message, optional photo, no account — and everyone else
 watches it pop onto a spinning globe live. Like reports, reply in threads,

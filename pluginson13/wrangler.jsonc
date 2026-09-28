@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "pluginson13",
+  "compatibility_date": "2026-09-01",
+  // A fully static site: Cloudflare serves the built files directly.
+  // _redirects (old catalog URLs) and _headers (security + caching) in
+  // public/ are picked up from the build output automatically.
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}

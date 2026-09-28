@@ -1,0 +1,401 @@
+---
+/*
+ * The kallah list builder. Checkmarks save on the device (nothing is sent
+ * anywhere); the list can be printed, shared with family as a link, or sent
+ * to the showroom through the contact form.
+ */
+import { kallahList, kallahItemCount } from '../data/kallahList';
+import Icon from './Icon.astro';
+---
+
+<section id="kallah-list" class="klist" aria-labelledby="klist-title" data-kallah>
+  <div class="klist__head">
+    <div class="klist__intro">
+      <p class="eyebrow">Kallah list builder</p>
+      <h2 id="klist-title">Our new-home <em>checklist.</em></h2>
+      <p class="muted">
+        Tick things off as you shop. The list saves on this phone or computer — nothing is sent anywhere unless you
+        choose to send it.
+      </p>
+    </div>
+
+    <div class="klist__progress">
+      <p class="klist__count" aria-live="polite">
+        <strong data-done>0</strong> of <span data-total>{kallahItemCount}</span> ready
+      </p>
+      <div class="klist__bar" aria-hidden="true"><span data-bar></span></div>
+    </div>
+
+    <div class="klist__actions no-print" data-actions hidden>
+      <button type="button" class="btn btn--primary btn--sm" data-action="send">
+        <Icon name="chat" /> Send to Plug-ins
+      </button>
+      <button type="button" class="btn btn--ghost btn--sm" data-action="share">
+        <Icon name="share" /> Share with family
+      </button>
+      <button type="button" class="btn btn--ghost btn--sm" data-action="print">
+        <Icon name="printer" /> Print
+      </button>
+      <button type="button" class="btn btn--ghost btn--sm klist__reset" data-action="reset">
+        <Icon name="reset" /> Start over
+      </button>
+    </div>
+
+    <p class="klist__shared no-print" data-shared hidden>
+      <Icon name="info" size={20} />
+      <span>This is a list someone shared with you. Changes stay on this screen until you save it.</span>
+      <button type="button" class="btn btn--ink btn--sm" data-action="adopt">Save as my list</button>
+    </p>
+  </div>
+
+  <div class="klist__groups">
+    {
+      kallahList.map((group) => (
+        <fieldset class="klist__group" data-group={group.id}>
+          <legend>
+            <span>{group.title}</span>
+            <span class="klist__gcount" data-group-count>
+              0/{group.items.length}
+            </span>
+          </legend>
+          <ul>
+            {group.items.map((item) => (
+              <li>
+                <label>
+                  <input type="checkbox" data-item={item.id} />
+                  <span>{item.label}</span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        </fieldset>
+      ))
+    }
+    <fieldset class="klist__group klist__group--extras no-print-empty" data-group="extras">
+      <legend>
+        <span>Our extras</span>
+        <span class="klist__gcount" data-group-count>0/0</span>
+      </legend>
+      <ul data-extras></ul>
+      <form class="klist__add no-print" data-add hidden>
+        <label for="klist-new" class="visually-hidden">Add something else to the list</label>
+        <input id="klist-new" name="item" maxlength="60" autocomplete="off" placeholder="Add something else…" />
+        <button type="submit" class="btn btn--ink btn--sm">Add</button>
+      </form>
+    </fieldset>
+  </div>
+
+  <p class="klist__toast" data-toast role="status" aria-live="polite"></p>
+</section>
+
+<template id="klist-extra">
+  <li>
+    <label>
+      <input type="checkbox" />
+      <span></span>
+    </label>
+    <button type="button" class="klist__remove no-print" aria-label="Remove">
+      <Icon name="close" size={18} />
+    </button>
+  </li>
+</template>
+
+<style>
+  .klist {
+    display: grid;
+    gap: 28px;
+    scroll-margin-top: calc(var(--header-h) + 16px);
+  }
+
+  .klist__head {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 20px 48px;
+    align-items: end;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--line-2);
+  }
+
+  @media (max-width: 859px) {
+    .klist__head {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .klist__intro {
+    display: grid;
+    gap: 12px;
+  }
+
+  .klist__intro h2 {
+    font-size: var(--step-4);
+  }
+
+  .klist__progress {
+    display: grid;
+    gap: 10px;
+  }
+
+  .klist__count {
+    font-size: 1.05rem;
+    color: var(--text-2);
+  }
+
+  .klist__count strong {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--copper-600);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .klist__bar {
+    height: 10px;
+    border-radius: 10px;
+    background: var(--paper-3);
+    overflow: hidden;
+  }
+
+  .klist__bar span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--copper-600), var(--copper-400));
+    transition: width 0.45s var(--ease-out);
+  }
+
+  .klist__actions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .klist__reset {
+    margin-left: auto;
+  }
+
+  @media (max-width: 559px) {
+    .klist__reset {
+      margin-left: 0;
+    }
+  }
+
+  .klist__shared {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    background: var(--water-100);
+    color: #1f4f6e;
+    font-weight: 560;
+  }
+
+  .klist__shared span {
+    flex: 1 1 260px;
+  }
+
+  .klist__groups {
+    columns: 3 280px;
+    column-gap: 20px;
+  }
+
+  .klist__group {
+    break-inside: avoid;
+    min-width: 0;
+    margin: 0 0 20px;
+    padding: 20px 22px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--card);
+  }
+
+  .klist__group legend {
+    float: left;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 0;
+    font-family: var(--font-display);
+    font-size: 1.22rem;
+    font-weight: 620;
+    color: var(--ink-900);
+  }
+
+  .klist__group legend + * {
+    clear: both;
+  }
+
+  .klist__gcount {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .klist__group[data-complete] .klist__gcount {
+    color: var(--green);
+  }
+
+  .klist ul {
+    padding: 0;
+    list-style: none;
+  }
+
+  .klist li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-top: 1px dashed var(--line);
+  }
+
+  .klist li:first-child {
+    border-top: 0;
+  }
+
+  .klist label {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 12px;
+    min-height: 46px;
+    padding: 6px 0;
+    cursor: pointer;
+    line-height: 1.35;
+  }
+
+  .klist input[type='checkbox'] {
+    appearance: none;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    border: 2px solid var(--line-2);
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    transition:
+      background-color 0.15s var(--ease),
+      border-color 0.15s var(--ease);
+  }
+
+  .klist input[type='checkbox']:hover {
+    border-color: var(--copper-400);
+  }
+
+  .klist input[type='checkbox']:checked {
+    border-color: var(--copper-600);
+    background: var(--copper-600)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.4l3 3 6-6.4' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      center / 19px no-repeat;
+  }
+
+  .klist input[type='checkbox']:focus-visible {
+    outline: 3px solid var(--copper-500);
+    outline-offset: 2px;
+  }
+
+  .klist li:has(input:checked) label span {
+    color: var(--text-3);
+    text-decoration: line-through;
+    text-decoration-color: rgb(93 101 115 / 55%);
+  }
+
+  .klist__remove {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    color: var(--text-3);
+  }
+
+  .klist__remove:hover {
+    background: var(--paper-2);
+    color: var(--red);
+  }
+
+  .klist__add {
+    display: flex;
+    gap: 8px;
+    margin: 10px 0 10px;
+  }
+
+  .klist__add input {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 1.5px solid var(--line-2);
+    border-radius: 12px;
+    background: var(--paper);
+  }
+
+  .klist__add input:focus {
+    outline: none;
+    border-color: var(--copper-500);
+    box-shadow: 0 0 0 3px var(--copper-100);
+  }
+
+  .klist__toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(var(--mobilebar-h) + 24px);
+    z-index: 70;
+    padding: 12px 20px;
+    border-radius: 999px;
+    background: var(--ink-900);
+    color: #fff;
+    font-weight: 560;
+    box-shadow: var(--shadow-lg);
+    transform: translate(-50%, 20px);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.25s var(--ease),
+      transform 0.25s var(--ease);
+  }
+
+  .klist__toast[data-show] {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  @media print {
+    .klist__groups {
+      columns: 2;
+    }
+
+    .klist__group {
+      border-color: #999;
+    }
+
+    .klist input[type='checkbox'] {
+      border-color: #555;
+    }
+
+    .klist li:has(input:checked) label span {
+      color: #555;
+    }
+
+    .klist__group--extras:not([data-has-items]) {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { initKallahList } from '../scripts/kallah';
+  initKallahList();
+</script>

@@ -1,0 +1,28 @@
+name: pluginson13 site
+
+on:
+  push:
+    branches: [main]
+    paths: ['pluginson13/**', '.github/workflows/pluginson13.yml']
+  pull_request:
+    paths: ['pluginson13/**', '.github/workflows/pluginson13.yml']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pluginson13
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: pluginson13/package-lock.json
+      - run: npm ci
+      - name: Type check
+        run: npm run check
+      - name: Opening-hours tests
+        run: npm test
+      - run: npm run build

@@ -1,0 +1,97 @@
+---
+import Department, { type Category, type Tip } from '../layouts/Department.astro';
+import { hoursFaq, mikvahFaq, registryFaq, specialOrderFaq } from '../data/faq';
+
+const categories: Category[] = [
+  {
+    id: 'cookware',
+    title: 'Cookware & cookware sets',
+    text: 'Stainless, nonstick and enameled cookware — a full set for the new kitchen, or just the one pot you’re missing.',
+    points: ['Stainless steel', 'Nonstick', 'Stock pots & Dutch ovens', 'Full sets'],
+  },
+  {
+    id: 'pans',
+    title: 'Frying pans & skillets',
+    text: 'Everyday nonstick, sturdy stainless and cast iron, in the sizes you actually cook with.',
+    points: ['Nonstick', 'Stainless', 'Cast iron', 'Grill pans'],
+  },
+  {
+    id: 'bakeware',
+    title: 'Bakeware',
+    text: 'Sheet pans, cake and loaf pans, muffin tins and challah pans for Erev Shabbos baking.',
+    points: ['Sheet & cake pans', 'Loaf & challah pans', 'Muffin & specialty'],
+  },
+  {
+    id: 'knives',
+    title: 'Knives & cutting boards',
+    text: 'Chef’s knives, bread knives and knife sets, plus color-coded cutting boards for fleishig, milchig and pareve.',
+    points: ['Knife sets', 'Chef’s & bread knives', 'Color-coded boards'],
+  },
+  {
+    id: 'utensils',
+    title: 'Utensils & gadgets',
+    text: 'Ladles, spatulas, peelers, graters, measuring cups — the drawer you open fifty times a day.',
+    points: ['Cooking utensils', 'Measuring & prep', 'Gadgets'],
+  },
+  {
+    id: 'storage',
+    title: 'Storage & containers',
+    text: 'Food storage, canisters and pantry organizers to keep leftovers and Shabbos prep in order.',
+    points: ['Food storage', 'Canisters', 'Pantry'],
+  },
+  {
+    id: 'serving',
+    title: 'Serving & tableware',
+    text: 'Platters, bowls and serving pieces for the Shabbos table, Yom Tov and every simcha.',
+    points: ['Platters & bowls', 'Serving pieces', 'Table accessories'],
+  },
+  {
+    id: 'pesach',
+    title: 'Pesach kitchen',
+    text: 'Setting up a separate Pesach kitchen? Pots, pans, utensils and small appliances — all in one trip.',
+    points: ['Pesach cookware', 'Utensils', 'Small appliances'],
+  },
+  {
+    id: 'housewares',
+    title: 'Around the house',
+    text: 'Dish racks, cleaning tools and the everyday housewares that keep a busy home running.',
+    points: ['Dish racks', 'Cleaning tools', 'Everyday housewares'],
+  },
+];
+
+const tips: Tip[] = [
+  {
+    icon: 'heart',
+    title: 'Color-code meat, dairy & pareve',
+    text: 'Red for fleishig, blue for milchig, green or white for pareve is a popular system. Pick one and keep it across boards, sponges and towels.',
+  },
+  {
+    icon: 'drop',
+    title: 'Tovel before you leave',
+    text: 'Our 13th Avenue store has a keilim mikvah on site. An attendant unwraps your new keilim and rewraps them after tevilah.',
+  },
+  {
+    icon: 'calendar',
+    title: 'Shop Pesach early',
+    text: 'The weeks before Pesach are busy everywhere on 13th Avenue. Coming in early means more choice and a calmer trip.',
+  },
+];
+---
+
+<Department
+  path="/kitchenware/"
+  metaTitle="Kitchenware & Cookware in Brooklyn"
+  description="Cookware sets, pans, knives, color-coded boards, bakeware and Pesach essentials in Boro Park and Williamsburg — with a keilim mikvah on site."
+  eyebrow="Kitchenware & housewares"
+  title="Pots, pans &"
+  em="everything in between."
+  lead="Cookware for fleishig, milchig and Pesach, knives that stay sharp, bakeware, utensils and serving pieces — and a keilim mikvah at 13th Avenue so it all goes home ready to use."
+  art={[{ kind: 'pots', height: 100 }]}
+  categoriesTitle="Stock the kitchen,"
+  categoriesEm="all of it."
+  categoriesLead="Whether you're setting up a whole new kitchen or replacing the pan that finally gave out, start here."
+  categories={categories}
+  tipsTitle="From our kitchenware aisle"
+  tips={tips}
+  faqs={[mikvahFaq, registryFaq, specialOrderFaq, hoursFaq]}
+/>

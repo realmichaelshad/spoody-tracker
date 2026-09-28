@@ -1,0 +1,79 @@
+---
+import Department, { type Category, type Tip } from '../layouts/Department.astro';
+import { deliveryFaq, hoursFaq, specialOrderFaq } from '../data/faq';
+
+const categories: Category[] = [
+  {
+    id: 'grooming',
+    title: 'Shavers & grooming',
+    text: 'Electric shavers, trimmers and clippers — and the replacement heads and blades to keep them sharp.',
+    points: ['Electric shavers', 'Trimmers & clippers', 'Replacement heads'],
+  },
+  {
+    id: 'hair-care',
+    title: 'Hair care',
+    text: 'Hair dryers, straighteners, curling irons and styling brushes.',
+    points: ['Hair dryers', 'Straighteners & curlers', 'Styling brushes'],
+  },
+  {
+    id: 'audio',
+    title: 'Speakers & headphones',
+    text: 'Bluetooth speakers, headphones and earbuds for the car, the kitchen and the commute.',
+    points: ['Bluetooth speakers', 'Headphones', 'Earbuds'],
+  },
+  {
+    id: 'clocks',
+    title: 'Clocks & timers',
+    text: 'Alarm clocks, wall clocks and Shabbos timers for the lights, the A/C and the plata.',
+    points: ['Alarm & wall clocks', 'Shabbos timers', 'Kitchen timers'],
+  },
+  {
+    id: 'lighting',
+    title: 'Lighting',
+    text: 'Desk and floor lamps, night lights and bulbs for every room.',
+    points: ['Lamps', 'Night lights', 'Bulbs'],
+  },
+  {
+    id: 'power',
+    title: 'Power & accessories',
+    text: 'Surge protectors, extension cords, chargers, cables and batteries. The plug-ins, if you will.',
+    points: ['Surge protectors', 'Extension cords', 'Chargers & cables', 'Batteries'],
+  },
+];
+
+const tips: Tip[] = [
+  {
+    icon: 'search',
+    title: 'Bring the old one',
+    text: 'Need a replacement shaver head, charger or cable? Bring the old one in and we’ll match it.',
+  },
+  {
+    icon: 'clock',
+    title: 'Pick the right Shabbos timer',
+    text: 'A lamp and an air conditioner need very different timers. Tell us what you’re plugging in and we’ll show you one that can handle it.',
+  },
+  {
+    icon: 'shield',
+    title: 'Protect the expensive stuff',
+    text: 'A good surge protector costs far less than a new fridge board or laptop. Worth it for anything with a screen or a circuit board.',
+  },
+];
+---
+
+<Department
+  path="/electronics/"
+  metaTitle="Electronics, Shavers & Shabbos Timers in Brooklyn"
+  description="Electric shavers, hair dryers, speakers, headphones, clocks, Shabbos timers, lamps and chargers at Plug-ins in Boro Park and Williamsburg."
+  eyebrow="Electronics"
+  title="Electronics for"
+  em="everyday life."
+  lead="Shavers and hair care, speakers and headphones, clocks and Shabbos timers, lamps, and the chargers, cords and batteries every home runs through."
+  art={[{ kind: 'electronics', height: 100 }]}
+  categoriesTitle="Small screens, big help,"
+  categoriesEm="and cords."
+  categoriesLead="The everyday electronics you run out to replace — on our shelves, with someone to ask."
+  categories={categories}
+  tipsTitle="Plugged-in advice"
+  tips={tips}
+  faqs={[specialOrderFaq, hoursFaq, deliveryFaq]}
+/>

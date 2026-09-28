@@ -1,0 +1,400 @@
+---
+/*
+ * Shared layout for the four department pages. Each page passes its own
+ * copy: categories (with anchors the old catalog URLs redirect to), buying
+ * tips and FAQs.
+ */
+import Base from './Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon, { type IconName } from '../components/Icon.astro';
+import BrandWall from '../components/BrandWall.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import DeptScene from '../components/art/DeptScene.astro';
+import DeptArt from '../components/art/DeptArt.astro';
+import { mainStore, telHref } from '../data/business';
+import { departments } from '../data/nav';
+import type { Faq } from '../data/faq';
+import { faqSchema } from '../lib/schema';
+
+import type { ArtKind as Kind } from '../components/art/artSizes';
+
+export interface Category {
+  id: string;
+  title: string;
+  text: string;
+  points: string[];
+}
+
+export interface Tip {
+  icon: IconName;
+  title: string;
+  text: string;
+}
+
+interface Props {
+  path: string;
+  metaTitle: string;
+  description: string;
+  eyebrow: string;
+  title: string;
+  em: string;
+  lead: string;
+  art: { kind: Kind; height: number }[];
+  categoriesTitle: string;
+  categoriesEm: string;
+  categoriesLead: string;
+  categories: Category[];
+  tipsTitle: string;
+  tips: Tip[];
+  faqs: Faq[];
+  showBrands?: boolean;
+}
+
+const p = Astro.props;
+const current = departments.find((d) => d.href === p.path);
+const others = departments.filter((d) => d.href !== p.path);
+const crumbs = [{ name: current?.title ?? p.eyebrow, path: p.path }];
+---
+
+<Base title={p.metaTitle} description={p.description} crumbs={crumbs} schema={[faqSchema(p.faqs)]}>
+  <PageHero eyebrow={p.eyebrow} title={p.title} em={p.em} lead={p.lead} crumbs={crumbs}>
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href="/contact/?topic=price">
+        <Icon name="chat" /> Ask about a model
+      </a>
+      <a class="btn btn--ghost" href={telHref(mainStore)} data-sheet-open="call">
+        <Icon name="phone" /> Call a store
+      </a>
+    </Fragment>
+    <ul class="jump" aria-label="On this page">
+      {
+        p.categories.map((c) => (
+          <li>
+            <a href={`#${c.id}`}>{c.title}</a>
+          </li>
+        ))
+      }
+    </ul>
+    <DeptScene slot="art" items={p.art} />
+  </PageHero>
+
+  <section class="section section--white" aria-labelledby="carry-title">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div class="stack">
+          <p class="eyebrow">What we carry</p>
+          <h2 id="carry-title">{p.categoriesTitle} <em>{p.categoriesEm}</em></h2>
+        </div>
+        <p class="lead">{p.categoriesLead}</p>
+      </div>
+      <ul class="cats">
+        {
+          p.categories.map((c, i) => (
+            <li id={c.id} class="cat reveal" style={`--delay:${(i % 3) * 60}ms`}>
+              <span class="cat__num" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3>{c.title}</h3>
+              <p>{c.text}</p>
+              <ul class="chip-list" aria-label={`${c.title}: popular picks`}>
+                {c.points.map((pt) => (
+                  <li class="chip chip--steel">{pt}</li>
+                ))}
+              </ul>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="cats__note">
+        <Icon name="info" size={20} />
+        <span>
+          What's on the floor changes every week. Looking for a specific model?{' '}
+          <a href="/contact/?topic=price">Send us the model number</a> and we'll check price and stock at both stores.
+        </span>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--ink" aria-labelledby="tips-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Good to know</p>
+        <h2 id="tips-title">{p.tipsTitle}</h2>
+      </div>
+      <ol class="tips">
+        {
+          p.tips.map((t, i) => (
+            <li class="tip reveal" style={`--delay:${i * 70}ms`}>
+              <span class="tip__icon">
+                <Icon name={t.icon} size={24} />
+              </span>
+              <h3>{t.title}</h3>
+              <p>{t.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  {
+    p.showBrands && (
+      <section class="section" id="brands" aria-labelledby="dept-brands-title">
+        <div class="container">
+          <div class="section-head section-head--center">
+            <p class="eyebrow">Brands on our floor</p>
+            <h2 id="dept-brands-title">
+              The names you <em>already trust.</em>
+            </h2>
+          </div>
+          <BrandWall />
+        </div>
+      </section>
+    )
+  }
+
+  <section class:list={['section', { 'section--sand': !p.showBrands }]} aria-labelledby="dept-faq-title">
+    <div class="container dept-faq">
+      <div class="stack">
+        <p class="eyebrow">Questions</p>
+        <h2 id="dept-faq-title">Asked <em>all the time.</em></h2>
+      </div>
+      <FaqList items={p.faqs} />
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="more-depts-title">
+    <div class="container">
+      <h2 id="more-depts-title" class="more-title">Keep browsing</h2>
+      <ul class="more-depts">
+        {
+          others.map((d) => (
+            <li>
+              <a href={d.href}>
+                <span class="more-depts__art">
+                  <DeptArt kind={d.art} />
+                </span>
+                <span>
+                  <strong>{d.title}</strong>
+                  <span>{d.blurb}</span>
+                </span>
+                <Icon name="arrow" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .cats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 959px) {
+    .cats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 599px) {
+    .cats {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .cat {
+    position: relative;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    padding: 28px;
+    border-radius: var(--radius-lg);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    scroll-margin-top: calc(var(--header-h) + 24px);
+  }
+
+  .cat:target {
+    border-color: var(--copper-400);
+    box-shadow: 0 0 0 4px var(--copper-100);
+  }
+
+  .cat__num {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--copper-600);
+  }
+
+  .cat h3 {
+    font-size: 1.45rem;
+  }
+
+  .cat p {
+    color: var(--text-2);
+  }
+
+  .cat .chip-list {
+    margin-top: 4px;
+  }
+
+  .cats__note {
+    display: flex;
+    align-items: start;
+    gap: 12px;
+    margin-top: 28px;
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    background: var(--copper-50);
+    color: var(--text-2);
+  }
+
+  .cats__note :global(svg) {
+    flex: none;
+    margin-top: 2px;
+    color: var(--copper-600);
+  }
+
+  .cats__note a {
+    color: var(--copper-700);
+    font-weight: 600;
+  }
+
+  .tips {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tip {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+    padding: 28px;
+    border-radius: var(--radius-lg);
+    background: rgb(255 255 255 / 5%);
+    border: 1px solid rgb(255 255 255 / 9%);
+  }
+
+  .tip__icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 6px;
+    border-radius: 14px;
+    background: rgb(238 176 138 / 14%);
+    color: var(--copper-300);
+    --icon-fill: var(--ink-900);
+  }
+
+  .tip h3 {
+    font-size: 1.3rem;
+  }
+
+  .tip p {
+    color: #b9c4d3;
+  }
+
+  .dept-faq {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: 32px 72px;
+    align-items: start;
+  }
+
+  @media (max-width: 859px) {
+    .dept-faq {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .dept-faq h2 {
+    font-size: var(--step-4);
+  }
+
+  .more-title {
+    margin-bottom: 20px;
+    font-size: var(--step-3);
+  }
+
+  .more-depts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 859px) {
+    .more-depts {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .more-depts a {
+    display: grid;
+    grid-template-columns: 76px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px 14px 14px;
+    border-radius: var(--radius);
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--text);
+    text-decoration: none;
+    transition:
+      border-color 0.2s var(--ease),
+      transform 0.2s var(--ease);
+  }
+
+  .more-depts a:hover {
+    border-color: var(--copper-300);
+    transform: translateY(-2px);
+  }
+
+  .more-depts__art {
+    position: relative;
+    height: 68px;
+    border-radius: var(--radius-sm);
+    background: var(--paper-2);
+  }
+
+  .more-depts__art :global(svg) {
+    position: absolute;
+    left: 14%;
+    top: 12%;
+    width: 72%;
+    height: 76%;
+  }
+
+  .more-depts strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.12rem;
+    font-weight: 620;
+    color: var(--ink-900);
+  }
+
+  .more-depts a > span:nth-child(2) > span {
+    font-size: 0.9rem;
+    color: var(--text-3);
+    line-height: 1.35;
+  }
+
+  .more-depts a > :global(svg) {
+    color: var(--copper-600);
+  }
+</style>

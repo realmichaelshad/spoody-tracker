@@ -1,0 +1,344 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import DeliveryArt from '../components/art/DeliveryArt.astro';
+import { business, mainStore, telHref } from '../data/business';
+import { deliveryFaq, financingFaq, rebateFaq, specialOrderFaq } from '../data/faq';
+import { faqSchema } from '../lib/schema';
+
+const crumbs = [{ name: 'Delivery & Financing', path: '/services/' }];
+const faqs = [deliveryFaq, financingFaq, rebateFaq, specialOrderFaq];
+
+const deliveryChecklist = [
+  {
+    title: 'Measure the way in',
+    text: 'Doorways, hallways, stairs and the elevator — not just the spot where it’s going. Walk-ups especially.',
+  },
+  {
+    title: 'Check the hookups',
+    text: 'Gas or electric, the outlet type, the water line for an ice maker. A photo of the hookup answers most questions.',
+  },
+  {
+    title: 'Tell us about the building',
+    text: 'Delivery hours, elevator reservations, a certificate of insurance — if your building has rules, mention them when you order.',
+  },
+  {
+    title: 'Clear a path',
+    text: 'Move the old appliance out of the way if you can, and make room from the door to where the new one goes.',
+  },
+];
+---
+
+<Base
+  title="Delivery, Financing & Rebates"
+  description="Fast delivery across Brooklyn, Queens, Manhattan and Jersey City, flexible financing, help claiming manufacturer rebates, and special orders."
+  crumbs={crumbs}
+  schema={[faqSchema(faqs)]}
+>
+  <PageHero
+    eyebrow="Delivery · Financing · Rebates"
+    title="The big purchase,"
+    em="made easy."
+    lead="A careful local delivery team, simple financing, help with every manufacturer rebate and special orders for anything that isn’t on the floor."
+    crumbs={crumbs}
+  >
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href={telHref(mainStore)} data-sheet-open="call">
+        <Icon name="phone" /> Call a store
+      </a>
+      <a class="btn btn--ghost" href="/contact/?topic=delivery">Ask a question</a>
+    </Fragment>
+    <ul class="jump" aria-label="On this page">
+      <li><a href="#delivery">Delivery</a></li>
+      <li><a href="#financing">Financing</a></li>
+      <li><a href="#rebates">Rebates</a></li>
+      <li><a href="#special-orders">Special orders</a></li>
+    </ul>
+    <div slot="art" class="svc-hero-art">
+      <DeliveryArt />
+    </div>
+  </PageHero>
+
+  <!-- Delivery -->
+  <section class="section section--white" id="delivery" aria-labelledby="delivery-title">
+    <div class="container svc-split">
+      <div class="stack" style="--stack: 1.1rem">
+        <p class="eyebrow">Delivery</p>
+        <h2 id="delivery-title">Quick, careful, <em>and on time.</em></h2>
+        <p class="lead">
+          Our local delivery team is quick, careful and committed to making sure everything arrives just right — from a
+          single air conditioner to a whole new kitchen.
+        </p>
+        <div class="area">
+          <p class="area__label">We deliver to</p>
+          <ul class="chip-list">
+            {
+              business.serviceArea.map((a) => (
+                <li class="chip">
+                  <Icon name="pin" />
+                  {a}
+                </li>
+              ))
+            }
+            <li class="chip chip--steel">and surrounding areas</li>
+          </ul>
+        </div>
+        <p class="muted">
+          Ask about delivery timing, installation and taking away the old appliance when you buy — we’ll set it up so
+          delivery day goes smoothly.
+        </p>
+      </div>
+      <div class="checklist">
+        <p class="checklist__title"><Icon name="list" /> Before delivery day</p>
+        <ol>
+          {
+            deliveryChecklist.map((item, i) => (
+              <li>
+                <span class="checklist__num">{i + 1}</span>
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Financing & rebates -->
+  <section class="section" aria-label="Financing and rebates">
+    <div class="container svc-cards">
+      <article class="svc-card" id="financing">
+        <span class="svc-card__icon"><Icon name="card" size={28} /></span>
+        <p class="eyebrow">Financing</p>
+        <h2>Take it home now, <em>pay over time.</em></h2>
+        <p>
+          We offer simple, flexible financing so you can bring home the appliances you need and pay for them over time.
+          Ask in store and we’ll walk you through the current plans and terms.
+        </p>
+        <p class="fine">Financing is subject to credit approval. Terms vary by plan.</p>
+      </article>
+      <article class="svc-card" id="rebates">
+        <span class="svc-card__icon"><Icon name="tag" size={28} /></span>
+        <p class="eyebrow">Manufacturer rebates</p>
+        <h2>Every rebate, <em>found and filed.</em></h2>
+        <p>
+          GE, LG, KitchenAid, Frigidaire, Electrolux and other brands run rebates all year — often bigger when you buy two
+          or more appliances from the same brand. We’ll tell you what’s running on the model you want and help you claim
+          it.
+        </p>
+        <p class="fine">
+          This week’s deals go up on <a href={business.instagram.url} target="_blank" rel="noopener">Instagram {business.instagram.handle}</a>.
+          Rebates are paid by the manufacturer on its terms.
+        </p>
+      </article>
+      <article class="svc-card" id="special-orders">
+        <span class="svc-card__icon"><Icon name="box" size={28} /></span>
+        <p class="eyebrow">Special orders</p>
+        <h2>Not on the floor? <em>We can get it.</em></h2>
+        <p>
+          The floor changes every week, and plenty more is a phone call away. Send us the model number and we’ll check the
+          price and how soon we can have it for you.
+        </p>
+        <a class="link-arrow" href="/contact/?topic=price">Send a model number <Icon name="arrow" /></a>
+      </article>
+      <article class="svc-card" id="registry-card">
+        <span class="svc-card__icon"><Icon name="gift" size={28} /></span>
+        <p class="eyebrow">Gift registry</p>
+        <h2>For the vort, the wedding <em>&amp; every simcha.</em></h2>
+        <p>
+          Set up a registry in our 13th Avenue kallah showroom, and family and friends can buy exactly what’s on your
+          list.
+        </p>
+        <a class="link-arrow" href="/kallah/">About the kallah showroom <Icon name="arrow" /></a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="svc-faq-title">
+    <div class="container svc-faq">
+      <div class="stack">
+        <p class="eyebrow">Questions</p>
+        <h2 id="svc-faq-title">Delivery &amp; <em>payment.</em></h2>
+      </div>
+      <FaqList items={faqs} />
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .svc-hero-art {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 8%;
+  }
+
+  .svc-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: 40px 72px;
+  }
+
+  @media (max-width: 959px) {
+    .svc-split {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .svc-split h2 {
+    font-size: var(--step-4);
+  }
+
+  .area {
+    display: grid;
+    gap: 10px;
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    background: var(--paper);
+    border: 1px solid var(--line);
+  }
+
+  .area__label {
+    font-weight: 650;
+    color: var(--ink-900);
+  }
+
+  .checklist {
+    padding: clamp(24px, 3vw, 36px);
+    border-radius: var(--radius-lg);
+    background: var(--ink-900);
+    color: #dfe6ef;
+  }
+
+  .checklist__title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 620;
+    color: #fff;
+  }
+
+  .checklist__title :global(svg) {
+    color: var(--copper-300);
+  }
+
+  .checklist ol {
+    display: grid;
+    gap: 18px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .checklist li {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 14px;
+  }
+
+  .checklist__num {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgb(238 176 138 / 16%);
+    color: var(--copper-300);
+    font-weight: 700;
+  }
+
+  .checklist h3 {
+    font-family: var(--font-body);
+    font-size: 1.02rem;
+    font-weight: 680;
+    letter-spacing: 0;
+    color: #fff;
+  }
+
+  .checklist p {
+    margin-top: 4px;
+    color: #b9c4d3;
+    font-size: 0.97rem;
+  }
+
+  .svc-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  @media (max-width: 859px) {
+    .svc-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .svc-card {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    padding: clamp(26px, 3.4vw, 40px);
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    border: 1px solid var(--line);
+    scroll-margin-top: calc(var(--header-h) + 24px);
+  }
+
+  .svc-card:target {
+    border-color: var(--copper-400);
+    box-shadow: 0 0 0 4px var(--copper-100);
+  }
+
+  .svc-card__icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 6px;
+    border-radius: 18px;
+    background: var(--copper-50);
+    color: var(--copper-600);
+    --icon-fill: var(--copper-50);
+  }
+
+  .svc-card h2 {
+    font-size: var(--step-3);
+  }
+
+  .svc-card p:not(.eyebrow):not(.fine) {
+    color: var(--text-2);
+  }
+
+  .svc-card .fine a {
+    color: var(--copper-700);
+  }
+
+  .svc-faq {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: 32px 72px;
+    align-items: start;
+  }
+
+  @media (max-width: 859px) {
+    .svc-faq {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .svc-faq h2 {
+    font-size: var(--step-4);
+  }
+</style>

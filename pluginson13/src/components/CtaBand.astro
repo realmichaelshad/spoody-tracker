@@ -1,0 +1,92 @@
+---
+/* The closing call to action on every page: send a model number or call. */
+import { mainStore, telHref } from '../data/business';
+import Icon from './Icon.astro';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+
+const {
+  title = 'Looking for one specific model?',
+  text = "Send us the model number and we'll check today's price and stock at both stores — or just call either store.",
+} = Astro.props;
+---
+
+<section class="cta-band" aria-labelledby="cta-band-title">
+  <div class="container">
+    <div class="cta-band__inner reveal">
+      <svg class="cta-band__wire" viewBox="0 0 400 120" aria-hidden="true" focusable="false" preserveAspectRatio="none">
+        <path d="M0 90c60 0 70-60 130-60s80 70 140 70 70-50 130-50" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round"></path>
+      </svg>
+      <div class="cta-band__copy">
+        <h2 id="cta-band-title">{title}</h2>
+        <p>{text}</p>
+      </div>
+      <div class="cta-band__actions">
+        <a class="btn btn--light" href="/contact/">
+          <Icon name="chat" /> Ask for a price
+        </a>
+        <a class="btn btn--outline-light" href={telHref(mainStore)} data-sheet-open="call">
+          <Icon name="phone" /> Call a store
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    padding-block: clamp(40px, 6vw, 88px);
+  }
+
+  .cta-band__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.3fr auto;
+    align-items: center;
+    gap: 24px 48px;
+    padding: clamp(32px, 5vw, 64px);
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(120% 140% at 100% 0%, rgb(224 138 85 / 45%) 0%, rgb(224 138 85 / 0%) 55%),
+      var(--copper-700);
+    color: #fff;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  @media (max-width: 859px) {
+    .cta-band__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .cta-band__wire {
+    position: absolute;
+    inset: auto 0 -6% 0;
+    width: 100%;
+    height: 46%;
+    color: rgb(255 255 255 / 16%);
+    z-index: -1;
+  }
+
+  .cta-band h2 {
+    color: #fff;
+    font-size: var(--step-4);
+  }
+
+  .cta-band p {
+    margin-top: 12px;
+    max-width: 54ch;
+    font-size: var(--step-1);
+    color: #fbe6d6;
+  }
+
+  .cta-band__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+</style>

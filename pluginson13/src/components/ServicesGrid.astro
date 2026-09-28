@@ -1,0 +1,146 @@
+---
+import { business } from '../data/business';
+import Icon, { type IconName } from './Icon.astro';
+
+const area = `${business.serviceArea.slice(0, -1).join(', ')} & ${business.serviceArea.at(-1)}`;
+
+const services: { icon: IconName; title: string; text: string; href: string }[] = [
+  {
+    icon: 'truck',
+    title: 'Fast local delivery',
+    text: `A quick, careful delivery team that makes sure everything arrives just right — across ${area}.`,
+    href: '/services/#delivery',
+  },
+  {
+    icon: 'card',
+    title: 'Flexible financing',
+    text: 'Bring the new fridge home now and pay over time, with simple plans that fit the budget.',
+    href: '/services/#financing',
+  },
+  {
+    icon: 'tag',
+    title: 'Manufacturer rebates',
+    text: "We'll flag every rebate running on the model you want, and help you claim it.",
+    href: '/services/#rebates',
+  },
+  {
+    icon: 'box',
+    title: 'Special orders',
+    text: "Don't see it on the floor? Bring the model number — we can usually get it.",
+    href: '/services/#special-orders',
+  },
+  {
+    icon: 'gift',
+    title: 'Gift registry',
+    text: 'For the vort, the wedding and every simcha — family buys exactly what’s on the list.',
+    href: '/kallah/#registry',
+  },
+  {
+    icon: 'chat',
+    title: 'Real advice',
+    text: 'Gas or electric, Sabbath mode, what fits up a Brooklyn staircase — ask people who know.',
+    href: '/contact/',
+  },
+];
+---
+
+<ul class="services">
+  {
+    services.map((s, i) => (
+      <li class="reveal" style={`--delay:${(i % 3) * 70}ms`}>
+        <a class="service" href={s.href}>
+          <span class="service__icon">
+            <Icon name={s.icon} size={26} />
+          </span>
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+          <span class="service__more" aria-hidden="true">
+            <Icon name="arrow" size={18} />
+          </span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .services {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 959px) {
+    .services {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 599px) {
+    .services {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .service {
+    position: relative;
+    display: grid;
+    gap: 10px;
+    align-content: start;
+    height: 100%;
+    padding: 28px 28px 30px;
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--text);
+    text-decoration: none;
+    transition:
+      transform 0.25s var(--ease),
+      box-shadow 0.25s var(--ease),
+      border-color 0.25s var(--ease);
+  }
+
+  .service:hover {
+    transform: translateY(-3px);
+    border-color: var(--copper-200);
+    box-shadow: var(--shadow);
+  }
+
+  .service__icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 8px;
+    border-radius: 16px;
+    background: var(--copper-50);
+    color: var(--copper-600);
+    --icon-fill: var(--copper-50);
+  }
+
+  .service h3 {
+    font-size: 1.3rem;
+  }
+
+  .service p {
+    color: var(--text-2);
+    font-size: 0.98rem;
+  }
+
+  .service__more {
+    position: absolute;
+    top: 28px;
+    right: 26px;
+    color: var(--line-2);
+    transition:
+      color 0.2s var(--ease),
+      transform 0.2s var(--ease);
+  }
+
+  .service:hover .service__more {
+    color: var(--copper-600);
+    transform: translateX(3px);
+  }
+</style>

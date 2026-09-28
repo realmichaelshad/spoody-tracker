@@ -1,0 +1,153 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import StoreCard from '../../components/StoreCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import StorefrontArt from '../../components/art/StorefrontArt.astro';
+import { stores } from '../../data/business';
+import { storeSchema } from '../../lib/schema';
+
+const crumbs = [{ name: 'Locations', path: '/locations/' }];
+---
+
+<Base
+  title="Store Locations & Hours — Boro Park & Williamsburg"
+  description="4103 13th Ave, Boro Park — (718) 853-6061. 50 Spencer St, Williamsburg — (718) 388-0857. Open Sunday–Friday, closed Shabbos and Yom Tov."
+  crumbs={crumbs}
+  schema={stores.map(storeSchema)}
+>
+  <PageHero
+    eyebrow="Locations & hours"
+    title="Two Brooklyn stores."
+    em="Come say hi."
+    lead="13th Avenue in Boro Park and Spencer Street in Williamsburg. Both carry appliances, kitchenware and electronics; the kallah showroom and keilim mikvah are at 13th Avenue."
+    crumbs={crumbs}
+  >
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href="#boro-park"><Icon name="pin" /> Boro Park</a>
+      <a class="btn btn--ghost" href="#williamsburg"><Icon name="pin" /> Williamsburg</a>
+    </Fragment>
+    <div slot="art" class="loc-hero-art">
+      <StorefrontArt id="loc-storefront" />
+    </div>
+  </PageHero>
+
+  <section class="section section--white">
+    <div class="container loc-grid">
+      {
+        stores.map((store) => (
+          <div class="loc" id={store.id}>
+            <StoreCard store={store} headingLevel="h2" />
+            <div class="upcoming" data-upcoming={store.id} hidden>
+              <p class="upcoming__title">
+                <Icon name="calendar" size={20} /> Coming up at {store.name}
+              </p>
+              <ul />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="which-title">
+    <div class="container which">
+      <div class="stack" style="--stack: 1rem">
+        <p class="eyebrow">Which store?</p>
+        <h2 id="which-title">Both have what you need. <em>One has a little more.</em></h2>
+      </div>
+      <ul class="which__list">
+        <li>
+          <Icon name="check" />
+          <span><strong>Appliances, kitchenware and electronics</strong> — at both stores.</span>
+        </li>
+        <li>
+          <Icon name="check" />
+          <span><strong>Kallah showroom &amp; registry</strong> — at 13th Avenue, Boro Park.</span>
+        </li>
+        <li>
+          <Icon name="check" />
+          <span><strong>Keilim mikvah</strong> — at 13th Avenue, Boro Park.</span>
+        </li>
+        <li>
+          <Icon name="check" />
+          <span><strong>Delivery</strong> across Brooklyn, Queens, Manhattan &amp; Jersey City — just ask either store.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand title="Want to check before you come?" text="Send us the model number and we'll tell you which store has it and what it costs today." />
+</Base>
+
+<style>
+  .loc-hero-art {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: end center;
+    padding: 6% 4% 0;
+  }
+
+  .loc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  @media (max-width: 899px) {
+    .loc-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .loc {
+    display: grid;
+    gap: 14px;
+    scroll-margin-top: calc(var(--header-h) + 24px);
+  }
+
+  .which {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 72px;
+    align-items: center;
+  }
+
+  @media (max-width: 859px) {
+    .which {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .which h2 {
+    font-size: var(--step-4);
+  }
+
+  .which__list {
+    display: grid;
+    gap: 12px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .which__list li {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 12px;
+    padding: 16px 18px;
+    border-radius: var(--radius);
+    background: var(--card);
+    border: 1px solid var(--line);
+  }
+
+  .which__list :global(svg) {
+    color: var(--green);
+  }
+
+  .which__list strong {
+    color: var(--ink-900);
+  }
+</style>

@@ -1,0 +1,188 @@
+---
+import type { ArtKind } from './artSizes';
+
+/*
+ * Department illustrations. Flat fills, one ink outline weight, the same
+ * copper / stainless / glass palette as the rest of the site.
+ */
+interface Props {
+  kind: ArtKind;
+  class?: string;
+  /** Position inside a parent <svg> (see DeptScene); omit for a standalone drawing. */
+  place?: { x: number; y: number; width: number; height: number };
+}
+
+const { kind, class: className, place } = Astro.props;
+// Standalone drawings get the sizing class; nested ones are sized by `place`.
+const cls = place ? className : ['art', className];
+
+const ink = 'var(--ink-900)';
+const steel = 'var(--steel-100)';
+const steel2 = 'var(--steel-200)';
+const steel3 = 'var(--steel-300)';
+const glass = 'var(--glass)';
+const copper = 'var(--copper-500)';
+const copperLight = 'var(--copper-300)';
+const shadow = 'rgb(15 27 45 / 10%)';
+---
+
+{
+  kind === 'fridge' && (
+    <svg class:list={cls} {...place} viewBox="0 0 120 172" aria-hidden="true" focusable="false">
+      <ellipse cx="60" cy="166" rx="50" ry="5" fill={shadow} />
+      <g stroke={ink} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="14" y="6" width="92" height="154" rx="10" fill={steel} />
+        <path d="M60 6v100M14 106h92" fill="none" />
+        <rect x="51.5" y="32" width="5" height="48" rx="2.5" fill={steel3} stroke-width="2" />
+        <rect x="63.5" y="32" width="5" height="48" rx="2.5" fill={steel3} stroke-width="2" />
+        <rect x="34" y="116" width="52" height="5" rx="2.5" fill={steel3} stroke-width="2" />
+        <rect x="23" y="36" width="20" height="30" rx="4" fill={glass} stroke-width="2" />
+      </g>
+      <rect x="27.5" y="41" width="11" height="5" rx="1.5" fill="var(--water)" />
+      <rect x="29" y="54" width="8" height="7" rx="1.2" fill="#5b6b80" />
+      <rect x="19.5" y="12" width="5" height="88" rx="2.5" fill="#fff" opacity="0.75" />
+      <rect x="66" y="12" width="3" height="16" rx="1.5" fill="#fff" opacity="0.6" />
+      <rect x="22" y="159" width="12" height="5" rx="1.5" fill={ink} />
+      <rect x="86" y="159" width="12" height="5" rx="1.5" fill={ink} />
+    </svg>
+  )
+}
+
+{
+  kind === 'mixer' && (
+    <svg class:list={cls} {...place} viewBox="0 0 132 132" aria-hidden="true" focusable="false">
+      <ellipse cx="66" cy="126" rx="54" ry="4.5" fill={shadow} />
+      <g stroke={ink} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="86" y="44" width="26" height="72" rx="11" fill={copper} />
+        <rect x="26" y="20" width="92" height="36" rx="18" fill={copper} />
+        <path d="M26 38h92" stroke={copperLight} stroke-width="4" />
+        <path d="M58 56v12" />
+        <path d="M34 70h52l-4.5 28a8 8 0 0 1-8 7H46.5a8 8 0 0 1-8-7z" fill={steel2} />
+        <rect x="30" y="66" width="60" height="7" rx="3.5" fill={steel} />
+        <rect x="16" y="112" width="104" height="12" rx="6" fill={copper} />
+        <circle cx="100" cy="40" r="4" fill={steel} stroke-width="2" />
+      </g>
+      <path d="M31 25c6-3 14-4 22-4" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.55" />
+      <rect x="40" y="78" width="4" height="18" rx="2" fill="#fff" opacity="0.6" />
+    </svg>
+  )
+}
+
+{
+  kind === 'pots' && (
+    <svg class:list={cls} {...place} viewBox="0 0 156 124" aria-hidden="true" focusable="false">
+      <ellipse cx="78" cy="118" rx="66" ry="4.5" fill={shadow} />
+      <g stroke={ink} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M17 52h-7a4 4 0 0 0-4 4v3a4 4 0 0 0 4 4h7M91 52h7a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4h-7" fill="none" />
+        <rect x="16" y="40" width="76" height="72" rx="9" fill={copper} />
+        <path d="M16 51h76" stroke={copperLight} stroke-width="5" />
+        <path d="M11 41c0-8 18-13 43-13s43 5 43 13z" fill={steel2} />
+        <rect x="47" y="18" width="14" height="10" rx="4" fill={ink} />
+        <path d="M104 88h36a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3h-36" fill={ink} />
+        <rect x="96" y="82" width="12" height="30" rx="5" fill={glass} />
+      </g>
+      <path d="M24 62v38" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="0.5" />
+      <path d="M24 36c10-3 20-4 30-4" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none" opacity="0.7" />
+    </svg>
+  )
+}
+
+{
+  kind === 'electronics' && (
+    <svg class:list={cls} {...place} viewBox="0 0 156 124" aria-hidden="true" focusable="false">
+      <ellipse cx="78" cy="118" rx="66" ry="4.5" fill={shadow} />
+      <g stroke={ink} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M18 78V64a38 38 0 0 1 76 0v14" fill="none" stroke-width="7" />
+        <path d="M18 78V64a38 38 0 0 1 76 0v14" fill="none" stroke={steel3} stroke-width="2.6" />
+        <rect x="8" y="66" width="22" height="42" rx="10" fill={copper} />
+        <rect x="82" y="66" width="22" height="42" rx="10" fill={copper} />
+        <rect x="112" y="46" width="36" height="66" rx="14" fill={steel2} />
+      </g>
+      <g fill={ink}>
+        <circle cx="130" cy="92" r="11" />
+        <circle cx="130" cy="61" r="4.5" />
+      </g>
+      <circle cx="130" cy="92" r="5.5" fill="#5b6b80" />
+      <circle cx="130" cy="92" r="2" fill={ink} />
+      <rect x="13" y="72" width="4" height="22" rx="2" fill="#fff" opacity="0.55" />
+      <rect x="87" y="72" width="4" height="22" rx="2" fill="#fff" opacity="0.55" />
+      <rect x="117" y="52" width="4" height="30" rx="2" fill="#fff" opacity="0.6" />
+    </svg>
+  )
+}
+
+{
+  kind === 'washer' && (
+    <svg class:list={cls} {...place} viewBox="0 0 120 142" aria-hidden="true" focusable="false">
+      <ellipse cx="60" cy="137" rx="50" ry="4.5" fill={shadow} />
+      <g stroke={ink} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="10" y="6" width="100" height="126" rx="9" fill={steel} />
+        <path d="M10 30h100" fill="none" />
+        <rect x="20" y="13" width="34" height="10" rx="2.5" fill={glass} stroke-width="2" />
+        <circle cx="92" cy="18" r="6.5" fill={steel2} stroke-width="2" />
+        <circle cx="60" cy="81" r="37" fill={steel2} />
+        <circle cx="60" cy="81" r="28" fill={glass} />
+      </g>
+      <path d="M32.3 86c5-4.4 9-4.4 14 0s9 4.4 14 0 9-4.4 14 0 9 4.4 13.4 0A28 28 0 0 1 32.3 86z" fill="var(--water)" opacity="0.9" />
+      <circle cx="50" cy="96" r="2.6" fill="#fff" opacity="0.8" />
+      <circle cx="68" cy="100" r="1.8" fill="#fff" opacity="0.8" />
+      <circle cx="60" cy="92" r="1.4" fill="#fff" opacity="0.8" />
+      <path d="M44 62c4-3 9-5 14-5" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.45" />
+      <rect x="24" y="16" width="14" height="4" rx="1" fill="var(--volt)" />
+      <rect x="17" y="12" width="4" height="112" rx="2" fill="#fff" opacity="0.6" />
+    </svg>
+  )
+}
+
+{
+  kind === 'urn' && (
+    <svg class:list={cls} {...place} viewBox="0 0 96 152" aria-hidden="true" focusable="false">
+      <ellipse cx="48" cy="147" rx="40" ry="4.5" fill={shadow} />
+      <g stroke={ink} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M20 44h-6a4 4 0 0 0-4 4v14a4 4 0 0 0 4 4h6M76 44h6a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4h-6" fill="none" />
+        <rect x="20" y="26" width="56" height="96" rx="9" fill={steel} />
+        <path d="M22 27c0-9 11-13 26-13s26 4 26 13z" fill={steel2} />
+        <rect x="41" y="5" width="14" height="10" rx="4" fill={ink} />
+        <rect x="61" y="40" width="7" height="58" rx="3.5" fill={glass} stroke-width="2" />
+        <path d="M40 108h16v6h-4.5v9h-7v-9H40z" fill={steel3} stroke-width="2" />
+        <rect x="14" y="122" width="68" height="14" rx="6" fill={steel2} />
+      </g>
+      <rect x="62.6" y="64" width="3.8" height="32.5" rx="1.9" fill="var(--water)" />
+      <circle cx="48" cy="129" r="2.8" fill="var(--volt)" />
+      <rect x="26" y="34" width="5" height="80" rx="2.5" fill="#fff" opacity="0.7" />
+    </svg>
+  )
+}
+
+{
+  kind === 'range' && (
+    <svg class:list={cls} {...place} viewBox="0 0 152 134" aria-hidden="true" focusable="false">
+      <ellipse cx="76" cy="129" rx="64" ry="4.5" fill={shadow} />
+      <g stroke={ink} stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="10" y="6" width="132" height="22" rx="5" fill={steel2} />
+        <rect x="8" y="28" width="136" height="96" rx="6" fill={steel} />
+        <path d="M8 38h136M8 106h136" fill="none" />
+        <rect x="26" y="45" width="100" height="5" rx="2.5" fill={steel3} stroke-width="2" />
+        <rect x="24" y="57" width="104" height="42" rx="7" fill={glass} />
+        <rect x="60" y="112" width="32" height="4.5" rx="2.25" fill={steel3} stroke-width="1.8" />
+        <rect x="63" y="11" width="26" height="12" rx="2.5" fill={glass} stroke-width="1.8" />
+      </g>
+      <rect x="33" y="64" width="86" height="28" rx="4" fill={copper} opacity="0.42" />
+      <path d="M36 82h80" stroke={copperLight} stroke-width="1.8" opacity="0.8" />
+      <g fill="#fff" stroke={ink} stroke-width="1.8">
+        <circle cx="26" cy="17" r="4.2" />
+        <circle cx="44" cy="17" r="4.2" />
+        <circle cx="108" cy="17" r="4.2" />
+        <circle cx="126" cy="17" r="4.2" />
+      </g>
+      <rect x="68" y="15" width="16" height="4" rx="1" fill="var(--volt)" />
+    </svg>
+  )
+}
+
+<style>
+  .art {
+    width: 100%;
+    height: auto;
+  }
+</style>

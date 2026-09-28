@@ -1,0 +1,108 @@
+---
+import type { Faq } from '../data/faq';
+
+interface Props {
+  items: Faq[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="faq">
+  {
+    items.map((item) => (
+      <details class="faq__item">
+        <summary>
+          <span>{item.q}</span>
+          <span class="faq__icon" aria-hidden="true" />
+        </summary>
+        <p>{item.a}</p>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .faq {
+    border-top: 1px solid var(--line-2);
+  }
+
+  .faq__item {
+    border-bottom: 1px solid var(--line-2);
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 72px;
+    padding: 18px 0;
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--ink-900);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:hover span:first-child {
+    color: var(--copper-700);
+  }
+
+  .faq__icon {
+    position: relative;
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 1px solid var(--line-2);
+    transition:
+      transform 0.25s var(--ease),
+      background-color 0.2s var(--ease);
+  }
+
+  .faq__icon::before,
+  .faq__icon::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 12px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--ink-900);
+    transform: translate(-50%, -50%);
+  }
+
+  .faq__icon::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+    transition: transform 0.25s var(--ease);
+  }
+
+  details[open] .faq__icon {
+    background: var(--copper-600);
+    border-color: var(--copper-600);
+  }
+
+  details[open] .faq__icon::before,
+  details[open] .faq__icon::after {
+    background: #fff;
+  }
+
+  details[open] .faq__icon::after {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  .faq__item p {
+    max-width: 68ch;
+    padding: 0 56px 24px 0;
+    color: var(--text-2);
+  }
+</style>

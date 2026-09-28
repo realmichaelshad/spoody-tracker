@@ -1,0 +1,248 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon, { type IconName } from '../components/Icon.astro';
+import StoreCard from '../components/StoreCard.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import MikvahArt from '../components/art/MikvahArt.astro';
+import { storeById, telHref } from '../data/business';
+import { hoursFaq, mikvahFaq, type Faq } from '../data/faq';
+import { faqSchema } from '../lib/schema';
+
+const crumbs = [{ name: 'Keilim Mikvah', path: '/keilim-mikvah/' }];
+const boroPark = storeById('boro-park');
+
+const steps: { icon: IconName; title: string; text: string }[] = [
+  { icon: 'search', title: 'Shop', text: 'Pick out your new pots, pans, dishes, flatware and utensils anywhere in the store.' },
+  { icon: 'box', title: 'We unwrap', text: 'Our mikvah attendant takes everything out of the packaging for you.' },
+  { icon: 'drop', title: 'You tovel', text: 'Immerse your new keilim in the keilim mikvah, right there in the store.' },
+  { icon: 'gift', title: 'We rewrap', text: 'Everything is wrapped back up for the trip home — ready for the kitchen.' },
+];
+
+const faqs: Faq[] = [
+  mikvahFaq,
+  {
+    q: 'Which location has the keilim mikvah?',
+    a: 'The keilim mikvah is at our Boro Park store, 4103 13th Avenue. Our Williamsburg store on Spencer Street does not have one.',
+  },
+  {
+    q: 'What needs tevilah, and how?',
+    a: 'Please ask your Rav about which keilim need tevilah and how to do it. We are happy to make the unwrapping, dipping and rewrapping part easy.',
+  },
+  {
+    q: 'Is it busy before Yom Tov?',
+    a: 'The weeks before Pesach and the other Yomim Tovim are busy on 13th Avenue. If you can, come earlier in the day or earlier in the season and give yourself a little extra time.',
+  },
+  hoursFaq,
+];
+---
+
+<Base
+  title="Keilim Mikvah in Boro Park — Tovel In Store"
+  description="Buy new pots, dishes and utensils on 13th Ave and tovel them before you leave. Our attendant unwraps and rewraps your purchases at the keilim mikvah."
+  crumbs={crumbs}
+  schema={[faqSchema(faqs)]}
+>
+  <PageHero
+    eyebrow="Keilim mikvah · 13th Avenue"
+    title="A keilim mikvah,"
+    em="right in the store."
+    lead="Buy your new pots, dishes and utensils at our Boro Park store and tovel them before you leave. An attendant unwraps everything for you, then rewraps it after tevilah — so it all goes home ready to use."
+    crumbs={crumbs}
+    tone="water"
+  >
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href={boroPark.mapsUrl} target="_blank" rel="noopener">
+        <Icon name="directions" /> Directions to 13th Ave
+      </a>
+      <a class="btn btn--ghost" href={telHref(boroPark)}>
+        <Icon name="phone" /> {boroPark.phone}
+      </a>
+    </Fragment>
+    <div slot="art" class="mikvah-hero-art">
+      <MikvahArt />
+    </div>
+  </PageHero>
+
+  <section class="section section--white" aria-labelledby="mikvah-how-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2 id="mikvah-how-title">Four steps, <em>one trip.</em></h2>
+      </div>
+      <ol class="mk-steps">
+        {
+          steps.map((s, i) => (
+            <li class="reveal" style={`--delay:${i * 70}ms`}>
+              <span class="mk-steps__icon">
+                <Icon name={s.icon} size={26} />
+              </span>
+              <span class="mk-steps__num">Step {i + 1}</span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="mk-note">
+        <Icon name="info" size={20} />
+        <span>
+          Questions about which keilim need tevilah, or how? Please ask your Rav — we’re here to make the dipping part
+          easy.
+        </span>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="mikvah-visit-title">
+    <div class="container mk-visit">
+      <div class="stack" style="--stack: 1.1rem">
+        <p class="eyebrow">Where to find it</p>
+        <h2 id="mikvah-visit-title">At our <em>13th Avenue</em> store.</h2>
+        <p class="lead">
+          The keilim mikvah is inside Plug-ins Boro Park at 4103 13th Avenue. Check the store’s hours before you head
+          over — the badge on the store card updates live, Shabbos and Yom Tov included.
+        </p>
+        <div class="upcoming" data-upcoming="boro-park" hidden>
+          <p class="upcoming__title"><Icon name="calendar" size={20} /> Coming up</p>
+          <ul></ul>
+        </div>
+      </div>
+      <StoreCard store={boroPark} />
+    </div>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="mikvah-faq-title">
+    <div class="container mk-faq">
+      <div class="stack">
+        <p class="eyebrow">Questions</p>
+        <h2 id="mikvah-faq-title">Before <em>you tovel.</em></h2>
+      </div>
+      <FaqList items={faqs} />
+    </div>
+  </section>
+
+  <CtaBand title="Setting up a whole kitchen?" text="Build your list, shop it in one trip and tovel on the spot. Call the 13th Avenue store or send us your list." />
+</Base>
+
+<style>
+  .mikvah-hero-art {
+    position: absolute;
+    inset: 0;
+  }
+
+  .mikvah-hero-art :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .mk-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 1023px) {
+    .mk-steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 559px) {
+    .mk-steps {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .mk-steps li {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+    padding: 28px;
+    border-radius: var(--radius-lg);
+    background: var(--paper);
+    border: 1px solid var(--line);
+  }
+
+  .mk-steps__icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 8px;
+    border-radius: 16px;
+    background: var(--water-100);
+    color: #1f5f86;
+    --icon-fill: var(--water-100);
+  }
+
+  .mk-steps__num {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #2a6f98;
+  }
+
+  .mk-steps h3 {
+    font-size: 1.35rem;
+  }
+
+  .mk-steps p {
+    color: var(--text-2);
+  }
+
+  .mk-note {
+    display: flex;
+    align-items: start;
+    gap: 12px;
+    margin-top: 24px;
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    background: var(--water-100);
+    color: #1f4f6e;
+    font-weight: 520;
+  }
+
+  .mk-note :global(svg) {
+    flex: none;
+    margin-top: 2px;
+  }
+
+  .mk-visit {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 40px 64px;
+  }
+
+  @media (max-width: 959px) {
+    .mk-visit {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .mk-visit h2 {
+    font-size: var(--step-4);
+  }
+
+  .mk-faq {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: 32px 72px;
+    align-items: start;
+  }
+
+  @media (max-width: 859px) {
+    .mk-faq {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .mk-faq h2 {
+    font-size: var(--step-4);
+  }
+</style>

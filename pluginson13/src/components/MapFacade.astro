@@ -1,0 +1,144 @@
+---
+/*
+ * A map that only loads Google Maps when someone asks for it: faster pages,
+ * no third-party requests on arrival, and it still works on filtered
+ * connections that block embeds (the directions link always works).
+ */
+import { fullAddress, type Store } from '../data/business';
+import Icon from './Icon.astro';
+
+interface Props {
+  store: Store;
+}
+
+const { store } = Astro.props;
+const embed = `https://www.google.com/maps?q=${encodeURIComponent(store.mapsEmbedQuery)}&z=16&output=embed`;
+const patternId = `map-grid-${store.id}`;
+---
+
+<div class="map" data-map={embed} data-map-title={`Map of Plug-ins ${store.name}, ${fullAddress(store)}`}>
+  <svg class="map__streets" viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <defs>
+      <pattern id={patternId} width="80" height="52" patternUnits="userSpaceOnUse" patternTransform="rotate(-28)">
+        <rect width="80" height="52" fill="#efe7db"></rect>
+        <path d="M0 0h80M0 0v52" stroke="#fffaf3" stroke-width="10"></path>
+      </pattern>
+    </defs>
+    <rect width="400" height="260" fill={`url(#${patternId})`}></rect>
+    <path d="M-20 196C80 170 150 120 230 110s130-40 200-90" stroke="#fffaf3" stroke-width="18" fill="none"></path>
+    <rect x="276" y="150" width="90" height="60" rx="10" fill="#dcead7" transform="rotate(-28 321 180)"></rect>
+  </svg>
+  <div class="map__pin" aria-hidden="true">
+    <svg viewBox="0 0 48 60" focusable="false">
+      <path d="M24 58s20-19 20-34A20 20 0 0 0 4 24c0 15 20 34 20 34z" fill="var(--copper-600)" stroke="var(--ink-900)" stroke-width="3"></path>
+      <circle cx="24" cy="24" r="8" fill="#fff8f1" stroke="var(--ink-900)" stroke-width="3"></circle>
+    </svg>
+  </div>
+  <div class="map__label">
+    <strong>Plug-ins {store.name}</strong>
+    <span>{fullAddress(store)}</span>
+  </div>
+  <div class="map__actions">
+    <button class="btn btn--ink btn--sm" type="button" data-map-load hidden>
+      <Icon name="pin" /> Show map
+    </button>
+    <a class="btn btn--light btn--sm" href={store.mapsUrl} target="_blank" rel="noopener">
+      <Icon name="directions" /> Directions
+    </a>
+  </div>
+</div>
+
+<style>
+  .map {
+    position: relative;
+    min-height: 320px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    background: #efe7db;
+  }
+
+  .map__streets,
+  .map :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .map__pin {
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    width: 44px;
+    transform: translate(-50%, -100%);
+    filter: drop-shadow(0 8px 10px rgb(15 27 45 / 30%));
+  }
+
+  .map__label {
+    position: absolute;
+    left: 50%;
+    top: calc(42% + 10px);
+    transform: translateX(-50%);
+    display: grid;
+    gap: 2px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: var(--shadow);
+    text-align: center;
+    white-space: nowrap;
+    font-size: 0.9rem;
+  }
+
+  .map__label strong {
+    color: var(--ink-900);
+  }
+
+  .map__label span {
+    color: var(--text-3);
+  }
+
+  .map__actions {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .map[data-loaded] .map__pin,
+  .map[data-loaded] .map__label,
+  .map[data-loaded] [data-map-load] {
+    display: none;
+  }
+
+  .map[data-loaded] .map__actions {
+    left: auto;
+    right: 12px;
+    bottom: 12px;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-map]').forEach((map) => {
+    const button = map.querySelector<HTMLButtonElement>('[data-map-load]');
+    if (!button) return;
+    button.hidden = false;
+    button.addEventListener('click', () => {
+      const frame = document.createElement('iframe');
+      frame.src = map.dataset.map!;
+      frame.title = map.dataset.mapTitle ?? 'Map';
+      frame.loading = 'lazy';
+      frame.referrerPolicy = 'no-referrer-when-downgrade';
+      frame.allowFullscreen = true;
+      map.prepend(frame);
+      map.setAttribute('data-loaded', '');
+      frame.focus();
+    });
+  });
+</script>

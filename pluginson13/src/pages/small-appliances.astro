@@ -1,0 +1,100 @@
+---
+import Department, { type Category, type Tip } from '../layouts/Department.astro';
+import { hoursFaq, mikvahFaq, registryFaq, specialOrderFaq } from '../data/faq';
+
+const categories: Category[] = [
+  {
+    id: 'shabbos',
+    title: 'Urns, platas & Shabbos essentials',
+    text: 'Hot water urns in every size, platas and warming trays, blechs and Shabbos timers — everything that keeps Shabbos warm.',
+    points: ['Hot water urns', 'Platas & warming trays', 'Blechs', 'Shabbos timers'],
+  },
+  {
+    id: 'mixers',
+    title: 'Mixers & food processors',
+    text: 'Stand mixers strong enough for a double batch of challah dough, plus food processors, hand mixers and immersion blenders.',
+    points: ['Stand mixers', 'Food processors', 'Hand mixers', 'Immersion blenders'],
+  },
+  {
+    id: 'slow-cookers',
+    title: 'Slow cookers & multi-cookers',
+    text: 'Slow cookers for cholent that’s ready when you are, and pressure cookers, multi-cookers and rice cookers for busy weeknights.',
+    points: ['Slow cookers', 'Pressure & multi-cookers', 'Rice cookers'],
+  },
+  {
+    id: 'coffee',
+    title: 'Coffee, espresso & kettles',
+    text: 'Drip coffee makers, espresso machines, grinders and electric kettles — for the morning coffee and the Shabbos tea.',
+    points: ['Drip & pod', 'Espresso', 'Grinders', 'Electric kettles'],
+  },
+  {
+    id: 'countertop',
+    title: 'Toasters, ovens & air fryers',
+    text: 'Toasters and toaster ovens (one milchig, one fleishig), air fryers, griddles and sandwich makers.',
+    points: ['Toasters', 'Toaster ovens', 'Air fryers', 'Griddles'],
+  },
+  {
+    id: 'blenders',
+    title: 'Blenders & juicers',
+    text: 'Full-size and personal blenders for shakes and soups, plus juicers for the fresh-squeezed crowd.',
+    points: ['Countertop blenders', 'Personal blenders', 'Juicers'],
+  },
+  {
+    id: 'vacuums',
+    title: 'Vacuums & floor care',
+    text: 'Canister and upright vacuums — including SEBO — stick vacuums and handhelds for the crumbs after every meal.',
+    points: ['Canister & upright', 'Stick & handheld', 'SEBO'],
+  },
+  {
+    id: 'comfort',
+    title: 'Fans, heaters & air care',
+    text: 'Fans for the summer, heaters for the winter, and air purifiers and humidifiers all year round.',
+    points: ['Fans', 'Heaters', 'Air purifiers', 'Humidifiers'],
+  },
+  {
+    id: 'garment-care',
+    title: 'Irons & garment steamers',
+    text: 'Steam irons and garment steamers to get the Shabbos clothes looking their best.',
+    points: ['Steam irons', 'Garment steamers'],
+  },
+];
+
+const tips: Tip[] = [
+  {
+    icon: 'bolt',
+    title: 'Spread the load before Shabbos',
+    text: 'An urn and a plata together can draw more power than one kitchen circuit handles. Plug them into outlets on different circuits so nothing trips in the middle of Shabbos.',
+  },
+  {
+    icon: 'heart',
+    title: 'One for milchig, one for fleishig',
+    text: 'Plenty of families keep two of the everyday tools — a toaster, a hand blender, an extra mixer bowl. We’ll help you pick a matching pair.',
+  },
+  {
+    icon: 'chat',
+    title: 'Size the urn to the crowd',
+    text: 'Tell us how many you usually host and we’ll suggest a size. A family Shabbos and a sheva brachos are very different jobs.',
+  },
+];
+---
+
+<Department
+  path="/small-appliances/"
+  metaTitle="Urns, Platas & Small Appliances in Brooklyn"
+  description="Hot water urns, platas, Shabbos timers, stand mixers, slow cookers, coffee makers and vacuums at Plug-ins in Boro Park and Williamsburg."
+  eyebrow="Small appliances"
+  title="The small stuff that"
+  em="runs the kitchen."
+  lead="Urns and platas for Shabbos, mixers for challah, slow cookers for cholent and coffee for every morning in between — plus vacuums, fans and heaters for the rest of the house."
+  art={[
+    { kind: 'urn', height: 100 },
+    { kind: 'mixer', height: 76 },
+  ]}
+  categoriesTitle="Countertop to closet,"
+  categoriesEm="covered."
+  categoriesLead="From the urn on the Shabbos table to the vacuum in the hall closet, here's what you'll find on our shelves."
+  categories={categories}
+  tipsTitle="A few things we tell everyone"
+  tips={tips}
+  faqs={[specialOrderFaq, mikvahFaq, registryFaq, hoursFaq]}
+/>

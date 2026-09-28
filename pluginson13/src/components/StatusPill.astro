@@ -1,0 +1,26 @@
+---
+/*
+ * A live "Open now / Closed for Shabbos" badge for one store. The page ships
+ * a neutral label; the status script fills in the real state in New York
+ * time and refreshes it every minute.
+ */
+import type { Store } from '../data/business';
+
+interface Props {
+  store: Store['id'];
+  /** Show "Until 7 PM" / "Opens Sunday at 11 AM" after the headline. */
+  detail?: boolean;
+  /** Prefix such as the store name. */
+  label?: string;
+  class?: string;
+}
+
+const { store, detail = true, label, class: className } = Astro.props;
+---
+
+<span class:list={['status', className]} data-store-status={store} data-pending>
+  <span class="status__dot" aria-hidden="true"></span>
+  {label && <span class="status__label">{label}</span>}
+  <span class="status__headline">Store hours</span>
+  {detail && <span class="status__detail"></span>}
+</span>

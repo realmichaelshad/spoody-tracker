@@ -1,0 +1,13 @@
+# Security and caching headers, applied by Cloudflare.
+# If you switch the contact form to a service other than Web3Forms or
+# Formspree, add its address to connect-src and form-action below.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com https://formspree.io; frame-src https://www.google.com https://maps.google.com; form-action 'self' https://api.web3forms.com https://formspree.io mailto:; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

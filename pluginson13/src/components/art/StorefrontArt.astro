@@ -1,0 +1,119 @@
+---
+/*
+ * A Brooklyn storefront: brick, a copper-and-cream awning, appliances in the
+ * windows and a green street sign on the corner pole.
+ */
+interface Props {
+  /** Text on the green street sign. */
+  street?: string;
+  /** Block number shown on the sign, if any. */
+  block?: string;
+  id?: string;
+}
+
+const { street = '13 Av', block = '4100', id = 'storefront' } = Astro.props;
+const ink = 'var(--ink-900)';
+const brick = `${id}-brick`;
+// The green street sign on the corner pole, right-aligned to the edge.
+const signW = Math.max(74, street.length * 9.5 + (block ? 30 : 20));
+const signX = 456 - signW;
+const signCenter = signX + signW / 2;
+// The awning's scalloped edge: 30 little arcs from one side to the other.
+const scallops = `M44 186${' c0 7 11 7 11 0'.repeat(30)}`;
+---
+
+<svg class="storefront-art" viewBox="0 0 460 330" role="img" aria-labelledby={`${id}-title`} focusable="false">
+  <title id={`${id}-title`}>Illustration of the Plug-ins storefront with a copper awning and appliances in the window.</title>
+  <defs>
+    <pattern id={brick} width="36" height="18" patternUnits="userSpaceOnUse">
+      <rect width="36" height="18" fill="#c77b5c"></rect>
+      <path d="M0 .6h36M0 9.6h36M.6 0v9M18.6 9v9" stroke="#b0664a" stroke-width="1.4"></path>
+    </pattern>
+  </defs>
+
+  <!-- Sidewalk -->
+  <rect x="0" y="300" width="460" height="30" fill="var(--paper-3)"></rect>
+  <path d="M0 300h460" stroke={ink} stroke-width="3"></path>
+
+  <!-- Building -->
+  <g stroke={ink} stroke-width="3" stroke-linejoin="round">
+    <rect x="24" y="30" width="370" height="270" fill={`url(#${brick})`}></rect>
+    <rect x="16" y="20" width="386" height="16" rx="3" fill="var(--paper-3)"></rect>
+    <rect x="60" y="48" width="58" height="46" rx="4" fill="#dcecf6"></rect>
+    <rect x="180" y="48" width="58" height="46" rx="4" fill="#dcecf6"></rect>
+    <rect x="300" y="48" width="58" height="46" rx="4" fill="#dcecf6"></rect>
+  </g>
+  <path d="M89 48v46M209 48v46M329 48v46" stroke={ink} stroke-width="2.4"></path>
+
+  <!-- Sign band -->
+  <g stroke={ink} stroke-width="3" stroke-linejoin="round">
+    <rect x="38" y="108" width="342" height="46" rx="6" fill="var(--ink-900)"></rect>
+  </g>
+  <g transform="translate(110 115)">
+    <rect x="0" y="0" width="32" height="32" rx="9.5" fill="var(--copper-500)"></rect>
+    <rect x="9" y="7.8" width="3.4" height="8.4" rx="1.7" fill="#fff8f1"></rect>
+    <rect x="19.6" y="7.8" width="3.4" height="8.4" rx="1.7" fill="#fff8f1"></rect>
+    <path d="M13.8 24.8v-2a2.2 2.2 0 0 1 4.4 0v2z" fill="#fff8f1"></path>
+  </g>
+  <text x="152" y="142" fill="#fff" font-family="var(--font-display)" font-weight="700" font-size="30" letter-spacing="-0.8">Plug-ins</text>
+
+  <!-- Awning -->
+  <g stroke={ink} stroke-width="3" stroke-linejoin="round">
+    <path d="M34 156h350l-10 30H44z" fill="#fff8f1"></path>
+  </g>
+  <g fill="var(--copper-500)">
+    <path d="M58 157h30l-3 28h-30zM118 157h30l-2 28h-30zM178 157h30l-1 28h-30zM238 157h30v28h-30zM298 157h30l1 28h-30zM352 157h29l-8 26-20 2z"></path>
+  </g>
+  <path d="M34 156h350l-10 30H44z" fill="none" stroke={ink} stroke-width="3" stroke-linejoin="round"></path>
+  <path d={scallops} fill="#fff8f1" stroke={ink} stroke-width="2.4" stroke-linejoin="round"></path>
+
+  <!-- Windows -->
+  <g stroke={ink} stroke-width="3" stroke-linejoin="round">
+    <rect x="44" y="200" width="138" height="100" fill="#e6f1f8"></rect>
+    <rect x="258" y="200" width="122" height="100" fill="#e6f1f8"></rect>
+    <!-- Fridge in the left window -->
+    <rect x="62" y="222" width="46" height="78" rx="5" fill="var(--steel-100)" stroke-width="2.4"></rect>
+    <path d="M85 222v48M62 270h46" stroke-width="2.2" fill="none"></path>
+    <!-- Range -->
+    <rect x="120" y="252" width="50" height="48" rx="4" fill="var(--steel-100)" stroke-width="2.4"></rect>
+    <rect x="128" y="264" width="34" height="20" rx="3" fill="var(--glass)" stroke-width="2"></rect>
+    <!-- Mixer + pot in the right window -->
+    <rect x="276" y="266" width="40" height="34" rx="6" fill="var(--copper-500)" stroke-width="2.4"></rect>
+    <path d="M272 267c0-6 10-9 24-9s24 3 24 9z" fill="var(--steel-200)" stroke-width="2.4"></path>
+    <rect x="330" y="236" width="34" height="64" rx="7" fill="var(--steel-100)" stroke-width="2.4"></rect>
+  </g>
+  <path d="M52 292l40-80M150 292l26-52M268 292l40-80" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity="0.6"></path>
+
+  <!-- Door -->
+  <g stroke={ink} stroke-width="3" stroke-linejoin="round">
+    <rect x="194" y="196" width="52" height="104" fill="var(--ink-700)"></rect>
+    <rect x="202" y="206" width="36" height="56" rx="3" fill="#dcecf6"></rect>
+    <rect x="232" y="266" width="5" height="16" rx="2.5" fill="var(--copper-400)" stroke-width="2"></rect>
+  </g>
+  <g transform="translate(206 214) rotate(-4)">
+    <rect x="0" y="0" width="28" height="14" rx="3" fill="var(--green)" stroke={ink} stroke-width="2"></rect>
+    <text x="14" y="10.4" fill="#fff" font-family="var(--font-body)" font-weight="800" font-size="8.4" text-anchor="middle" letter-spacing="0.4">OPEN</text>
+  </g>
+
+  <!-- Street sign pole -->
+  <path d="M434 120v180" stroke={ink} stroke-width="5" stroke-linecap="round"></path>
+  <g transform={`rotate(-2 ${signCenter} 103)`}>
+    <rect x={signX} y="88" width={signW} height="30" rx="5" fill="#0b6b3f" stroke={ink} stroke-width="2.6"></rect>
+    <rect x={signX + 3.5} y="91.5" width={signW - 7} height="23" rx="3" fill="none" stroke="#fff" stroke-width="1.4"></rect>
+    <text x={block ? signCenter - 7 : signCenter} y="108.5" fill="#fff" font-family="var(--font-body)" font-weight="800" font-size="14" text-anchor="middle">{street}</text>
+    {
+      block && (
+        <text x={signX + signW - 12} y="100" fill="#fff" font-family="var(--font-body)" font-weight="700" font-size="6.5" text-anchor="middle">
+          {block}
+        </text>
+      )
+    }
+  </g>
+</svg>
+
+<style>
+  .storefront-art {
+    width: 100%;
+    height: auto;
+  }
+</style>

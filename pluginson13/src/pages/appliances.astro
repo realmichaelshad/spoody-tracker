@@ -1,0 +1,89 @@
+---
+import Department, { type Category, type Tip } from '../layouts/Department.astro';
+import { deliveryFaq, financingFaq, rebateFaq, sabbathModeFaq, specialOrderFaq } from '../data/faq';
+
+const categories: Category[] = [
+  {
+    id: 'refrigeration',
+    title: 'Refrigerators & freezers',
+    text: 'French door, side-by-side, top- and bottom-freezer and counter-depth refrigerators — plus upright and chest freezers for Yom Tov cooking and Pesach.',
+    points: ['French door', 'Side-by-side', 'Top & bottom freezer', 'Counter-depth', 'Upright & chest freezers'],
+  },
+  {
+    id: 'cooking',
+    title: 'Ranges, ovens & cooktops',
+    text: 'Gas and electric ranges, wall ovens and double ovens, cooktops and range hoods. Plenty of models offer a Sabbath mode — ask us which.',
+    points: ['Gas & electric ranges', 'Wall & double ovens', 'Cooktops', 'Range hoods', 'Sabbath mode'],
+  },
+  {
+    id: 'dishwashers',
+    title: 'Dishwashers',
+    text: 'Quiet, efficient built-in dishwashers in every finish. Planning a kosher kitchen with two? We’ll help you match them.',
+    points: ['Built-in', 'Extra-quiet', 'Stainless & panel-ready', 'Two-dishwasher kitchens'],
+  },
+  {
+    id: 'microwaves',
+    title: 'Microwaves',
+    text: 'Over-the-range, countertop and built-in microwaves — one for fleishig, one for milchig, if that’s how your kitchen runs.',
+    points: ['Over-the-range', 'Countertop', 'Built-in & drawer'],
+  },
+  {
+    id: 'laundry',
+    title: 'Washers & dryers',
+    text: 'Front-load and top-load washers, gas and electric dryers, stackable pairs and all-in-one laundry centers for tighter Brooklyn apartments.',
+    points: ['Front & top load', 'Gas & electric dryers', 'Stackable pairs', 'Laundry centers'],
+  },
+  {
+    id: 'air-conditioners',
+    title: 'Air conditioners',
+    text: 'Window, through-the-wall and portable air conditioners to get the whole family through a Brooklyn summer.',
+    points: ['Window units', 'Through-the-wall', 'Portable'],
+  },
+];
+
+const tips: Tip[] = [
+  {
+    icon: 'ruler',
+    title: 'Measure the space — and the way in',
+    text: 'Width, height and depth of the opening, plus room for the door to swing. Then measure every doorway, hallway and staircase it has to pass through, especially in a walk-up.',
+  },
+  {
+    icon: 'bolt',
+    title: 'Gas or electric?',
+    text: 'Check what your kitchen or laundry is hooked up for before you fall in love with a model. Not sure? Snap a photo of the hookup and show us.',
+  },
+  {
+    icon: 'clock',
+    title: 'Sabbath mode',
+    text: 'Many ovens, ranges and refrigerators have a Sabbath mode, and several are Star-K certified. Tell us how you use it and we’ll narrow it down.',
+  },
+  {
+    icon: 'tag',
+    title: 'Rebates add up',
+    text: 'Buying two or more appliances from the same brand often unlocks a bigger manufacturer rebate. Ask what’s running before you decide.',
+  },
+];
+---
+
+<Department
+  path="/appliances/"
+  metaTitle="Appliances in Brooklyn: Fridges, Ranges & Laundry"
+  description="Refrigerators, ranges, dishwashers, washers, dryers and A/C from GE, Café, Whirlpool, KitchenAid, LG and more — with fast delivery and financing."
+  eyebrow="Major appliances"
+  title="Big appliances."
+  em="Brooklyn prices."
+  lead="Refrigerators, ranges, dishwashers, washers, dryers and air conditioners from the names you trust — with fast local delivery, flexible financing and help with every rebate."
+  art={[
+    { kind: 'fridge', height: 100 },
+    { kind: 'range', height: 66 },
+    { kind: 'washer', height: 70 },
+  ]}
+  categoriesTitle="Every big appliance,"
+  categoriesEm="under one roof."
+  categoriesLead="Both stores carry major appliances, and anything that isn't on the floor we can usually order. Here's where to start."
+  categories={categories}
+  tipsTitle="Before you buy a big appliance"
+  tips={tips}
+  faqs={[deliveryFaq, sabbathModeFaq, rebateFaq, financingFaq, specialOrderFaq]}
+  showBrands
+/>

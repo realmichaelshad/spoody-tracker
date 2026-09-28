@@ -1,0 +1,130 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import UnpluggedArt from '../components/art/UnpluggedArt.astro';
+import { mainStore, telHref } from '../data/business';
+import { departments } from '../data/nav';
+---
+
+<Base
+  title="Page not found"
+  description="That page has moved or no longer exists. Find appliances, kitchenware, electronics, store hours and more at Plug-ins."
+  noindex
+>
+  <section class="section nf">
+    <div class="container nf__grid">
+      <div class="nf__copy">
+        <p class="eyebrow">Error 404</p>
+        <h1>This page got <em>unplugged.</em></h1>
+        <p class="lead">
+          It may have moved when we rebuilt the site, or the link has a typo. Everything is still here — try one of these:
+        </p>
+        <ul class="nf__links">
+          {
+            departments.map((d) => (
+              <li>
+                <a href={d.href}>
+                  {d.title} <Icon name="arrow" size={18} />
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href="/kallah/">Kallah showroom &amp; registry <Icon name="arrow" size={18} /></a>
+          </li>
+          <li>
+            <a href="/locations/">Store hours &amp; locations <Icon name="arrow" size={18} /></a>
+          </li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="/">
+            <Icon name="home" /> Back to the home page
+          </a>
+          <a class="btn btn--ghost" href={telHref(mainStore)} data-sheet-open="call">
+            <Icon name="phone" /> Call a store
+          </a>
+        </div>
+      </div>
+      <div class="nf__art">
+        <UnpluggedArt />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding-top: clamp(40px, 6vw, 96px);
+  }
+
+  .nf__grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: 40px 64px;
+  }
+
+  @media (max-width: 859px) {
+    .nf__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .nf__art {
+      order: -1;
+      max-width: 360px;
+    }
+  }
+
+  .nf__copy {
+    display: grid;
+    gap: 20px;
+    justify-items: start;
+  }
+
+  .nf h1 {
+    font-size: var(--step-5);
+    line-height: 1;
+  }
+
+  .nf__links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 24px;
+    width: 100%;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 559px) {
+    .nf__links {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .nf__links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 48px;
+    border-bottom: 1px solid var(--line);
+    font-weight: 600;
+    color: var(--ink-900);
+    text-decoration: none;
+  }
+
+  .nf__links a:hover {
+    color: var(--copper-700);
+  }
+
+  .nf__links :global(svg) {
+    color: var(--copper-600);
+  }
+
+  .nf__art {
+    padding: 32px;
+    border-radius: var(--radius-xl);
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+  }
+</style>

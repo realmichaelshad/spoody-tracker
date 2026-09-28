@@ -1,0 +1,251 @@
+---
+import { fullAddress, telHref, type Store } from '../data/business';
+import { groupWeek } from '../lib/hours';
+import Icon from './Icon.astro';
+import StatusPill from './StatusPill.astro';
+
+interface Props {
+  store: Store;
+  headingLevel?: 'h2' | 'h3';
+  /** Link to the store's own page. */
+  showDetailsLink?: boolean;
+}
+
+const { store, headingLevel: H = 'h3', showDetailsLink = true } = Astro.props;
+const rows = groupWeek(store.hours);
+---
+
+<article class="store-card">
+  <div class="store-card__head">
+    <div>
+      <p class="store-card__kicker">{store.neighborhood}</p>
+      <H class="store-card__name">Plug-ins {store.name}</H>
+      <p class="store-card__street">on {store.street}</p>
+    </div>
+    <StatusPill store={store.id} />
+  </div>
+
+  {
+    store.features.length > 0 && (
+      <ul class="chip-list store-card__features" aria-label="At this store">
+        {store.features.map((f) => (
+          <li class="chip">
+            <Icon name="sparkle" />
+            {f}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  <div class="store-card__body">
+    <div class="store-card__contact">
+      <address>
+        <Icon name="pin" />
+        <a href={store.mapsUrl} target="_blank" rel="noopener">{fullAddress(store)}</a>
+      </address>
+      <p>
+        <Icon name="phone" />
+        <a class="store-card__phone" href={telHref(store)}>{store.phone}</a>
+      </p>
+    </div>
+
+    <dl class="store-card__hours" aria-label={`Hours at ${store.name}`}>
+      {
+        rows.map((row) => (
+          <div data-days={row.days.join(',')} class:list={{ 'is-closed': row.closed }}>
+            <dt>{row.label}</dt>
+            <dd>{row.range}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+
+  <div class="store-card__actions">
+    <a class="btn btn--primary btn--sm" href={telHref(store)}>
+      <Icon name="phone" /> Call
+    </a>
+    <a class="btn btn--ghost btn--sm" href={store.mapsUrl} target="_blank" rel="noopener">
+      <Icon name="directions" /> Directions
+    </a>
+    {
+      showDetailsLink && (
+        <a class="link-arrow store-card__more" href={`/locations/${store.id}/`}>
+          Store details <Icon name="arrow" />
+        </a>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .store-card {
+    display: grid;
+    gap: 20px;
+    align-content: start;
+    height: 100%;
+    padding: clamp(22px, 3vw, 32px);
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-sm);
+    color: var(--text);
+  }
+
+  /* The card is always light, even inside a dark section. */
+  .store-card :global(.status) {
+    --status-fg: var(--text-2);
+    --status-bg: var(--steel-50);
+  }
+
+  .store-card :global(.status[data-state='open']) {
+    --status-fg: var(--green);
+    --status-bg: var(--green-bg);
+  }
+
+  .store-card :global(.status[data-state='closing']),
+  .store-card :global(.status[data-state='opening']) {
+    --status-fg: var(--amber);
+    --status-bg: var(--amber-bg);
+  }
+
+  .store-card :global(.status[data-state='closed']) {
+    --status-fg: var(--red);
+    --status-bg: var(--red-bg);
+  }
+
+  .store-card :global(.link-arrow) {
+    color: var(--copper-600);
+  }
+
+  .store-card__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    justify-content: space-between;
+    gap: 12px 16px;
+  }
+
+  .store-card__kicker {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--copper-600);
+  }
+
+  .store-card__name {
+    margin-top: 4px;
+    font-size: var(--step-3);
+    color: var(--ink-900);
+  }
+
+  .store-card__street {
+    color: var(--text-3);
+    font-weight: 500;
+  }
+
+  .store-card__body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  @media (max-width: 1023px) and (min-width: 700px), (max-width: 459px) {
+    .store-card__body {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .store-card__contact {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+
+  .store-card__contact address,
+  .store-card__contact p {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 10px;
+    align-items: start;
+    font-style: normal;
+    line-height: 1.45;
+  }
+
+  .store-card__contact :global(svg) {
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    color: var(--copper-600);
+  }
+
+  .store-card__contact a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .store-card__contact a:hover {
+    text-decoration: underline;
+  }
+
+  .store-card__phone {
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .store-card__hours {
+    display: grid;
+    gap: 2px;
+    font-size: 0.93rem;
+  }
+
+  .store-card__hours div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 5px 10px;
+    margin: 0 -10px;
+    border-radius: 9px;
+  }
+
+  .store-card__hours dt {
+    color: var(--text-2);
+  }
+
+  .store-card__hours dd {
+    font-weight: 560;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .store-card__hours .is-closed dd {
+    color: var(--text-3);
+    font-weight: 500;
+  }
+
+  .store-card__hours div[data-today] {
+    background: var(--copper-50);
+    box-shadow: inset 3px 0 0 var(--copper-500);
+  }
+
+  .store-card__hours div[data-today] dt {
+    color: var(--ink-900);
+    font-weight: 650;
+  }
+
+  .store-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 12px;
+    margin-top: auto;
+  }
+
+  .store-card__more {
+    margin-left: auto;
+  }
+</style>

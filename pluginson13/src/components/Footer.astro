@@ -1,0 +1,286 @@
+---
+import { business, stores, telHref } from '../data/business';
+import { companyNav, departments } from '../data/nav';
+import { groupWeek } from '../lib/hours';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import StatusPill from './StatusPill.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <a href="/" aria-label={`${business.name} — home`} class="site-footer__logo"><Logo tone="light" size="lg" /></a>
+        <p>
+          Your one-stop shop for appliances, kitchenware and electronics. Family owned, with two Brooklyn stores and
+          delivery across {business.serviceArea.slice(0, -1).join(', ')} &amp; {business.serviceArea.at(-1)}.
+        </p>
+        <ul class="site-footer__social">
+          <li>
+            <a href={business.instagram.url} target="_blank" rel="noopener">
+              <Icon name="instagram" />
+              <span>{business.instagram.handle}</span>
+            </a>
+          </li>
+          <li>
+            <a href={`mailto:${business.email}`}>
+              <Icon name="mail" />
+              <span>{business.email}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      {
+        stores.map((store) => (
+          <section class="site-footer__store" aria-labelledby={`footer-${store.id}`}>
+            <h2 id={`footer-${store.id}`}>
+              <a href={`/locations/${store.id}/`}>{store.name}</a>
+            </h2>
+            <StatusPill store={store.id} />
+            <address>
+              <a href={store.mapsUrl} target="_blank" rel="noopener">
+                {store.address.line1}
+                <br />
+                {store.address.city}, {store.address.region} {store.address.postalCode}
+              </a>
+            </address>
+            <a class="site-footer__phone" href={telHref(store)}>
+              {store.phone}
+            </a>
+            <dl class="site-footer__hours" aria-label={`${store.name} hours`}>
+              {groupWeek(store.hours).map((row) => (
+                <div data-days={row.days.join(',')}>
+                  <dt>{row.label}</dt>
+                  <dd>{row.range}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        ))
+      }
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <h2>Shop</h2>
+        <ul>
+          {
+            departments.map((d) => (
+              <li>
+                <a href={d.href}>{d.title}</a>
+              </li>
+            ))
+          }
+        </ul>
+        <h2>Plug-ins</h2>
+        <ul>
+          {
+            companyNav.map((l) => (
+              <li>
+                <a href={l.href}>{l.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p>© {year} {business.name}. Prices, rebates and availability change often — call or visit for today's.</p>
+      <p>
+        <a href="/policies/">Privacy &amp; accessibility</a>
+        <span aria-hidden="true">·</span>
+        <span>Closed Shabbos &amp; Yom Tov</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink-950);
+    color: #aab6c6;
+    padding: clamp(56px, 7vw, 96px) 0 calc(28px + env(safe-area-inset-bottom));
+    font-size: 0.95rem;
+  }
+
+  .site-footer a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .site-footer a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+  .site-footer__top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.1fr;
+    gap: 48px 40px;
+  }
+
+  @media (max-width: 1023px) {
+    .site-footer__top {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .site-footer__brand {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 599px) {
+    .site-footer__top {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .site-footer__brand {
+    display: grid;
+    gap: 18px;
+    align-content: start;
+    max-width: 420px;
+  }
+
+  .site-footer__logo:hover {
+    text-decoration: none !important;
+  }
+
+  .site-footer__social {
+    display: grid;
+    gap: 10px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer__social a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #dbe3ee;
+    font-weight: 560;
+  }
+
+  .site-footer__social :global(svg) {
+    width: 20px;
+    height: 20px;
+    color: var(--copper-300);
+  }
+
+  .site-footer h2 {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--copper-300);
+  }
+
+  .site-footer__store {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    justify-items: start;
+  }
+
+  .site-footer__store h2 a {
+    color: var(--copper-300);
+  }
+
+  .site-footer__store address {
+    font-style: normal;
+    color: #dbe3ee;
+    line-height: 1.5;
+  }
+
+  .site-footer__phone {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #fff !important;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .site-footer__hours {
+    display: grid;
+    gap: 4px;
+    width: 100%;
+    max-width: 280px;
+    font-size: 0.9rem;
+  }
+
+  .site-footer__hours div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 3px 8px;
+    margin: 0 -8px;
+    border-radius: 8px;
+  }
+
+  .site-footer__hours div[data-today] {
+    background: rgb(255 255 255 / 7%);
+    color: #fff;
+  }
+
+  .site-footer__hours dd {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .site-footer__store :global(.status) {
+    --status-bg: rgb(255 255 255 / 8%);
+    --status-fg: #d7dee8;
+  }
+
+  .site-footer__store :global(.status[data-state='open']) {
+    --status-fg: #7fe0ae;
+    --status-bg: rgb(127 224 174 / 12%);
+  }
+
+  .site-footer__store :global(.status[data-state='closing']),
+  .site-footer__store :global(.status[data-state='opening']) {
+    --status-fg: #ffd08a;
+    --status-bg: rgb(255 208 138 / 12%);
+  }
+
+  .site-footer__store :global(.status[data-state='closed']) {
+    --status-fg: #ffb4a8;
+    --status-bg: rgb(255 180 168 / 12%);
+  }
+
+  .site-footer__nav {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+
+  .site-footer__nav ul {
+    display: grid;
+    gap: 8px;
+    padding: 0;
+    margin-bottom: 18px;
+    list-style: none;
+  }
+
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px 24px;
+    margin-top: clamp(40px, 6vw, 72px);
+    padding-top: 24px;
+    border-top: 1px solid rgb(255 255 255 / 10%);
+    font-size: 0.86rem;
+    color: #8593a6;
+  }
+
+  .site-footer__bottom p {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>

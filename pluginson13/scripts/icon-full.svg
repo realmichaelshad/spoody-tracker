@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Full-bleed version for home-screen icons: iOS and Android round the corners themselves. -->
+  <rect width="512" height="512" fill="#ae4a1a"/>
+  <g transform="translate(256 256) scale(8) translate(-32 -32)">
+    <rect x="17.5" y="16" width="7.5" height="17" rx="3.75" fill="#fff8f1"/>
+    <rect x="39" y="16" width="7.5" height="17" rx="3.75" fill="#fff8f1"/>
+    <path d="M27 49v-4.5a5 5 0 0 1 10 0V49z" fill="#fff8f1"/>
+  </g>
+</svg>

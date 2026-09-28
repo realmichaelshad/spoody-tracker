@@ -1,0 +1,443 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import StatusPill from '../components/StatusPill.astro';
+import { business, stores, telHref } from '../data/business';
+
+const crumbs = [{ name: 'Contact', path: '/contact/' }];
+
+const { web3formsKey, formEndpoint } = business.forms;
+// With a form service configured the form posts there (and works even
+// without JavaScript); otherwise it falls back to the customer's email app.
+const endpoint = web3formsKey ? 'https://api.web3forms.com/submit' : formEndpoint;
+const mailto = `mailto:${business.email}?subject=${encodeURIComponent('Question from pluginson13.com')}`;
+
+const topics = [
+  { value: 'price', label: 'Price & availability' },
+  { value: 'delivery', label: 'Delivery' },
+  { value: 'kallah', label: 'Kallah list & registry' },
+  { value: 'financing', label: 'Financing' },
+  { value: 'other', label: 'Something else' },
+];
+---
+
+<Base
+  title="Contact Us — Price Check & Stock Questions"
+  description="Ask for a price, check stock, or ask about delivery, financing and registries. Call (718) 853-6061 or (718) 388-0857, or send us a message."
+  crumbs={crumbs}
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Ask us"
+    em="anything."
+    lead="Price check, stock check, a delivery question or a whole kallah list — send it over and we’ll get back to you during store hours. In a hurry? Call either store."
+    crumbs={crumbs}
+  />
+
+  <section class="section section--white contact-section">
+    <div class="container contact">
+      <form
+        class="cform"
+        id="contact-form"
+        action={endpoint || mailto}
+        method="post"
+        enctype={endpoint ? 'multipart/form-data' : 'text/plain'}
+        data-contact-form
+        data-endpoint={endpoint || undefined}
+        data-email={business.email}
+        novalidate
+      >
+        <h2>Send us a message</h2>
+        <p class="muted">Fields marked * are required. We’ll only use your details to answer you.</p>
+
+        {web3formsKey && <input type="hidden" name="access_key" value={web3formsKey} />}
+        <input type="hidden" name="subject" value="New message from pluginson13.com" />
+        <input type="hidden" name="from_name" value="Plug-ins website" />
+        <div class="cform__trap" aria-hidden="true">
+          <label>Leave this empty <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+          <label>Leave this unchecked <input type="checkbox" name="botcheck" tabindex="-1" /></label>
+        </div>
+
+        <div class="cform__row">
+          <div class="field">
+            <label for="cf-name">Name *</label>
+            <input id="cf-name" name="name" type="text" autocomplete="name" required maxlength="80" aria-describedby="cf-name-err" />
+            <p class="field__error" id="cf-name-err" hidden>Please tell us your name.</p>
+          </div>
+          <div class="field">
+            <label for="cf-phone">Phone *</label>
+            <input id="cf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="30" aria-describedby="cf-phone-err" />
+            <p class="field__error" id="cf-phone-err" hidden>Please enter a phone number we can reach you at.</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cf-email">Email <span class="muted">(optional)</span></label>
+          <input id="cf-email" name="email" type="email" autocomplete="email" maxlength="120" aria-describedby="cf-email-err" />
+          <p class="field__error" id="cf-email-err" hidden>That email address doesn’t look right.</p>
+        </div>
+
+        <fieldset class="field">
+          <legend>How should we get back to you?</legend>
+          <div class="segmented">
+            <label><input type="radio" name="reply_by" value="Call" checked /><span>Call</span></label>
+            <label><input type="radio" name="reply_by" value="Text" /><span>Text</span></label>
+            <label><input type="radio" name="reply_by" value="Email" /><span>Email</span></label>
+          </div>
+        </fieldset>
+
+        <div class="cform__row">
+          <div class="field">
+            <label for="cf-topic">What’s it about?</label>
+            <select id="cf-topic" name="topic">
+              {topics.map((t) => <option value={t.label} data-topic={t.value}>{t.label}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="cf-store">Which store?</label>
+            <select id="cf-store" name="store">
+              <option>Either store</option>
+              {stores.map((s) => <option>{`${s.name} (${s.street})`}</option>)}
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cf-model">Model number <span class="muted">(if you have one)</span></label>
+          <input id="cf-model" name="model" type="text" maxlength="80" autocapitalize="characters" spellcheck="false" placeholder="e.g. GUD27GSSMWW" />
+        </div>
+
+        <div class="field">
+          <label for="cf-message">Message *</label>
+          <textarea id="cf-message" name="message" rows="6" required maxlength="4000" aria-describedby="cf-message-err"></textarea>
+          <p class="field__error" id="cf-message-err" hidden>Please add a short message.</p>
+        </div>
+
+        <div class="cform__submit">
+          <button class="btn btn--primary" type="submit" data-submit>
+            <Icon name="arrow" /> <span>Send message</span>
+          </button>
+          <p class="fine">We reply Sunday–Friday during store hours. Closed Shabbos &amp; Yom Tov.</p>
+        </div>
+
+        <div class="cform__result" data-result role="status" aria-live="polite" tabindex="-1" hidden></div>
+      </form>
+
+      <aside class="contact__side" aria-label="Call or visit">
+        <h2>Rather talk?</h2>
+        {
+          stores.map((store) => (
+            <div class="side-store">
+              <div class="side-store__top">
+                <a href={`/locations/${store.id}/`} class="side-store__name">
+                  Plug-ins {store.name}
+                </a>
+                <StatusPill store={store.id} />
+              </div>
+              <p class="side-store__addr">
+                {store.address.line1}, {store.address.city}
+              </p>
+              <a class="btn btn--ink btn--block" href={telHref(store)}>
+                <Icon name="phone" /> {store.phone}
+              </a>
+            </div>
+          ))
+        }
+        <ul class="side-links">
+          <li>
+            <a href={`mailto:${business.email}`}>
+              <Icon name="mail" /> {business.email}
+            </a>
+          </li>
+          <li>
+            <a href={business.instagram.url} target="_blank" rel="noopener">
+              <Icon name="instagram" /> {business.instagram.handle}
+            </a>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact-section {
+    padding-top: clamp(32px, 5vw, 64px);
+  }
+
+  .contact {
+    display: grid;
+    grid-template-columns: 1.35fr 0.65fr;
+    gap: 32px 56px;
+    align-items: start;
+  }
+
+  @media (max-width: 959px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .cform {
+    display: grid;
+    gap: 20px;
+    padding: clamp(24px, 4vw, 44px);
+    border-radius: var(--radius-xl);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    scroll-margin-top: calc(var(--header-h) + 16px);
+  }
+
+  .cform h2,
+  .contact__side h2 {
+    font-size: var(--step-3);
+  }
+
+  .cform__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 599px) {
+    .cform__row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .cform__trap {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .field {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .field label,
+  .field legend {
+    padding: 0;
+    font-weight: 620;
+    color: var(--ink-900);
+  }
+
+  .field input:not([type='radio']),
+  .field select,
+  .field textarea {
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 16px;
+    border: 1.5px solid var(--line-2);
+    border-radius: 14px;
+    background: #fff;
+    font-size: 1rem;
+    transition:
+      border-color 0.15s var(--ease),
+      box-shadow 0.15s var(--ease);
+  }
+
+  .field textarea {
+    min-height: 150px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  .field select {
+    appearance: none;
+    padding-right: 44px;
+    background: #fff
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.5 9.5l5.5 5.5 5.5-5.5' fill='none' stroke='%231b2433' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      right 14px center / 20px no-repeat;
+  }
+
+  .field input::placeholder {
+    color: #9aa1ab;
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--copper-500);
+    box-shadow: 0 0 0 4px var(--copper-100);
+  }
+
+  .field [aria-invalid='true'] {
+    border-color: var(--red) !important;
+    box-shadow: 0 0 0 4px var(--red-bg) !important;
+  }
+
+  .field__error {
+    font-size: 0.9rem;
+    font-weight: 560;
+    color: var(--red);
+  }
+
+  .segmented {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .segmented label {
+    position: relative;
+  }
+
+  .segmented input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .segmented span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line-2);
+    background: #fff;
+    font-weight: 600;
+    color: var(--text-2);
+    transition:
+      background-color 0.15s var(--ease),
+      border-color 0.15s var(--ease),
+      color 0.15s var(--ease);
+  }
+
+  .segmented input:checked + span {
+    background: var(--ink-900);
+    border-color: var(--ink-900);
+    color: #fff;
+  }
+
+  .segmented input:focus-visible + span {
+    outline: 3px solid var(--copper-500);
+    outline-offset: 2px;
+  }
+
+  .cform__submit {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+    margin-top: 4px;
+  }
+
+  .cform__submit .btn[aria-busy='true'] {
+    opacity: 0.75;
+    pointer-events: none;
+  }
+
+  .cform__result {
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    font-weight: 560;
+    line-height: 1.5;
+  }
+
+  .cform__result[data-kind='ok'] {
+    background: var(--green-bg);
+    color: #0d5a35;
+  }
+
+  .cform__result[data-kind='error'] {
+    background: var(--red-bg);
+    color: #8a1c13;
+  }
+
+  .cform__result[data-kind='mail'] {
+    background: var(--water-100);
+    color: #1f4f6e;
+  }
+
+  .cform__result a {
+    color: inherit;
+    font-weight: 700;
+  }
+
+  .contact__side {
+    display: grid;
+    gap: 14px;
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+  }
+
+  .side-store {
+    display: grid;
+    gap: 10px;
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    border: 1px solid var(--line);
+  }
+
+  .side-store__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .side-store__name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 620;
+    color: var(--ink-900);
+    text-decoration: none;
+  }
+
+  .side-store__name:hover {
+    text-decoration: underline;
+  }
+
+  .side-store__addr {
+    color: var(--text-3);
+    font-size: 0.95rem;
+  }
+
+  .side-links {
+    display: grid;
+    gap: 10px;
+    margin-top: 6px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .side-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-2);
+    font-weight: 560;
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  .side-links a:hover {
+    color: var(--copper-700);
+    text-decoration: underline;
+  }
+
+  .side-links :global(svg) {
+    color: var(--copper-600);
+    flex: none;
+  }
+</style>
+
+<script>
+  import { initContactForm } from '../scripts/contact';
+  initContactForm();
+</script>

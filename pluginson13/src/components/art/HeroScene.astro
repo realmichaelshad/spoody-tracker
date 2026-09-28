@@ -1,0 +1,300 @@
+---
+/*
+ * The home page hero: a kitchen line — fridge, range with a copper pot,
+ * counter with a stand mixer and an urn — both plugged into one outlet, with
+ * a little current running down the cords. The green sign over the fridge is
+ * the 4100 block of 13th Avenue, where the flagship store is.
+ */
+const ink = 'var(--ink-900)';
+const sw = 3;
+---
+
+<svg
+  class="hero-scene"
+  viewBox="0 0 640 520"
+  role="img"
+  aria-labelledby="hero-scene-title"
+  focusable="false"
+>
+  <title id="hero-scene-title">Illustration of a kitchen: a stainless refrigerator, a range with a copper pot, and a counter with a stand mixer and a hot water urn plugged into the wall.</title>
+  <defs>
+    <pattern id="hero-tiles" width="40" height="20" patternUnits="userSpaceOnUse">
+      <rect width="40" height="20" fill="#fffdf9"></rect>
+      <path d="M0 .5h40M0 10.5h40M.5 0v10M20.5 10v10" stroke="#e8dfd2" stroke-width="1"></path>
+    </pattern>
+    <radialGradient id="hero-lamp-glow" cx="0.5" cy="0" r="0.9">
+      <stop offset="0" stop-color="#ffcf3f" stop-opacity="0.5"></stop>
+      <stop offset="1" stop-color="#ffcf3f" stop-opacity="0"></stop>
+    </radialGradient>
+    <linearGradient id="hero-oven-glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff9a52" stop-opacity="0.75"></stop>
+      <stop offset="1" stop-color="#cf6a31" stop-opacity="0.35"></stop>
+    </linearGradient>
+  </defs>
+
+  <!-- Wall & floor -->
+  <rect x="0" y="0" width="640" height="432" fill="var(--paper-2)"></rect>
+  <rect x="0" y="432" width="640" height="88" fill="#e9dfd1"></rect>
+  <path d="M0 432h640" stroke={ink} stroke-width={sw} opacity="0.9"></path>
+  <path d="M0 462h640M0 496h640" stroke="#dccfbd" stroke-width="2"></path>
+
+  <!-- Backsplash -->
+  <rect x="200" y="150" width="440" height="120" fill="url(#hero-tiles)"></rect>
+
+  <!-- Lamp glow (drawn behind everything on the counter) -->
+  <ellipse cx="552" cy="150" rx="92" ry="110" fill="url(#hero-lamp-glow)"></ellipse>
+
+  <!-- Street sign: 13 Av, 4100 block -->
+  <g class="hero-sign" transform="rotate(-4 115 66)">
+    <rect x="50" y="40" width="130" height="50" rx="7" fill="#0b6b3f" stroke={ink} stroke-width={sw}></rect>
+    <rect x="56.5" y="46.5" width="117" height="37" rx="4" fill="none" stroke="#fff" stroke-width="2"></rect>
+    <text x="68" y="76" fill="#fff" font-family="var(--font-body)" font-weight="800" font-size="27" letter-spacing="-0.5">13 Av</text>
+    <text x="146" y="62" fill="#fff" font-family="var(--font-body)" font-weight="700" font-size="10.5">4100</text>
+    <path d="M146 67h24" stroke="#fff" stroke-width="1.6"></path>
+    <circle cx="61" cy="51" r="1.6" fill="#fff" opacity="0.8"></circle>
+    <circle cx="169" cy="51" r="1.6" fill="#fff" opacity="0.8"></circle>
+  </g>
+
+  <!-- Pendant lamp -->
+  <path d="M552 0v58" stroke={ink} stroke-width="2.4"></path>
+  <path d="M528 84a24 24 0 0 1 48 0z" fill="var(--copper-500)" stroke={ink} stroke-width={sw} stroke-linejoin="round"></path>
+  <rect x="547" y="54" width="10" height="9" rx="2" fill={ink}></rect>
+  <path d="M540 84a12 5 0 0 0 24 0" fill="#ffe7a3" stroke={ink} stroke-width="2"></path>
+
+  <!-- Range hood -->
+  <g stroke={ink} stroke-width={sw} stroke-linejoin="round">
+    <rect x="268" y="-4" width="54" height="110" fill="var(--steel-100)"></rect>
+    <path d="M248 104h94l26 44H222z" fill="var(--steel-200)"></path>
+    <rect x="218" y="146" width="154" height="11" rx="3" fill="var(--steel-100)"></rect>
+  </g>
+  <rect x="276" y="4" width="5" height="92" rx="2.5" fill="#fff" opacity="0.7"></rect>
+  <rect x="266" y="157" width="58" height="5" rx="2.5" fill="#ffcf3f" opacity="0.9"></rect>
+
+  <!-- Refrigerator -->
+  <ellipse cx="115" cy="434" rx="84" ry="6" fill="rgb(15 27 45 / 12%)"></ellipse>
+  <g stroke={ink} stroke-width={sw} stroke-linejoin="round" stroke-linecap="round">
+    <rect x="40" y="110" width="150" height="314" rx="13" fill="var(--steel-100)"></rect>
+    <path d="M115 110v208M40 318h150" fill="none"></path>
+    <rect x="102" y="152" width="7" height="100" rx="3.5" fill="var(--steel-300)" stroke-width="2.4"></rect>
+    <rect x="121" y="152" width="7" height="100" rx="3.5" fill="var(--steel-300)" stroke-width="2.4"></rect>
+    <rect x="70" y="334" width="90" height="7" rx="3.5" fill="var(--steel-300)" stroke-width="2.4"></rect>
+    <rect x="56" y="160" width="32" height="50" rx="6" fill="var(--glass)" stroke-width="2.4"></rect>
+  </g>
+  <rect x="62" y="167" width="20" height="8" rx="2" fill="var(--water)"></rect>
+  <rect x="64" y="186" width="16" height="12" rx="2" fill="#5b6b80"></rect>
+  <rect x="49" y="120" width="7" height="188" rx="3.5" fill="#fff" opacity="0.75"></rect>
+  <rect x="49" y="328" width="7" height="86" rx="3.5" fill="#fff" opacity="0.6"></rect>
+  <rect x="54" y="424" width="18" height="8" rx="2" fill={ink}></rect>
+  <rect x="158" y="424" width="18" height="8" rx="2" fill={ink}></rect>
+
+  <!-- Range -->
+  <ellipse cx="295" cy="434" rx="94" ry="6" fill="rgb(15 27 45 / 12%)"></ellipse>
+  <g stroke={ink} stroke-width={sw} stroke-linejoin="round" stroke-linecap="round">
+    <rect x="214" y="250" width="162" height="28" rx="6" fill="var(--steel-200)"></rect>
+    <rect x="210" y="276" width="170" height="148" rx="8" fill="var(--steel-100)"></rect>
+    <path d="M210 290h170M210 392h170" fill="none"></path>
+    <rect x="232" y="300" width="126" height="7" rx="3.5" fill="var(--steel-300)" stroke-width="2.4"></rect>
+    <rect x="230" y="316" width="130" height="62" rx="10" fill="var(--glass)"></rect>
+    <rect x="276" y="403" width="38" height="6" rx="3" fill="var(--steel-300)" stroke-width="2.2"></rect>
+    <rect x="279" y="256" width="32" height="15" rx="3" fill="var(--glass)" stroke-width="2.2"></rect>
+  </g>
+  <rect x="240" y="324" width="110" height="46" rx="5" fill="url(#hero-oven-glow)"></rect>
+  <path d="M244 350h102" stroke="var(--copper-300)" stroke-width="2" opacity="0.8"></path>
+  <rect x="285" y="261" width="20" height="5" rx="1.5" fill="var(--volt)"></rect>
+  <g fill="#fff" stroke={ink} stroke-width="2.2">
+    <circle cx="234" cy="264" r="5.5"></circle>
+    <circle cx="256" cy="264" r="5.5"></circle>
+    <circle cx="334" cy="264" r="5.5"></circle>
+    <circle cx="356" cy="264" r="5.5"></circle>
+  </g>
+  <rect x="218" y="284" width="154" height="3" rx="1.5" fill="#fff" opacity="0.7"></rect>
+  <rect x="224" y="424" width="16" height="8" rx="2" fill={ink}></rect>
+  <rect x="350" y="424" width="16" height="8" rx="2" fill={ink}></rect>
+
+  <!-- Tea towel on the oven handle -->
+  <g stroke={ink} stroke-width="2.4" stroke-linejoin="round">
+    <path d="M318 298h24v8h-24z" fill="#fff8f1"></path>
+    <path d="M320 306h20l2 50h-24z" fill="#fff8f1"></path>
+  </g>
+  <path d="M319.5 318h21.3M319.9 326h21.3M320.5 342h21.3" stroke="var(--copper-500)" stroke-width="3"></path>
+
+  <!-- Copper stock pot + steam -->
+  <g class="hero-steam" fill="none" stroke="#c3cdd8" stroke-width="4" stroke-linecap="round" opacity="0.9">
+    <path d="M246 196c-8-10 8-16 0-28"></path>
+    <path d="M262 190c-8-12 8-18 0-32"></path>
+    <path d="M278 196c-8-10 8-16 0-28"></path>
+  </g>
+  <g stroke={ink} stroke-width={sw} stroke-linejoin="round" stroke-linecap="round">
+    <path d="M228 240h-9a5 5 0 0 0-5 5v4a5 5 0 0 0 5 5h9M296 240h9a5 5 0 0 1 5 5v4a5 5 0 0 1-5 5h-9" fill="none"></path>
+    <rect x="227" y="224" width="70" height="62" rx="9" fill="var(--copper-500)"></rect>
+    <path d="M223 225c0-9 17-13 39-13s39 4 39 13z" fill="var(--steel-200)"></path>
+    <rect x="255" y="202" width="14" height="10" rx="4" fill={ink}></rect>
+  </g>
+  <path d="M227 236h70" stroke="var(--copper-300)" stroke-width="5"></path>
+  <path d="M236 246v30" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity="0.45"></path>
+
+  <!-- Kettle -->
+  <g stroke={ink} stroke-width={sw} stroke-linejoin="round" stroke-linecap="round">
+    <path d="M332 250c3-22 30-22 33 0" fill="none" stroke-width="5"></path>
+    <path d="M328 262l-15-14-2 6 12 18" fill="var(--steel-300)"></path>
+    <path d="M324 286l4-30c1-6 7-10 13-10h14c6 0 12 4 13 10l4 30z" fill="var(--ink-700)"></path>
+    <rect x="344" y="240" width="10" height="7" rx="3" fill="var(--steel-300)"></rect>
+  </g>
+  <path d="M331 262l2-6" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0.5"></path>
+
+  <!-- Counter & cabinet -->
+  <ellipse cx="508" cy="434" rx="126" ry="6" fill="rgb(15 27 45 / 12%)"></ellipse>
+  <g stroke={ink} stroke-width={sw} stroke-linejoin="round" stroke-linecap="round">
+    <rect x="392" y="282" width="236" height="142" fill="#fffaf3"></rect>
+    <path d="M392 318h236M510 318v106" fill="none"></path>
+    <rect x="386" y="266" width="254" height="17" rx="4" fill="var(--ink-700)"></rect>
+    <rect x="436" y="296" width="30" height="6" rx="3" fill="var(--copper-500)" stroke-width="2.2"></rect>
+    <rect x="554" y="296" width="30" height="6" rx="3" fill="var(--copper-500)" stroke-width="2.2"></rect>
+    <rect x="494" y="340" width="6" height="34" rx="3" fill="var(--copper-500)" stroke-width="2.2"></rect>
+    <rect x="520" y="340" width="6" height="34" rx="3" fill="var(--copper-500)" stroke-width="2.2"></rect>
+  </g>
+  <rect x="392" y="424" width="236" height="8" fill="var(--ink-800)"></rect>
+  <path d="M392 270h244" stroke="#fff" stroke-width="2" opacity="0.25"></path>
+
+  <!-- Outlet -->
+  <g stroke={ink} stroke-width="2.4" stroke-linejoin="round">
+    <rect x="598" y="188" width="34" height="58" rx="7" fill="#fffdf9"></rect>
+  </g>
+
+  <!-- Mixer cord: from the top socket, runs along the counter behind the urn -->
+  <g fill="none" stroke-linecap="round">
+    <path class="cord" d="M605 206c-14 0-18 12-20 26s-4 32-32 33h-44c-12 0-24-4-31-15" stroke={ink} stroke-width="4"></path>
+    <path class="cord cord--live" d="M605 206c-14 0-18 12-20 26s-4 32-32 33h-44c-12 0-24-4-31-15" stroke="var(--volt)" stroke-width="2.2"></path>
+  </g>
+  <!-- Plug in the top socket -->
+  <g stroke={ink} stroke-width="2.4" stroke-linejoin="round">
+    <rect x="605" y="195" width="20" height="21" rx="5" fill="var(--ink-800)"></rect>
+  </g>
+  <rect x="609" y="199" width="4" height="10" rx="2" fill="#fff" opacity="0.3"></rect>
+
+  <!-- Hot water urn -->
+  <g transform="translate(514 160.4) scale(0.76)">
+    <ellipse cx="48" cy="152" rx="40" ry="5" fill="rgb(15 27 45 / 14%)"></ellipse>
+    <g stroke={ink} stroke-width="3.9" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M20 44h-6a4 4 0 0 0-4 4v14a4 4 0 0 0 4 4h6M76 44h6a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4h-6" fill="none"></path>
+      <rect x="20" y="26" width="56" height="96" rx="9" fill="var(--steel-100)"></rect>
+      <path d="M22 27c0-9 11-13 26-13s26 4 26 13z" fill="var(--steel-200)"></path>
+      <rect x="41" y="5" width="14" height="10" rx="4" fill={ink}></rect>
+      <rect x="61" y="40" width="7" height="58" rx="3.5" fill="var(--glass)" stroke-width="3"></rect>
+      <path d="M40 108h16v6h-4.5v9h-7v-9H40z" fill="var(--steel-300)" stroke-width="3"></path>
+      <rect x="14" y="122" width="68" height="17" rx="6" fill="var(--steel-200)"></rect>
+    </g>
+    <rect x="62.6" y="64" width="3.8" height="32.5" rx="1.9" fill="var(--water)"></rect>
+    <circle class="hero-ready" cx="48" cy="130.5" r="3.4" fill="var(--volt)"></circle>
+    <rect x="26" y="34" width="6" height="80" rx="3" fill="#fff" opacity="0.7"></rect>
+  </g>
+
+  <!-- Stand mixer -->
+  <g transform="translate(394 172.8) scale(0.74)">
+    <g stroke={ink} stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+      <rect x="86" y="44" width="26" height="72" rx="11" fill="var(--copper-500)"></rect>
+      <rect x="26" y="20" width="92" height="36" rx="18" fill="var(--copper-500)"></rect>
+      <path d="M26 38h92" stroke="var(--copper-300)" stroke-width="5"></path>
+      <path d="M58 56v12"></path>
+      <path d="M34 70h52l-4.5 28a8 8 0 0 1-8 7H46.5a8 8 0 0 1-8-7z" fill="var(--steel-200)"></path>
+      <rect x="30" y="66" width="60" height="7" rx="3.5" fill="var(--steel-100)"></rect>
+      <rect x="16" y="112" width="104" height="14" rx="7" fill="var(--copper-500)"></rect>
+      <circle cx="100" cy="40" r="4.5" fill="var(--steel-100)" stroke-width="3"></circle>
+    </g>
+    <path d="M32 26c6-3 14-4 22-4" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.55"></path>
+    <rect x="40" y="78" width="5" height="18" rx="2.5" fill="#fff" opacity="0.6"></rect>
+  </g>
+
+  <!-- Urn cord: from the lower socket, in front -->
+  <g fill="none" stroke-linecap="round">
+    <path class="cord" d="M605 231c-9 0-13 7-15 15s-6 13-14 13" stroke={ink} stroke-width="4"></path>
+    <path class="cord cord--live" d="M605 231c-9 0-13 7-15 15s-6 13-14 13" stroke="var(--volt)" stroke-width="2.2"></path>
+  </g>
+  <g stroke={ink} stroke-width="2.4" stroke-linejoin="round">
+    <rect x="605" y="220" width="20" height="21" rx="5" fill="var(--ink-800)"></rect>
+  </g>
+  <rect x="609" y="224" width="4" height="10" rx="2" fill="#fff" opacity="0.3"></rect>
+
+  <!-- Spark at the outlet -->
+  <path class="hero-spark" d="M586 176l4 8 8 4-8 4-4 8-4-8-8-4 8-4z" fill="var(--volt)" stroke={ink} stroke-width="2" stroke-linejoin="round"></path>
+</svg>
+
+<style>
+  .hero-scene {
+    width: 100%;
+    height: auto;
+  }
+
+  .cord--live {
+    stroke-dasharray: 3 16;
+    opacity: 0.95;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .cord--live {
+      animation: current 1.1s linear infinite;
+    }
+
+    .hero-steam path {
+      animation: steam 3.2s var(--ease) infinite;
+      transform-box: fill-box;
+      transform-origin: bottom;
+    }
+
+    .hero-steam path:nth-child(2) {
+      animation-delay: 0.9s;
+    }
+
+    .hero-steam path:nth-child(3) {
+      animation-delay: 1.8s;
+    }
+
+    .hero-spark {
+      animation: spark 2.8s var(--ease) infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .hero-ready {
+      animation: ready 2.4s ease-in-out infinite;
+    }
+  }
+
+  @keyframes current {
+    to {
+      stroke-dashoffset: -19;
+    }
+  }
+
+  @keyframes steam {
+    0% {
+      opacity: 0;
+      transform: translateY(8px) scaleY(0.8);
+    }
+    35% {
+      opacity: 0.95;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-16px) scaleY(1.1);
+    }
+  }
+
+  @keyframes spark {
+    0%,
+    100% {
+      transform: scale(0.85) rotate(0deg);
+      opacity: 0.85;
+    }
+    50% {
+      transform: scale(1.1) rotate(20deg);
+      opacity: 1;
+    }
+  }
+
+  @keyframes ready {
+    50% {
+      opacity: 0.45;
+    }
+  }
+</style>

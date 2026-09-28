@@ -1,0 +1,104 @@
+---
+import '@fontsource-variable/fraunces/soft.css';
+import '@fontsource-variable/fraunces/soft-italic.css';
+import '@fontsource-variable/inter/wght.css';
+import '../styles/global.css';
+
+import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-soft-normal.woff2?url';
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+
+import { business } from '../data/business';
+import { clientCalendarPayload } from '../lib/calendar';
+import { baseGraph, breadcrumbSchema, type Crumb } from '../lib/schema';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import Announcement from '../components/Announcement.astro';
+
+interface Props {
+  /** Page title without the brand; the brand is appended. */
+  title: string;
+  description: string;
+  /** Breadcrumb trail after Home, e.g. [{ name: 'Appliances', path: '/appliances/' }]. */
+  crumbs?: Crumb[];
+  /** Extra JSON-LD nodes for this page (stores, FAQ…). */
+  schema?: object[];
+  noindex?: boolean;
+  /** Use the title as-is (the home page). */
+  rawTitle?: boolean;
+}
+
+const { title, description, crumbs = [], schema = [], noindex = false, rawTitle = false } = Astro.props;
+
+const pageTitle = rawTitle ? title : `${title} | ${business.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og.png', Astro.site).href;
+
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    ...baseGraph(),
+    ...(crumbs.length ? [breadcrumbSchema([{ name: 'Home', path: '/' }, ...crumbs])] : []),
+    ...schema,
+  ],
+};
+
+// Keep "</script>" inside data from ever closing the tag early.
+const safeJson = (value: unknown) => JSON.stringify(value).replace(/</g, '\\u003c');
+const calendarPayload = safeJson(clientCalendarPayload());
+---
+
+<!doctype html>
+<html lang="en-US" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+
+    <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+
+    <meta name="theme-color" content="#faf6f0" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Plug-ins — appliances, kitchenware and electronics in Boro Park and Williamsburg, Brooklyn" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={safeJson(graph)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Announcement />
+    <Header />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <MobileBar />
+
+    <script type="application/json" id="store-calendar" set:html={calendarPayload} />
+    <script>
+      import '../scripts/status';
+      import '../scripts/reveal';
+    </script>
+  </body>
+</html>

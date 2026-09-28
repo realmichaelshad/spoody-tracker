@@ -1,0 +1,201 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { business, stores, telHref } from '../data/business';
+
+const crumbs = [{ name: 'Privacy & Accessibility', path: '/policies/' }];
+const updated = 'September 2026';
+---
+
+<Base
+  title="Privacy, Accessibility & Store Policies"
+  description="How the Plug-ins website handles your information, our accessibility commitment, and notes on pricing, rebates and financing."
+  crumbs={crumbs}
+>
+  <PageHero
+    eyebrow="Policies"
+    title="Privacy &"
+    em="accessibility."
+    lead="The short version: this site doesn’t track you, doesn’t sell anything about you, and should work for everyone. The details are below."
+    crumbs={crumbs}
+  />
+
+  <section class="section section--white">
+    <div class="container policies">
+      <nav class="policies__toc" aria-label="On this page">
+        <p>On this page</p>
+        <ul>
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#accessibility">Accessibility</a></li>
+          <li><a href="#prices">Prices, rebates &amp; financing</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="prose">
+        <p class="fine">Last updated {updated}.</p>
+
+        <h2 id="privacy">Privacy</h2>
+        <p>
+          We built this website to share information about our stores, not to collect information about you. Here is
+          everything it does with your data.
+        </p>
+        <h3>What we collect</h3>
+        <ul>
+          <li>
+            <strong>Messages you send us.</strong> If you use the contact form, we receive what you type — your name,
+            phone number, optional email and your message — so we can answer you. We don’t use it for anything else, and
+            we never sell or rent it.
+          </li>
+          <li>
+            <strong>Your kallah list stays with you.</strong> The kallah list builder saves your checkmarks in your own
+            browser, on your own device. It isn’t sent to us unless you press “Send to Plug-ins”, and a shared link only
+            carries the list itself.
+          </li>
+          <li>
+            <strong>No tracking.</strong> There are no advertising pixels, no cross-site tracking cookies and no
+            third-party analytics scripts on this site.
+          </li>
+        </ul>
+        <h3>Services we rely on</h3>
+        <ul>
+          <li>
+            Our web host serves the pages and, like every web server, briefly processes basic technical information such
+            as your IP address to deliver them securely.
+          </li>
+          <li>
+            When a form service is used to deliver contact messages, it processes your message only to pass it on to us.
+          </li>
+          <li>
+            Maps load from Google only if you press “Show map”, and directions open in Google Maps. Google’s own privacy
+            policy applies there.
+          </li>
+          <li>Links to Instagram take you to Instagram, which has its own privacy policy.</li>
+        </ul>
+        <h3>Your choices</h3>
+        <p>
+          To ask what we have from you, or to have a message deleted, email
+          <a href={`mailto:${business.email}`}>{business.email}</a> or call either store.
+        </p>
+
+        <h2 id="accessibility">Accessibility</h2>
+        <p>
+          We want everyone to be able to use this site — on any device, with a keyboard, a screen reader, zoomed in or
+          with reduced motion. We design and test against the Web Content Accessibility Guidelines (WCAG) 2.2 at level AA.
+        </p>
+        <ul>
+          <li>Every page works with a keyboard alone, with visible focus and a “Skip to content” link.</li>
+          <li>Text and buttons meet contrast guidelines, and the layout holds up when text is enlarged.</li>
+          <li>Illustrations are described where they carry meaning, and animation stops if your device asks for less motion.</li>
+          <li>Store hours, phone numbers and addresses are always plain text — never only in an image.</li>
+        </ul>
+        <p>
+          If anything on the site is hard to use, please tell us — call
+          {
+            stores.map((s, i) => (
+              <>
+                {i > 0 && ' or '}
+                <a href={telHref(s)}>{s.phone}</a>
+              </>
+            ))
+          }{' '}
+          or email <a href={`mailto:${business.email}`}>{business.email}</a>. We’ll help you with whatever you were trying
+          to do, and fix the problem.
+        </p>
+
+        <h2 id="prices">Prices, rebates &amp; financing</h2>
+        <ul>
+          <li>
+            Prices, stock and promotions change often. Call or visit either store for today’s price; what we quote you in
+            person or on the phone is what counts.
+          </li>
+          <li>
+            Manufacturer rebates are offered and paid by the manufacturer, on its terms and deadlines. We’re happy to help
+            you find and file them.
+          </li>
+          <li>Financing is subject to credit approval, and terms vary by plan. Ask in store for current details.</li>
+          <li>Brand names shown on this site belong to their owners and are listed to show what we carry.</li>
+        </ul>
+
+        <h2 id="contact">Contact</h2>
+        <p>
+          Plug-ins —
+          {
+            stores.map((s, i) => (
+              <>
+                {i > 0 && '; '}
+                {s.address.line1}, {s.address.city}, {s.address.region} {s.address.postalCode} (<a href={telHref(s)}>{s.phone}</a>)
+              </>
+            ))
+          }
+          . Email <a href={`mailto:${business.email}`}>{business.email}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .policies {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 32px 64px;
+    align-items: start;
+  }
+
+  @media (max-width: 859px) {
+    .policies {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .policies__toc {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+    padding: 20px;
+    border-radius: var(--radius);
+    background: var(--paper);
+    border: 1px solid var(--line);
+  }
+
+  @media (max-width: 859px) {
+    .policies__toc {
+      position: static;
+    }
+  }
+
+  .policies__toc p {
+    margin-bottom: 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+
+  .policies__toc ul {
+    display: grid;
+    gap: 8px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .policies__toc a {
+    color: var(--text-2);
+    font-weight: 560;
+    text-decoration: none;
+  }
+
+  .policies__toc a:hover {
+    color: var(--copper-700);
+    text-decoration: underline;
+  }
+
+  .prose h2 {
+    scroll-margin-top: calc(var(--header-h) + 24px);
+  }
+
+  .prose h2:first-of-type {
+    margin-top: 0.6em;
+  }
+</style>

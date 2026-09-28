@@ -1,0 +1,71 @@
+---
+/*
+ * The mark is a wall outlet seen head-on — two slots and a ground hole, the
+ * friendliest face in any kitchen. The wordmark swaps the hyphen for a
+ * copper prong. Pass `tone="light"` on dark backgrounds.
+ */
+interface Props {
+  tone?: 'dark' | 'light';
+  size?: 'md' | 'lg';
+  class?: string;
+}
+
+const { tone = 'dark', size = 'md', class: className } = Astro.props;
+---
+
+<span class:list={['logo', `logo--${tone}`, `logo--${size}`, className]}>
+  <svg class="logo__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+    <rect x="1" y="1" width="38" height="38" rx="11.5" fill="var(--copper-600)"></rect>
+    <path d="M12.5 1h15A11.5 11.5 0 0 1 39 12.5v1.2C28 8.6 13 8.3 1 13.4v-.9A11.5 11.5 0 0 1 12.5 1z" fill="#fff" opacity="0.13"></path>
+    <rect x="11.6" y="10.6" width="4" height="10" rx="2" fill="#fff8f1"></rect>
+    <rect x="24.4" y="10.6" width="4" height="10" rx="2" fill="#fff8f1"></rect>
+    <path d="M17.2 30.2v-2.6a2.8 2.8 0 0 1 5.6 0v2.6z" fill="#fff8f1"></path>
+  </svg>
+  <span class="logo__word" aria-hidden="true">Plug<span class="logo__prong"></span>ins</span>
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 1.62rem;
+    line-height: 1;
+    color: var(--ink-900);
+  }
+
+  .logo--lg {
+    font-size: 2.2rem;
+  }
+
+  .logo--light {
+    color: #fff;
+  }
+
+  .logo__mark {
+    width: 1.3em;
+    height: 1.3em;
+    flex: none;
+    filter: drop-shadow(0 4px 8px rgb(174 74 26 / 28%));
+  }
+
+  .logo__word {
+    display: inline-flex;
+    align-items: baseline;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-variation-settings: 'SOFT' 100;
+    letter-spacing: -0.035em;
+    transform: translateY(-0.04em);
+  }
+
+  .logo__prong {
+    display: inline-block;
+    width: 0.3em;
+    height: 0.13em;
+    margin: 0 0.05em 0 0.06em;
+    border-radius: 1em;
+    background: var(--copper-500);
+    transform: translateY(-0.24em);
+  }
+</style>

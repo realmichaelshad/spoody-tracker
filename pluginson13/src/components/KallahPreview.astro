@@ -1,0 +1,185 @@
+---
+/*
+ * A small, decorative preview of the kallah list builder for the home page.
+ * The working list lives on /kallah/.
+ */
+const items = [
+  { text: 'Refrigerator & freezer', done: true },
+  { text: 'Hot water urn', done: true },
+  { text: 'Pots — fleishig set', done: true },
+  { text: 'Pots — milchig set', done: false },
+  { text: 'Blech & plata', done: true },
+  { text: 'Stand mixer', done: false },
+];
+const done = items.filter((i) => i.done).length;
+---
+
+<div class="kp" aria-hidden="true">
+  <div class="kp__card">
+    <div class="kp__head">
+      <p class="kp__title">Our kallah list</p>
+      <p class="kp__count">{done + 14} of 42 ready</p>
+    </div>
+    <div class="kp__bar"><span style="width: 43%"></span></div>
+    <ul class="kp__items">
+      {
+        items.map((item) => (
+          <li class:list={{ done: item.done }}>
+            <span class="kp__box" />
+            {item.text}
+          </li>
+        ))
+      }
+    </ul>
+    <div class="kp__foot">
+      <span class="kp__btn">Share list</span>
+      <span class="kp__btn kp__btn--copper">Send to Plug-ins</span>
+    </div>
+  </div>
+  <svg class="kp__gift" viewBox="0 0 120 120" focusable="false">
+    <g stroke="var(--ink-900)" stroke-width="3" stroke-linejoin="round">
+      <rect x="14" y="50" width="92" height="62" rx="6" fill="#fff8f1"></rect>
+      <rect x="8" y="36" width="104" height="20" rx="5" fill="#fffdf9"></rect>
+      <rect x="52" y="36" width="16" height="76" fill="var(--copper-500)"></rect>
+      <path d="M60 36c-8-20-34-26-36-12-2 12 20 12 36 12zM60 36c8-20 34-26 36-12 2 12-20 12-36 12z" fill="var(--copper-500)"></path>
+    </g>
+    <path d="M22 60v42" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="0.9"></path>
+  </svg>
+</div>
+
+<style>
+  .kp {
+    position: relative;
+    width: min(100%, 400px);
+    margin-inline: auto;
+    padding: 30px 0 0 18px;
+  }
+
+  .kp__card {
+    position: relative;
+    display: grid;
+    gap: 16px;
+    padding: 24px;
+    border-radius: 24px;
+    background: var(--paper);
+    color: var(--text);
+    box-shadow:
+      0 40px 80px -30px rgb(0 0 0 / 60%),
+      0 0 0 1px rgb(255 255 255 / 8%);
+    transform: rotate(-2.2deg);
+  }
+
+  .kp__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .kp__title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 640;
+    color: var(--ink-900);
+  }
+
+  .kp__count {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--copper-700);
+  }
+
+  .kp__bar {
+    height: 8px;
+    border-radius: 8px;
+    background: var(--paper-3);
+    overflow: hidden;
+  }
+
+  .kp__bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--copper-500), var(--copper-400));
+  }
+
+  .kp__items {
+    display: grid;
+    gap: 2px;
+    padding: 0;
+    list-style: none;
+    font-size: 0.97rem;
+  }
+
+  .kp__items li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 4px;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .kp__items li.done {
+    color: var(--text-3);
+    text-decoration: line-through;
+    text-decoration-color: rgb(93 101 115 / 50%);
+  }
+
+  .kp__box {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 7px;
+    border: 2px solid var(--line-2);
+    background: #fff;
+  }
+
+  .done .kp__box {
+    border-color: var(--copper-600);
+    background: var(--copper-600)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.4l3 3 6-6.4' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      center / 18px no-repeat;
+  }
+
+  .kp__foot {
+    display: flex;
+    gap: 10px;
+  }
+
+  .kp__btn {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    min-height: 42px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line-2);
+    font-size: 0.9rem;
+    font-weight: 620;
+    color: var(--ink-900);
+  }
+
+  .kp__btn--copper {
+    background: var(--copper-600);
+    border-color: var(--copper-600);
+    color: #fff;
+  }
+
+  .kp__gift {
+    position: absolute;
+    right: -22px;
+    top: -46px;
+    width: 92px;
+    height: 92px;
+    transform: rotate(9deg);
+    filter: drop-shadow(0 16px 20px rgb(0 0 0 / 35%));
+  }
+
+  @media (max-width: 559px) {
+    .kp__gift {
+      right: -4px;
+      width: 76px;
+      height: 76px;
+      top: -34px;
+    }
+  }
+</style>

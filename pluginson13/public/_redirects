@@ -1,0 +1,40 @@
+# Old catalog URLs → their new homes, so links and Google results keep working.
+# First match wins, so the more specific lines come first. Never add a bare
+# "/appliances/*" or "/electronics/*" line: it would also match the new pages.
+
+/contact-us                                   /contact/                      301
+/locations/brooklyn-store                     /locations/boro-park/          301
+/locations/brooklyn.html                      /locations/                    301
+/locations/spencer-st                         /locations/williamsburg/       301
+/rebate_center.html                           /services/#rebates             301
+/rebates                                      /services/#rebates             301
+
+/appliances/cooking/small-appliances          /small-appliances/             301
+/appliances/cooking/small-appliances/*        /small-appliances/             301
+/appliances/cooking/*                         /appliances/#cooking           301
+/appliances/cooking                           /appliances/#cooking           301
+/appliances/refrigeration/*                   /appliances/#refrigeration     301
+/appliances/refrigeration                     /appliances/#refrigeration     301
+/appliances/laundry/*                         /appliances/#laundry           301
+/appliances/laundry                           /appliances/#laundry           301
+/appliances/cleaning/*                        /appliances/#dishwashers       301
+/appliances/home-air-control/*                /appliances/#air-conditioners  301
+/appliances/home-air-control                  /appliances/#air-conditioners  301
+/appliances/home-appliances/vacuum-cleaners/* /small-appliances/#vacuums     301
+/appliances/home-appliances/*                 /small-appliances/             301
+/appliances/home-appliances                   /small-appliances/             301
+
+/products                                     /appliances/                   301
+/products/*                                   /appliances/                   301
+/by-brand/*                                   /appliances/#brands            301
+/cafe                                         /appliances/#brands            301
+/ge                                           /appliances/#brands            301
+/ge-profile                                   /appliances/#brands            301
+/whirlpool                                    /appliances/#brands            301
+/kitchenaid                                   /appliances/#brands            301
+/lg                                           /appliances/#brands            301
+/frigidaire                                   /appliances/#brands            301
+/electrolux                                   /appliances/#brands            301
+/samsung                                      /appliances/#brands            301
+/bosch                                        /appliances/#brands            301
+/maytag                                       /appliances/#brands            301

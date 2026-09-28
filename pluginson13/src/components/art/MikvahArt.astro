@@ -1,0 +1,142 @@
+---
+/*
+ * The keilim mikvah story in one picture: wrapped purchases waiting on the
+ * left ledge, a pot going under with ripples in the middle, rewrapped and
+ * ready on the right.
+ */
+const ink = 'var(--ink-900)';
+---
+
+<svg class="mikvah-art" viewBox="0 0 400 300" role="img" aria-labelledby="mikvah-art-title" focusable="false">
+  <title id="mikvah-art-title">Illustration of a keilim mikvah: wrapped purchases on the ledge, a copper pot being immersed, and items rewrapped and ready.</title>
+  <defs>
+    <pattern id="mikvah-tiles" width="28" height="28" patternUnits="userSpaceOnUse">
+      <rect width="28" height="28" fill="#eaf4fa"></rect>
+      <path d="M0 .5h28M.5 0v28" stroke="#cfe3ef" stroke-width="1"></path>
+    </pattern>
+    <linearGradient id="mikvah-water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7cc0e4"></stop>
+      <stop offset="1" stop-color="#3f8fc0"></stop>
+    </linearGradient>
+    <clipPath id="mikvah-pool">
+      <rect x="54" y="160" width="292" height="118" rx="4"></rect>
+    </clipPath>
+  </defs>
+
+  <rect x="0" y="0" width="400" height="300" rx="24" fill="url(#mikvah-tiles)"></rect>
+
+  <!-- Pool -->
+  <g stroke={ink} stroke-width="3" stroke-linejoin="round">
+    <rect x="54" y="150" width="292" height="128" fill="#fffdf9"></rect>
+  </g>
+  <g clip-path="url(#mikvah-pool)">
+    <path d="M46 176c16-8 32-8 48 0s32 8 48 0 32-8 48 0 32 8 48 0 32-8 48 0 32 8 48 0 32-8 48 0v110H46z" fill="url(#mikvah-water)"></path>
+    <path d="M46 176c16-8 32-8 48 0s32 8 48 0 32-8 48 0 32 8 48 0 32-8 48 0 32 8 48 0 32-8 48 0" fill="none" stroke="#fff" stroke-width="3" opacity="0.7"></path>
+    <!-- Submerged pot -->
+    <g opacity="0.8">
+      <rect x="164" y="196" width="72" height="54" rx="9" fill="var(--copper-500)" stroke={ink} stroke-width="3"></rect>
+      <path d="M164 206h72" stroke="var(--copper-300)" stroke-width="5"></path>
+      <path d="M236 214h30" stroke={ink} stroke-width="7" stroke-linecap="round"></path>
+    </g>
+    <rect x="54" y="176" width="292" height="110" fill="#3f8fc0" opacity="0.18"></rect>
+    <path d="M70 236h26M112 258h40M258 244h52M290 222h30" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0.35"></path>
+  </g>
+  <rect x="44" y="140" width="312" height="14" rx="5" fill="var(--paper-3)" stroke={ink} stroke-width="3"></rect>
+
+  <!-- Ripples and drops -->
+  <g fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round">
+    <ellipse class="ripple" cx="200" cy="178" rx="54" ry="7"></ellipse>
+    <ellipse class="ripple ripple--2" cx="200" cy="178" rx="84" ry="11" opacity="0.6"></ellipse>
+  </g>
+  <g fill="var(--water)" stroke={ink} stroke-width="2.2" stroke-linejoin="round">
+    <path class="drop" d="M176 120c0 0 7 9 7 13a7 7 0 0 1-14 0c0-4 7-13 7-13z"></path>
+    <path class="drop drop--2" d="M222 104c0 0 6 8 6 11.5a6 6 0 0 1-12 0c0-3.5 6-11.5 6-11.5z"></path>
+    <path class="drop drop--3" d="M200 86c0 0 5 6.5 5 9.5a5 5 0 0 1-10 0c0-3 5-9.5 5-9.5z"></path>
+  </g>
+
+  <!-- Left ledge: wrapped purchases -->
+  <g stroke={ink} stroke-width="3" stroke-linejoin="round">
+    <rect x="30" y="96" width="60" height="44" rx="5" fill="#dcb48c"></rect>
+    <rect x="42" y="62" width="40" height="34" rx="5" fill="#e7c7a3"></rect>
+  </g>
+  <g stroke="var(--copper-700)" stroke-width="3" stroke-linecap="round">
+    <path d="M60 96v44M30 116h60M62 62v34M42 79h40"></path>
+  </g>
+  <g fill="none" stroke="var(--copper-700)" stroke-width="3">
+    <ellipse cx="56" cy="57" rx="6.5" ry="3.6" transform="rotate(-28 56 57)"></ellipse>
+    <ellipse cx="68" cy="57" rx="6.5" ry="3.6" transform="rotate(28 68 57)"></ellipse>
+  </g>
+
+  <!-- Right ledge: rewrapped and ready -->
+  <g stroke={ink} stroke-width="3" stroke-linejoin="round">
+    <rect x="300" y="100" width="70" height="40" rx="5" fill="#e7c7a3"></rect>
+    <path d="M308 100c0-18 54-18 54 0" fill="var(--steel-100)"></path>
+  </g>
+  <path d="M335 100v40M300 120h70" stroke="var(--copper-700)" stroke-width="3" stroke-linecap="round"></path>
+  <g>
+    <circle cx="364" cy="94" r="15" fill="var(--green)" stroke={ink} stroke-width="3"></circle>
+    <path d="M357 94.5l5 5 9-10" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path>
+  </g>
+</svg>
+
+<style>
+  .mikvah-art {
+    width: 100%;
+    height: auto;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .ripple {
+      animation: ripple 3.6s var(--ease-out) infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .ripple--2 {
+      animation-delay: 1.2s;
+    }
+
+    .drop {
+      animation: drop 2.8s ease-in infinite;
+    }
+
+    .drop--2 {
+      animation-delay: 0.9s;
+    }
+
+    .drop--3 {
+      animation-delay: 1.8s;
+    }
+  }
+
+  @keyframes ripple {
+    0% {
+      transform: scale(0.4);
+      opacity: 0;
+    }
+    30% {
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(1.15);
+      opacity: 0;
+    }
+  }
+
+  @keyframes drop {
+    0% {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(46px);
+      opacity: 0;
+    }
+  }
+</style>

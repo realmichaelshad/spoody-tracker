@@ -1,0 +1,279 @@
+---
+/*
+ * Phones get a thumb-reach bar: Call, Directions, Ask a price. With two
+ * stores, Call and Directions open a sheet to pick one, each with its live
+ * status. Without JavaScript the buttons still work as plain links.
+ */
+import { mainStore, stores, telHref, fullAddress } from '../data/business';
+import Icon from './Icon.astro';
+import StatusPill from './StatusPill.astro';
+---
+
+<nav class="mobile-bar no-print" aria-label="Quick actions">
+  <a href={telHref(mainStore)} data-sheet-open="call">
+    <Icon name="phone" />
+    <span>Call</span>
+  </a>
+  <a href="/locations/" data-sheet-open="directions">
+    <Icon name="directions" />
+    <span>Directions</span>
+  </a>
+  <a href="/contact/" class="mobile-bar__primary">
+    <Icon name="chat" />
+    <span>Ask a price</span>
+  </a>
+</nav>
+
+<dialog class="sheet" id="store-sheet" aria-labelledby="store-sheet-title" data-mode="call">
+  <div class="sheet__inner">
+    <div class="sheet__grip" aria-hidden="true"></div>
+    <div class="sheet__head">
+      <h2 id="store-sheet-title">
+        <span data-for="call">Which store should we connect you to?</span>
+        <span data-for="directions">Which store are you heading to?</span>
+      </h2>
+      <button class="sheet__close" type="button" aria-label="Close" data-sheet-close>
+        <Icon name="close" />
+      </button>
+    </div>
+    <ul class="sheet__stores">
+      {
+        stores.map((store) => (
+          <li class="sheet__store">
+            <div class="sheet__info">
+              <p class="sheet__name">
+                Plug-ins {store.name} <span>· {store.street}</span>
+              </p>
+              <p class="sheet__addr">{fullAddress(store)}</p>
+              <StatusPill store={store.id} />
+            </div>
+            <a class="btn btn--primary" data-for="call" href={telHref(store)}>
+              <Icon name="phone" />
+              {store.phone}
+            </a>
+            <a class="btn btn--ink" data-for="directions" href={store.mapsUrl} target="_blank" rel="noopener">
+              <Icon name="directions" />
+              Get directions
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="sheet__foot">
+      <a class="link-arrow" href="/locations/">
+        All hours &amp; locations <Icon name="arrow" />
+      </a>
+    </p>
+  </div>
+</dialog>
+
+<style>
+  .mobile-bar {
+    display: none;
+  }
+
+  @media (max-width: 859px) {
+    .mobile-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 60;
+      display: grid;
+      grid-template-columns: 0.8fr 0.8fr 1.4fr;
+      gap: 8px;
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+      background: rgb(250 246 240 / 94%);
+      backdrop-filter: saturate(1.4) blur(14px);
+      -webkit-backdrop-filter: saturate(1.4) blur(14px);
+      border-top: 1px solid var(--line);
+      box-shadow: 0 -12px 30px -24px rgb(15 27 45 / 45%);
+    }
+  }
+
+  .mobile-bar a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 54px;
+    border-radius: 14px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--ink-900);
+    font-weight: 650;
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-bar a.mobile-bar__primary {
+    flex-direction: row;
+    gap: 8px;
+    font-size: 0.98rem;
+  }
+
+  .mobile-bar a:active {
+    transform: translateY(1px);
+  }
+
+  .mobile-bar :global(svg) {
+    width: 20px;
+    height: 20px;
+    color: var(--copper-600);
+  }
+
+  .mobile-bar a.mobile-bar__primary {
+    background: var(--copper-600);
+    border-color: var(--copper-600);
+    color: #fff;
+  }
+
+  .mobile-bar .mobile-bar__primary :global(svg) {
+    color: #fff;
+  }
+
+  /* ---------- Sheet ---------- */
+  .sheet {
+    position: fixed;
+    inset: auto 0 0 0;
+    width: 100%;
+    max-width: 560px;
+    max-height: 88dvh;
+    margin: auto auto 0;
+    padding: 0;
+    border: 0;
+    border-radius: 26px 26px 0 0;
+    background: var(--paper);
+    color: var(--text);
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+  }
+
+  @media (min-width: 860px) {
+    .sheet {
+      inset: 0;
+      margin: auto;
+      border-radius: 26px;
+    }
+  }
+
+  .sheet::backdrop {
+    background: rgb(9 18 31 / 55%);
+    backdrop-filter: blur(3px);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .sheet[open] {
+      animation: sheet-up 0.34s var(--ease-out);
+    }
+  }
+
+  @keyframes sheet-up {
+    from {
+      transform: translateY(40px);
+      opacity: 0.4;
+    }
+  }
+
+  .sheet__inner {
+    padding: 10px 20px calc(24px + env(safe-area-inset-bottom));
+  }
+
+  .sheet__grip {
+    width: 44px;
+    height: 5px;
+    margin: 0 auto 14px;
+    border-radius: 3px;
+    background: var(--line-2);
+  }
+
+  .sheet__head {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .sheet__head h2 {
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+
+  .sheet__close {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    margin: -6px -8px 0 0;
+    border-radius: 12px;
+  }
+
+  .sheet__stores {
+    display: grid;
+    gap: 12px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sheet__store {
+    display: grid;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+  }
+
+  .sheet__info {
+    display: grid;
+    gap: 6px;
+    justify-items: start;
+  }
+
+  .sheet__name {
+    font-weight: 700;
+    color: var(--ink-900);
+  }
+
+  .sheet__name span {
+    font-weight: 500;
+    color: var(--text-3);
+  }
+
+  .sheet__addr {
+    font-size: 0.92rem;
+    color: var(--text-2);
+  }
+
+  .sheet[data-mode='call'] [data-for='directions'],
+  .sheet[data-mode='directions'] [data-for='call'] {
+    display: none;
+  }
+
+  .sheet__foot {
+    margin-top: 18px;
+    text-align: center;
+  }
+</style>
+
+<script>
+  const sheet = document.getElementById('store-sheet') as HTMLDialogElement | null;
+  if (sheet) {
+    document.querySelectorAll<HTMLElement>('[data-sheet-open]').forEach((trigger) =>
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        sheet.dataset.mode = trigger.dataset.sheetOpen;
+        sheet.showModal();
+      }),
+    );
+    sheet.querySelector('[data-sheet-close]')?.addEventListener('click', () => sheet.close());
+    sheet.addEventListener('click', (e) => {
+      if (e.target === sheet) sheet.close();
+    });
+  }
+</script>

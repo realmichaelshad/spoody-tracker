@@ -1,0 +1,253 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon, { type IconName } from '../components/Icon.astro';
+import KallahList from '../components/KallahList.astro';
+import KallahPreview from '../components/KallahPreview.astro';
+import StoreCard from '../components/StoreCard.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { storeById } from '../data/business';
+import { deliveryFaq, financingFaq, mikvahFaq, registryFaq, type Faq } from '../data/faq';
+import { faqSchema } from '../lib/schema';
+
+const crumbs = [{ name: 'Kallah & Registry', path: '/kallah/' }];
+const boroPark = storeById('boro-park');
+
+const steps: { icon: IconName; title: string; text: string }[] = [
+  {
+    icon: 'list',
+    title: 'Build your list',
+    text: 'Start with our checklist below — or bring the one your mother has been keeping since the vort.',
+  },
+  {
+    icon: 'home',
+    title: 'Walk the showroom',
+    text: 'See the appliances, cookware and tableware side by side, and ask all the questions. Bring whoever you shop with.',
+  },
+  {
+    icon: 'gift',
+    title: 'Open a registry',
+    text: 'For the vort, the wedding, sheva brachos or any simcha — family and friends buy exactly what’s on your list.',
+  },
+  {
+    icon: 'truck',
+    title: 'Tovel & deliver',
+    text: 'Dip your new keilim in our on-site keilim mikvah, and schedule delivery for when the apartment is ready.',
+  },
+];
+
+const whenFaq: Faq = {
+  q: 'When should we start shopping?',
+  a: 'Whenever you are ready. Many couples start once they have an apartment, so they know what fits — and delivery can be scheduled for move-in.',
+};
+
+const faqs = [registryFaq, whenFaq, mikvahFaq, deliveryFaq, financingFaq];
+---
+
+<Base
+  title="Kallah Showroom & Gift Registry in Boro Park"
+  description="Everything for the new home under one roof on 13th Ave — registries for vorts, weddings and every simcha, a keilim mikvah, and a free kallah list builder."
+  crumbs={crumbs}
+  schema={[faqSchema(faqs)]}
+>
+  <PageHero
+    eyebrow="Kallah showroom & registry"
+    title="Mazel tov! Let’s set up"
+    em="the new home."
+    lead="Our kallah showroom on 13th Avenue brings the whole new home under one roof — appliances, cookware, dishes, the urn, the plata and every small thing in between — with people who know exactly what a new home needs."
+    crumbs={crumbs}
+    tone="ink"
+  >
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href="#kallah-list">
+        <Icon name="list" /> Start our kallah list
+      </a>
+      <a class="btn btn--ghost" href="#registry">About registries</a>
+    </Fragment>
+    <div slot="art" class="kallah-hero-art">
+      <KallahPreview />
+    </div>
+  </PageHero>
+
+  <section class="section section--white" aria-labelledby="how-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2 id="how-title">From the vort <em>to the new keys.</em></h2>
+      </div>
+      <ol class="how">
+        {
+          steps.map((s, i) => (
+            <li class="reveal" style={`--delay:${i * 70}ms`}>
+              <span class="how__num">{i + 1}</span>
+              <span class="how__icon">
+                <Icon name={s.icon} size={26} />
+              </span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <KallahList />
+    </div>
+  </section>
+
+  <section class="section section--ink" id="registry" aria-labelledby="registry-title">
+    <div class="container registry">
+      <div class="stack" style="--stack: 1.2rem">
+        <p class="eyebrow">Gift registry</p>
+        <h2 id="registry-title">A registry for <em>every simcha.</em></h2>
+        <p class="lead">
+          Vort, wedding, sheva brachos — or just a new house. Set up a registry in the showroom and friends and family can
+          buy exactly what you picked. No guessing, and no third toaster.
+        </p>
+        <ul class="tick-list">
+          <li>Set it up in person at our 13th Avenue showroom</li>
+          <li>Family can call or stop by to buy from your list</li>
+          <li>Tovel on site and schedule delivery when you’re ready</li>
+        </ul>
+      </div>
+      <div class="registry__card">
+        <StoreCard store={boroPark} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="kallah-faq-title">
+    <div class="container kallah-faq">
+      <div class="stack">
+        <p class="eyebrow">Questions</p>
+        <h2 id="kallah-faq-title">Kallah <em>questions.</em></h2>
+      </div>
+      <FaqList items={faqs} />
+    </div>
+  </section>
+
+  <CtaBand title="Want to talk it through first?" text="Call the showroom or send us your list — we'll help you figure out what you need and what it'll cost." />
+</Base>
+
+<style>
+  .kallah-hero-art {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 36px 28px 20px;
+  }
+
+  .kallah-hero-art :global(.kp) {
+    width: min(100%, 360px);
+  }
+
+  .how {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 0;
+    list-style: none;
+    counter-reset: how;
+  }
+
+  @media (max-width: 1023px) {
+    .how {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 559px) {
+    .how {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .how li {
+    position: relative;
+    display: grid;
+    gap: 10px;
+    align-content: start;
+    padding: 28px;
+    border-radius: var(--radius-lg);
+    background: var(--paper);
+    border: 1px solid var(--line);
+  }
+
+  .how__num {
+    position: absolute;
+    top: 22px;
+    right: 24px;
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--paper-3);
+  }
+
+  .how__icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 6px;
+    border-radius: 16px;
+    background: var(--copper-50);
+    color: var(--copper-600);
+    --icon-fill: var(--copper-50);
+  }
+
+  .how h3 {
+    font-size: 1.3rem;
+  }
+
+  .how p {
+    color: var(--text-2);
+  }
+
+  .registry {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 40px 72px;
+  }
+
+  @media (max-width: 959px) {
+    .registry {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .registry h2 {
+    font-size: var(--step-4);
+  }
+
+  .registry__card :global(.store-card) {
+    color: var(--text);
+  }
+
+  .registry__card :global(.store-card h3) {
+    color: var(--ink-900);
+  }
+
+  .kallah-faq {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: 32px 72px;
+    align-items: start;
+  }
+
+  @media (max-width: 859px) {
+    .kallah-faq {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .kallah-faq h2 {
+    font-size: var(--step-4);
+  }
+</style>

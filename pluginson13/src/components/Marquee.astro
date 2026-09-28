@@ -1,0 +1,112 @@
+---
+/* The value strip under the hero. Scrolls slowly; sits still for anyone who prefers less motion. */
+import Icon, { type IconName } from './Icon.astro';
+
+const items: { icon: IconName; text: string }[] = [
+  { icon: 'truck', text: 'Fast local delivery' },
+  { icon: 'card', text: 'Flexible financing' },
+  { icon: 'tag', text: 'Manufacturer rebates' },
+  { icon: 'gift', text: 'Kallah showroom & registry' },
+  { icon: 'drop', text: 'Keilim mikvah on site' },
+  { icon: 'heart', text: 'Family owned' },
+  { icon: 'box', text: 'Special orders' },
+];
+---
+
+<div class="marquee" role="region" aria-label="Why shop Plug-ins">
+  <div class="marquee__track">
+    {
+      [0, 1].map((copy) => (
+        <ul class="marquee__list" aria-hidden={copy === 1 ? 'true' : undefined}>
+          {items.map((item) => (
+            <li>
+              <Icon name={item.icon} size={22} />
+              <span>{item.text}</span>
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    background: var(--ink-900);
+    color: #e6ecf3;
+    border-block: 1px solid var(--ink-700);
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+  }
+
+  .marquee__list {
+    display: flex;
+    flex: none;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .marquee li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 34px;
+    font-weight: 560;
+    white-space: nowrap;
+  }
+
+  .marquee li :global(svg) {
+    color: var(--copper-300);
+    --icon-fill: var(--ink-900);
+  }
+
+  .marquee li::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    margin-left: 34px;
+    border-radius: 50%;
+    background: var(--copper-500);
+    opacity: 0.8;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .marquee__track {
+      animation: marquee 48s linear infinite;
+    }
+
+    .marquee:hover .marquee__track {
+      animation-play-state: paused;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track {
+      width: auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .marquee__list[aria-hidden] {
+      display: none;
+    }
+
+    .marquee__list {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+</style>

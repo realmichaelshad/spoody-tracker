@@ -1,0 +1,450 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import StatusPill from '../../components/StatusPill.astro';
+import MapFacade from '../../components/MapFacade.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import StorefrontArt from '../../components/art/StorefrontArt.astro';
+import DeptArt from '../../components/art/DeptArt.astro';
+import { business, fullAddress, stores, telHref, type Store } from '../../data/business';
+import { departments } from '../../data/nav';
+import { DAY_NAMES, formatRange } from '../../lib/hours';
+import { storeSchema } from '../../lib/schema';
+
+export const getStaticPaths = (() => stores.map((store) => ({ params: { store: store.id }, props: { store } }))) satisfies GetStaticPaths;
+
+interface Props {
+  store: Store;
+}
+
+const { store } = Astro.props;
+const other = stores.find((s) => s.id !== store.id)!;
+const crumbs = [
+  { name: 'Locations', path: '/locations/' },
+  { name: store.name, path: `/locations/${store.id}/` },
+];
+const isBoroPark = store.id === 'boro-park';
+const extras = isBoroPark ? ', plus our kallah showroom and a keilim mikvah on site' : '';
+// Sunday first, the way the week runs here.
+const week = [0, 1, 2, 3, 4, 5, 6];
+---
+
+<Base
+  title={`${store.name} Store — ${store.address.line1}, Brooklyn`}
+  description={`Plug-ins ${store.name}: appliances, kitchenware & electronics at ${fullAddress(store)}. Call ${store.phone} — open Sunday to Friday.`}
+  crumbs={crumbs}
+  schema={[storeSchema(store)]}
+>
+  <PageHero
+    eyebrow={`${store.neighborhood} · Brooklyn`}
+    title={`Plug-ins ${store.name}`}
+    em={`on ${store.street}.`}
+    lead={`${fullAddress(store)}. Appliances, kitchenware and electronics${extras} — open Sunday through Friday.`}
+    crumbs={crumbs}
+  >
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href={telHref(store)}>
+        <Icon name="phone" /> {store.phone}
+      </a>
+      <a class="btn btn--ghost" href={store.mapsUrl} target="_blank" rel="noopener">
+        <Icon name="directions" /> Directions
+      </a>
+    </Fragment>
+    <div class="store-now">
+      <StatusPill store={store.id} />
+    </div>
+    <div slot="art" class="store-hero-art">
+      <StorefrontArt id={`sf-${store.id}`} street={isBoroPark ? '13 Av' : 'Spencer St'} block={isBoroPark ? '4100' : ''} />
+    </div>
+  </PageHero>
+
+  <section class="section section--white" aria-labelledby="hours-title">
+    <div class="container store-grid">
+      <div class="stack" style="--stack: 1.2rem">
+        <p class="eyebrow">Hours</p>
+        <h2 id="hours-title">When we’re <em>open.</em></h2>
+        <table class="hours" data-hours-table>
+          <caption class="visually-hidden">Weekly hours at Plug-ins {store.name}</caption>
+          <tbody>
+            {
+              week.map((dow) => (
+                <tr data-days={String(dow)}>
+                  <th scope="row">{DAY_NAMES[dow]}</th>
+                  <td>{store.hours[dow] ? formatRange(store.hours[dow]) : dow === 6 ? 'Closed for Shabbos' : 'Closed'}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        <p class="fine">
+          Closed on Yom Tov, and closing early before Yom Tov. The live badge and the notices below account for both.
+        </p>
+        <div class="upcoming" data-upcoming={store.id} hidden>
+          <p class="upcoming__title"><Icon name="calendar" size={20} /> Coming up</p>
+          <ul></ul>
+        </div>
+      </div>
+
+      <div class="stack" style="--stack: 1.2rem">
+        <p class="eyebrow">Find us</p>
+        <h2>{store.address.line1}</h2>
+        <MapFacade store={store} />
+        <dl class="contact-list">
+          <div>
+            <dt><Icon name="pin" /> Address</dt>
+            <dd>
+              <a href={store.mapsUrl} target="_blank" rel="noopener">{fullAddress(store)}</a>
+            </dd>
+          </div>
+          <div>
+            <dt><Icon name="phone" /> Phone</dt>
+            <dd><a href={telHref(store)}>{store.phone}</a></dd>
+          </div>
+          <div>
+            <dt><Icon name="mail" /> Email</dt>
+            <dd><a href={`mailto:${business.email}`}>{business.email}</a></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="here-title">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div class="stack">
+          <p class="eyebrow">In this store</p>
+          <h2 id="here-title">What you’ll <em>find here.</em></h2>
+        </div>
+        <p class="lead">
+          Handy to {store.nearby.slice(0, -1).join(', ')} and {store.nearby.at(-1)} — and we deliver across{' '}
+          {business.serviceArea.slice(0, -1).join(', ')} &amp; {business.serviceArea.at(-1)}.
+        </p>
+      </div>
+
+      {
+        isBoroPark && (
+          <ul class="features">
+            <li>
+              <a href="/kallah/">
+                <span class="features__icon">
+                  <Icon name="gift" size={26} />
+                </span>
+                <span>
+                  <strong>Kallah showroom &amp; registry</strong>
+                  <span>Everything for the new home under one roof, with registries for every simcha.</span>
+                </span>
+                <Icon name="arrow" />
+              </a>
+            </li>
+            <li>
+              <a href="/keilim-mikvah/">
+                <span class="features__icon features__icon--water">
+                  <Icon name="drop" size={26} />
+                </span>
+                <span>
+                  <strong>Keilim mikvah on site</strong>
+                  <span>An attendant unwraps and rewraps your new keilim — tovel before you leave.</span>
+                </span>
+                <Icon name="arrow" />
+              </a>
+            </li>
+          </ul>
+        )
+      }
+
+      <ul class="store-depts">
+        {
+          departments.map((d) => (
+            <li>
+              <a href={d.href}>
+                <span class="store-depts__art">
+                  <DeptArt kind={d.art} />
+                </span>
+                <strong>{d.title}</strong>
+                <span>{d.blurb}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="other-store">
+        <Icon name="pin" />
+        <span>
+          Closer to {other.neighborhood}? Visit <a href={`/locations/${other.id}/`}>Plug-ins {other.name}</a> at{' '}
+          {fullAddress(other)} — <a href={telHref(other)}>{other.phone}</a>.
+        </span>
+      </p>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .store-now {
+    margin-top: 2px;
+  }
+
+  .store-now :global(.status) {
+    font-size: 0.95rem;
+    min-height: 36px;
+  }
+
+  .store-hero-art {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: end center;
+    padding: 6% 4% 0;
+  }
+
+  .store-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 48px 72px;
+    align-items: start;
+  }
+
+  @media (max-width: 899px) {
+    .store-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .store-grid h2 {
+    font-size: var(--step-4);
+  }
+
+  .hours {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.02rem;
+  }
+
+  .hours th,
+  .hours td {
+    padding: 13px 12px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+
+  .hours th {
+    font-weight: 500;
+    color: var(--text-2);
+  }
+
+  .hours td {
+    text-align: right;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hours tr[data-today] {
+    background: var(--copper-50);
+  }
+
+  .hours tr[data-today] th {
+    color: var(--ink-900);
+    font-weight: 700;
+    box-shadow: inset 3px 0 0 var(--copper-500);
+  }
+
+  .hours tr[data-today] th::after {
+    content: ' · today';
+    font-weight: 600;
+    color: var(--copper-700);
+  }
+
+  .contact-list {
+    display: grid;
+    gap: 2px;
+  }
+
+  .contact-list div {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .contact-list dt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-3);
+    font-weight: 560;
+  }
+
+  .contact-list dt :global(svg) {
+    width: 18px;
+    height: 18px;
+    color: var(--copper-600);
+  }
+
+  .contact-list a {
+    color: var(--text);
+    font-weight: 600;
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  .contact-list a:hover {
+    text-decoration: underline;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 859px) {
+    .features {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .features a {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 18px;
+    padding: 22px 24px;
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--text);
+    text-decoration: none;
+    transition:
+      border-color 0.2s var(--ease),
+      transform 0.2s var(--ease);
+  }
+
+  .features a:hover {
+    border-color: var(--copper-300);
+    transform: translateY(-2px);
+  }
+
+  .features strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 620;
+    color: var(--ink-900);
+  }
+
+  .features a > span:nth-child(2) > span {
+    color: var(--text-2);
+    font-size: 0.96rem;
+  }
+
+  .features a > :global(svg) {
+    color: var(--copper-600);
+  }
+
+  .features__icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    background: var(--copper-50);
+    color: var(--copper-600);
+    --icon-fill: var(--copper-50);
+  }
+
+  .features__icon--water {
+    background: var(--water-100);
+    color: #1f5f86;
+  }
+
+  .store-depts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 959px) {
+    .store-depts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .store-depts a {
+    display: grid;
+    gap: 6px;
+    height: 100%;
+    padding: 16px 16px 20px;
+    border-radius: var(--radius);
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.2s var(--ease);
+  }
+
+  .store-depts a:hover {
+    border-color: var(--copper-300);
+  }
+
+  .store-depts__art {
+    position: relative;
+    height: 96px;
+    margin-bottom: 6px;
+    border-radius: var(--radius-sm);
+    background: var(--paper-2);
+  }
+
+  .store-depts__art :global(svg) {
+    position: absolute;
+    left: 20%;
+    top: 14%;
+    width: 60%;
+    height: 72%;
+  }
+
+  .store-depts strong {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 620;
+    color: var(--ink-900);
+  }
+
+  .store-depts a > span:last-child {
+    font-size: 0.9rem;
+    color: var(--text-3);
+    line-height: 1.4;
+  }
+
+  .other-store {
+    display: flex;
+    align-items: start;
+    gap: 12px;
+    margin-top: 28px;
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    background: var(--paper-2);
+    color: var(--text-2);
+  }
+
+  .other-store :global(svg) {
+    flex: none;
+    margin-top: 2px;
+    color: var(--copper-600);
+  }
+
+  .other-store a {
+    color: var(--copper-700);
+    font-weight: 600;
+  }
+</style>

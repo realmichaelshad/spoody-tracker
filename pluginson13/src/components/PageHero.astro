@@ -1,0 +1,198 @@
+---
+/*
+ * The top of every inner page: breadcrumb, eyebrow, headline, lead, actions
+ * and an illustration panel. Put the italic part of the headline in `em`.
+ */
+import type { Crumb } from '../lib/schema';
+import Icon from './Icon.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  /** Optional italic copper ending for the headline. */
+  em?: string;
+  lead: string;
+  crumbs: Crumb[];
+  /** Tint of the illustration panel. */
+  tone?: 'sand' | 'water' | 'ink';
+}
+
+const { eyebrow, title, em, lead, crumbs, tone = 'sand' } = Astro.props;
+const hasArt = Astro.slots.has('art');
+---
+
+<section class:list={['page-hero', { 'page-hero--no-art': !hasArt }]}>
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Home</a></li>
+        {
+          crumbs.map((c, i) => (
+            <li>
+              <Icon name="chevron" size={14} class="crumbs__sep" />
+              {i === crumbs.length - 1 ? <span aria-current="page">{c.name}</span> : <a href={c.path}>{c.name}</a>}
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+    <div class="page-hero__grid">
+      <div class="page-hero__copy">
+        <p class="eyebrow">{eyebrow}</p>
+        <h1>{title}{em && ' '}{em && <em>{em}</em>}</h1>
+        <p class="lead">{lead}</p>
+        {
+          Astro.slots.has('actions') && (
+            <div class="btn-row">
+              <slot name="actions" />
+            </div>
+          )
+        }
+        <slot />
+      </div>
+      {
+        hasArt && (
+          <div class:list={['page-hero__art', `page-hero__art--${tone}`]}>
+            <slot name="art" />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    padding: clamp(20px, 3vw, 32px) 0 clamp(48px, 6vw, 88px);
+    overflow: hidden;
+  }
+
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    inset: -40% -12% auto auto;
+    width: 56vw;
+    height: 56vw;
+    max-width: 760px;
+    max-height: 760px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(224 138 85 / 16%), rgb(224 138 85 / 0%) 65%);
+    pointer-events: none;
+  }
+
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: clamp(24px, 4vw, 44px);
+    padding: 0;
+    list-style: none;
+    font-size: 0.9rem;
+    color: var(--text-3);
+  }
+
+  .crumbs li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .crumbs a {
+    color: var(--text-2);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--copper-700);
+    text-decoration: underline;
+  }
+
+  .crumbs [aria-current] {
+    color: var(--ink-900);
+    font-weight: 600;
+  }
+
+  .crumbs :global(.crumbs__sep) {
+    transform: rotate(-90deg);
+    opacity: 0.6;
+  }
+
+  .page-hero__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    align-items: center;
+    gap: clamp(32px, 5vw, 72px);
+  }
+
+  .page-hero--no-art .page-hero__grid {
+    grid-template-columns: minmax(0, 860px);
+  }
+
+  @media (max-width: 899px) {
+    .page-hero__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .page-hero__copy {
+    display: grid;
+    gap: 20px;
+    justify-items: start;
+  }
+
+  .page-hero h1 {
+    font-size: var(--step-5);
+    line-height: 1;
+    letter-spacing: -0.026em;
+  }
+
+  .page-hero h1 em {
+    display: inline;
+  }
+
+  .page-hero__art {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 5 / 4;
+    padding: clamp(24px, 4vw, 48px);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(circle at 50% 120%, rgb(255 255 255 / 75%), transparent 62%),
+      var(--paper-2);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .page-hero__art--water {
+    background:
+      radial-gradient(circle at 50% 120%, rgb(255 255 255 / 70%), transparent 62%),
+      #e4f0f7;
+  }
+
+  .page-hero__art--ink {
+    background:
+      radial-gradient(circle at 80% 0%, rgb(207 106 49 / 35%), transparent 60%),
+      var(--ink-900);
+    border-color: var(--ink-700);
+  }
+
+  /* A definite box for the drawing; its viewBox keeps the proportions. */
+  .page-hero__art > :global(svg) {
+    position: absolute;
+    left: 9%;
+    top: 9%;
+    width: 82%;
+    height: 82%;
+  }
+
+  @media (max-width: 899px) {
+    .page-hero__art {
+      aspect-ratio: 16 / 10;
+    }
+  }
+</style>
